@@ -13,7 +13,7 @@ namespace hff {
 struct Node {
   // character stored by the nodes this will be used to encoded and decode a
   // textifle
-  char charEncoded;
+  unsigned char charEncoded;
   // its frequency inside a given textfile
   int frequency;
   // left and right references to nodes inside the huffman tree
@@ -33,7 +33,7 @@ public:
     // set all references to other nodes to zero explicitly to null
     // when tree is first constructed, allocate memory to root
     // this root will serve as the entry point into the binary tree
-    root = new Node;
+    root = NULL;
     root->left = NULL;
     root->right = NULL;
     root->parent = NULL;
