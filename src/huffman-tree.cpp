@@ -1,7 +1,6 @@
 #include "huffman-tree.hpp"
 #include <cstdlib>
 #include <iostream>
-using namespace std;
 
 // This constant can be avoided by explicitly
 // calculating height of Huffman Tree
@@ -23,9 +22,7 @@ struct hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
 
 // A utility function to create
 // a min heap of given capacity
-struct hff::MinHeap *createMinHeap(unsigned capacity)
-
-{
+struct hff::MinHeap *hff::createMinHeap(unsigned capacity) {
 
   struct hff::MinHeap *minHeap =
       (struct hff::MinHeap *)malloc(sizeof(struct hff::MinHeap));
@@ -49,9 +46,7 @@ void hff::swapMinHeapNode(struct hff::MinHeapNode **a,
 }
 
 // The standard minHeapify function.
-void hff::minHeapify(struct hff::MinHeap *minHeap, int index)
-
-{
+void hff::minHeapify(struct hff::MinHeap *minHeap, int index) {
 
   int smallest = index;
   int left = 2 * index + 1;
@@ -79,9 +74,7 @@ bool hff::isSizeOne(struct hff::MinHeap *minHeap) {
 
 // A standard function to extract
 // minimum value node from heap
-struct hff::MinHeapNode *extractMin(struct hff::MinHeap *minHeap)
-
-{
+struct hff::MinHeapNode *hff::extractMin(struct hff::MinHeap *minHeap) {
 
   struct hff::MinHeapNode *temp = minHeap->array[0];
   minHeap->array[0] = minHeap->array[minHeap->size - 1];
@@ -95,9 +88,7 @@ struct hff::MinHeapNode *extractMin(struct hff::MinHeap *minHeap)
 // A utility function to insert
 // a new node to Min Heap
 void hff::insertMinHeap(struct hff::MinHeap *minHeap,
-                        struct hff::MinHeapNode *minHeapNode)
-
-{
+                        struct hff::MinHeapNode *minHeapNode) {
 
   ++minHeap->size;
   int i = minHeap->size - 1;
@@ -112,9 +103,7 @@ void hff::insertMinHeap(struct hff::MinHeap *minHeap,
 }
 
 // A standard function to build min heap
-void hff::buildMinHeap(struct hff::MinHeap *minHeap)
-
-{
+void hff::buildMinHeap(struct hff::MinHeap *minHeap) {
 
   int n = minHeap->size - 1;
   int i;
@@ -127,27 +116,19 @@ void hff::buildMinHeap(struct hff::MinHeap *minHeap)
 void hff::printArr(int arr[], int n) {
   int i;
   for (i = 0; i < n; ++i)
-    cout << arr[i];
+    std::cout << arr[i];
 
-  cout << "\n";
+  std::cout << "\n";
 }
 
 // Utility function to check if this node is leaf
-bool hff::isLeaf(struct MinHeapNode *root)
-
-{
-
+bool hff::isLeaf(struct MinHeapNode *root) {
   return !(root->left) && !(root->right);
 }
 
-// Creates a min heap of capacity
-// equal to size and inserts all character of
-// data[] in min heap. Initially size of
-// min heap is equal to capacity
+// Creates a min heap of a given capacity
 struct hff::MinHeap *hff::createAndBuildMinHeap(char data[], int freq[],
-                                                int size)
-
-{
+                                                int size) {
 
   struct hff::MinHeap *minHeap = hff::createMinHeap(size);
 
@@ -155,16 +136,14 @@ struct hff::MinHeap *hff::createAndBuildMinHeap(char data[], int freq[],
     minHeap->array[i] = hff::newNode(data[i], freq[i]);
 
   minHeap->size = size;
-  buildMinHeap(minHeap);
+  hff::buildMinHeap(minHeap);
 
   return minHeap;
 }
 
 // The main function that builds Huffman tree
 struct hff::MinHeapNode *hff::buildHuffmanTree(char data[], int freq[],
-                                               int size)
-
-{
+                                               int size) {
   struct hff::MinHeapNode *left, *right, *top;
 
   struct hff::MinHeap *minHeap = hff::createAndBuildMinHeap(data, freq, size);
@@ -207,7 +186,7 @@ void hff::printCodes(struct hff::MinHeapNode *root, int arr[], int top)
 
   if (hff::isLeaf(root)) {
 
-    cout << root->data << ": ";
+    std::cout << root->data << ": ";
     printArr(arr, top);
   }
 }
@@ -223,17 +202,4 @@ void hff::huffmanCodes(char data[], int freq[], int size)
   int arr[MAX_TREE_HT], top = 0;
 
   hff::printCodes(root, arr, top);
-}
-
-// Driver code
-int main() {
-
-  char arr[] = {'a', 'b', 'c', 'd', 'e', 'f'};
-  int freq[] = {5, 9, 12, 13, 16, 45};
-
-  int size = sizeof(arr) / sizeof(arr[0]);
-
-  hff::huffmanCodes(arr, freq, size);
-
-  return 0;
 }

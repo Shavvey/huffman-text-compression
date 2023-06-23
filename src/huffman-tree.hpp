@@ -9,7 +9,7 @@
 #include <unordered_map>
 namespace hff {
 
-#define MAX_TREE_HEIGHT 256
+#define MAX_TREE_HEIGHT 100
 
 /*DEFINTIONS*/
 struct MinHeapNode {
@@ -33,7 +33,7 @@ struct MinHeap {
 /*FUNCTION PROTOTYPING*/
 struct hff::MinHeapNode *newNode(char, unsigned);
 struct hff::MinHeap *createMinHeap(unsigned);
-hff::MinHeapNode *extractMin(hff::MinHeap *minHeap);
+struct hff::MinHeapNode *extractMin(struct hff::MinHeap *minHeap);
 void swapMinHeapNode(hff::MinHeapNode **, hff::MinHeapNode **);
 void minHeapify(hff::MinHeap *, int);
 bool isSizeOne(hff::MinHeap *);
