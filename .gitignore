@@ -7,3 +7,7 @@
 #DS Store
 .DS_Store
 src/.DS_Store
+
+#ignore generated executable
+a.out
+huff_tree

@@ -6,7 +6,7 @@ SRC = huffman-tree.cpp huffman-tree.hpp main.cpp
 OBJS = huffman-tree.o main.o
 
 huffman: $(OBJS)
-	$(CC) $(OBJS)
+	$(CC) $(OBJS) -o huff_tree
 
 # produce object file, do not run linker
 huffman-tree.o: $(SRC)
