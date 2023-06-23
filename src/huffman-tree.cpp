@@ -128,3 +128,21 @@ hff::MinHeapNode *buildHuffmanTree(char data[], int freq[], int size) {
   // the remaing node should be the root node of the tree
   return extractMin(minHeap);
 }
+void printCodes(hff::MinHeapNode *root, int arr[], int top) {
+  // assign 0 to left edges and recurse
+  if (root->left) {
+    arr[top] = 0;
+    printCodes(root->left, arr, top++);
+  }
+  // assign 1 to right edge and recurse
+  if (root->right) {
+    arr[top] = 1;
+    printCodes(root->right, arr, top++);
+  }
+  // if encountering a leaf node then print the character and its codes using
+  // arr[]
+  if (isLeaf(root)) {
+    std::cout << root->charIn << ": ";
+    printArr(arr, top);
+  }
+}
