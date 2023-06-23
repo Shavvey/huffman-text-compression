@@ -14,9 +14,9 @@ namespace hff {
 /*DEFINTIONS*/
 struct MinHeapNode {
   // input character for
-  unsigned char charIn;
+  char data;
   // its frequency inside a given textfile
-  u_int32_t freq;
+  unsigned freq;
   // left and right references to nodes inside the huffman tree
   MinHeapNode *right;
   MinHeapNode *left;
@@ -30,12 +30,12 @@ struct MinHeap {
   // array of minheap node pointers
   struct MinHeapNode **array;
 };
-} // namespace hff
 /*FUNCTION PROTOTYPING*/
 hff::MinHeapNode *newNode(char, unsigned);
 hff::MinHeap *createMinHeap(unsigned);
+hff::MinHeapNode *extractMin(hff::MinHeap *minHeap);
 void swapMinHeapNode(hff::MinHeapNode **, hff::MinHeapNode **);
-void minHeapify(hff::MinHeap, int);
+void minHeapify(hff::MinHeap *, int);
 bool isSizeOne(hff::MinHeap *);
 void insertMinHeap(hff::MinHeap *, hff::MinHeapNode *);
 void buildMinHeap(hff::MinHeap *);
@@ -48,3 +48,4 @@ void huffmanCodes(char[], int[], int);
 // namespace hff
 // Maybe encapsulate this stuff inside a class?
 class HuffmanTree {};
+} // namespace hff
