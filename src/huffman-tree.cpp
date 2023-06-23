@@ -51,4 +51,36 @@ void minHeapify(hff::MinHeap *minHeap, int index) {
   }
 }
 // helper function to query whether size of the heap is one
-int isSizeOne(hff::MinHeap *minHeap) { return minHeap->size == 1; }
+bool isSizeOne(hff::MinHeap *minHeap) { return minHeap->size == 1; }
+
+hff::MinHeapNode *extractMin(hff::MinHeap *minHeap) {
+  hff::MinHeapNode *top = minHeap->array[0];
+  // throw heap node at the top of heap and call heapify
+  minHeap->array[0] = minHeap->array[minHeap->size - 1];
+  // decrement size of heap
+  --minHeap->size;
+  minHeapify(minHeap, 0);
+
+  return top;
+}
+// standard function to insert a new node inside a heap given a root entry point
+void insertMinHeap(hff::MinHeap *minHeap, hff::MinHeapNode *minHeapNode) {
+  ++minHeap->size;
+  int i = minHeap->size - 1;
+  while (i && minHeapNode->freq < minHeap->array[(i - 1) / 2]->freq) {
+
+    minHeap->array[i] = minHeap->array[(i - 1) / 2];
+    i = (i - 1) / 2;
+  }
+
+  minHeap->array[i] = minHeapNode;
+}
+
+// build minHeap given a root entry point, standard function
+void buildMinHeap(hff::MinHeap *minHeap) {
+  int n = minHeap->size - 1;
+  int i;
+  for (i = (n - 1) / 2; i >= 0; --i) {
+    minHeapify(minHeap, i);
+  }
+}
