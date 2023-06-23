@@ -9,34 +9,27 @@
 #include <unordered_map>
 namespace hff {
 
+#define MAX_TREE_HEIGHT 256
+
 /*DEFINTIONS*/
-struct Node {
-  // character stored by the nodes this will be used to encoded and decode a
-  // textifle
-  unsigned char charEncoded;
+struct MinHeapNode {
+  // input character for
+  unsigned char charIn;
   // its frequency inside a given textfile
-  int frequency;
+  u_int32_t freq;
   // left and right references to nodes inside the huffman tree
-  Node *right;
-  Node *left;
-  // parent reference
-  Node *parent;
+  MinHeapNode *right;
+  MinHeapNode *left;
 };
 
-// top-level class that stores each huffman binary tree
-class HuffTree {
-public:
-  // reference to root node of created binary tree
-  Node *root;
-  // !! constructor !!
-  HuffTree() {
-    // set all references to other nodes to zero explicitly to null
-    // when tree is first constructed, allocate memory to root
-    // this root will serve as the entry point into the binary tree
-    root = NULL;
-    root->left = NULL;
-    root->right = NULL;
-    root->parent = NULL;
-  };
+struct MinHeap {
+  // current size of min heap
+  u_int32_t size;
+  // capacity of min heap
+  u_int32_t capacity;
+  // array of minheap node pointers
+  struct MinHeapNode **array;
 };
 } // namespace hff
+// Maybe encapsulate this stuff inside a class?
+class HuffmanTree {};
