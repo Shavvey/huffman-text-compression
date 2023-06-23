@@ -84,3 +84,47 @@ void buildMinHeap(hff::MinHeap *minHeap) {
     minHeapify(minHeap, i);
   }
 }
+// helper function to helper print out the contents of the array
+void printArr(int arr[], int n) {
+  for (int i = 0; i < n; i++) {
+    std::cout << arr[i];
+  }
+  std::cout << "\n";
+}
+// helper function to see whether is given node is a leaf inside the heap
+bool isLeaf(hff::MinHeapNode *current) {
+  return !(current->left) && !(current->right);
+}
+
+// creates a min heap of capacity
+// equal to size and inserts all character of data[]
+hff::MinHeap *createAndBuildHeap(char data[], int freq[], int size) {
+  hff::MinHeap *minHeap = createMinHeap(size);
+  for (int i = 0; i < size; ++i) {
+    minHeap->array[i] = newNode(data[i], freq[i]);
+  }
+  minHeap->size = size;
+  buildMinHeap(minHeap);
+  return minHeap;
+}
+
+// main function to build huffman tree
+hff::MinHeapNode *buildHuffmanTree(char data[], int freq[], int size) {
+  hff::MinHeapNode *left, *right, *top;
+  // create min heap of capacity equal to size
+  hff::MinHeap *minHeap = createAndBuildHeap(data, freq, size);
+  // iterate until we reach a size of 1 for the heap
+  while (!isSizeOne(minHeap)) {
+    // extract the two minimums
+    left = extractMin(minHeap);
+    right = extractMin(minHeap);
+    // $ is special value used for intermediate nodes that don't encode for
+    // chars
+    top = newNode('$', left->freq + right->freq);
+    top->left = left;
+    top->right = right;
+    insertMinHeap(minHeap, top);
+  }
+  // the remaing node should be the root node of the tree
+  return extractMin(minHeap);
+}
