@@ -1,5 +1,5 @@
 # compiler and compiler flags
-CC = g++
+CC = clang++
 # source files
 SRC = huffman-tree.cpp huffman-tree.hpp main.cpp
 # object files
@@ -14,7 +14,7 @@ huffman-tree.o: $(SRC)
 
 
 # produce object file, do not run linker
-main.o: main.cpp $(SRC)
+main.o: $(SRC)
 	$(CC) -c $(SRC)
 
 .PHONY: clean
