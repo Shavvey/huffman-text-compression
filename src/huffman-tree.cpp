@@ -30,3 +30,25 @@ void swapMinHeapNode(hff::MinHeapNode **first, hff::MinHeapNode **second) {
   *first = *second;
   *second = temp;
 }
+
+void minHeapify(hff::MinHeap *minHeap, int index) {
+  int smallest = index;
+  // given left child based on the passed index
+  int left = 2 * index + 1;
+  // given right child based on the passewd index
+  int right = 2 * index + 2;
+  if (left < minHeap->size &&
+      minHeap->array[left]->freq < minHeap->array[smallest]->freq)
+    smallest = left;
+
+  if (right < minHeap->size &&
+      minHeap->array[right]->freq < minHeap->array[smallest]->freq)
+    smallest = right;
+
+  if (smallest != index) {
+    swapMinHeapNode(&minHeap->array[smallest], &minHeap->array[index]);
+    minHeapify(minHeap, smallest);
+  }
+}
+// helper function to query whether size of the heap is one
+int isSizeOne(hff::MinHeap *minHeap) { return minHeap->size == 1; }
