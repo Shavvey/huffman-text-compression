@@ -51,6 +51,15 @@ int maxDepth(hff::MinHeapNode *);
 void pathRecursive(hff::MinHeapNode *, char ***, int, int, int, int);
 char ***printTree(hff::MinHeapNode *);
 void printCurrentTree(hff::MinHeapNode *);
-// Maybe encapsulate this stuff inside a class?
-class HuffmanTree {};
+int power(int, int);
+class HuffmanTree {
+public:
+  // public fields!
+  hff::MinHeapNode *root;
+  HuffmanTree(char *data, int *freq, int size) {
+    root = hff::buildHuffmanTree(data, freq, size);
+  }
+  // class methods declarations!
+  void printHuffmanTree();
+};
 } // namespace hff
