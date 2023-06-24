@@ -1,4 +1,5 @@
 #include "huffman-tree.hpp"
+using namespace hff;
 
 struct hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
   struct MinHeapNode *node =
@@ -14,7 +15,7 @@ struct hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
 // A utility function to create
 // a min heap of given capacity
 struct hff::MinHeap *hff::createMinHeap(unsigned capacity) {
-
+  // entry pointer to minHeap, should be the root
   struct hff::MinHeap *minHeap =
       (struct hff::MinHeap *)malloc(sizeof(struct hff::MinHeap));
 
@@ -41,7 +42,7 @@ void hff::swapMinHeapNode(struct hff::MinHeapNode **first,
 
 // The standard minHeapify function
 void hff::minHeapify(struct hff::MinHeap *minHeap, int index) {
-
+  // initialize smallest value to the current index
   int smallest = index;
   // compute the left child of the indexed heap node
   int left = 2 * index + 1;
@@ -190,9 +191,7 @@ void hff::printCodes(struct hff::MinHeapNode *root, int arr[], int top) {
   }
 }
 
-void hff::huffmanCodes(char data[], int freq[], int size)
-
-{
+void hff::huffmanCodes(char data[], int freq[], int size) {
   // construct Huffman Tree using frequency and character data
   struct MinHeapNode *root = hff::buildHuffmanTree(data, freq, size);
 
@@ -202,4 +201,73 @@ void hff::huffmanCodes(char data[], int freq[], int size)
 
   // print codes from constructed huffman tree
   hff::printCodes(root, arr, top);
+}
+// simple helper function to find the largest of two numbers
+int max(int a, int b) { return (a > b) ? a : b; }
+// another helper function used in string representation of binary-tree
+int power(int base, int exponent) {
+  // i really like ternary operators
+  return (exponent != 0) ? base * power(base, exponent - 1) : 1;
+}
+int hff::maxDepth(hff::MinHeapNode *root) {
+  if (root == NULL) {
+    return 0;
+  }
+  int left_depth = maxDepth(root->left);
+  int right_depth = maxDepth(root->right);
+  // compare left and left depth values
+  int max_val = max(left_depth, right_depth);
+  return max_val + 1;
+}
+// recursive path from the tree how far left and right we need to index into
+// the 2D character array
+void hff::pathRecursive(hff::MinHeapNode *root, char ***res, int d, int depth,
+                        int left, int right) {
+  // if recursive path hits a branch (or root isnt created) or is past the max
+  // depth we return out of the function call
+  if (root == NULL || d == depth) {
+    // early return if root passed does not exist
+    return;
+  }
+  // calculate mid point, used to move left and right based on the midpoint of
+  // each node
+  int mid = (left + right) / 2;
+  res[d][mid] = (char *)malloc(sizeof(char) * 4);
+  snprintf(res[d][mid], 100, "%c", root->data);
+  hff::pathRecursive(root->left, res, d + 1, depth, left, mid - 1);
+  hff::pathRecursive(root->right, res, d + 1, depth, mid + 1, right);
+}
+// gets a string representation of the tree
+// its pretty ugly but it works!
+char ***hff::printTree(hff::MinHeapNode *root) {
+  int depth = maxDepth(root);
+  int width = power(depth, 2) - 1;
+
+  int *return_size = &depth;
+  // init the 2 dimensional character array, based on depth and width calc
+  char ***res = (char ***)malloc(sizeof(char **) * depth);
+  for (int i = 0; i < depth; i++) {
+    res[i] = (char **)malloc(sizeof(char *) * width);
+    for (int j = 0; j < width; j++) {
+      res[i][j] = (char *)" ";
+    }
+  }
+  // take recursive path through binary tree
+  hff::pathRecursive(root, res, 0, depth, 0, width - 1);
+  return res;
+}
+// print current tree as a 2D string representation
+void hff::printCurrentTree(hff::MinHeapNode *root) {
+  int depth = maxDepth(root);
+  int width = power(depth, 2) - 1;
+  int *return_size;
+  //  create the 2D representation of the character array
+  char ***out = printTree(root);
+  // traverse through array and print out result
+  for (int i = 0; i < depth; i++) {
+    for (int j = 0; j < width; j++) {
+      printf("%s", out[i][j]);
+    }
+    printf("\n");
+  }
 }

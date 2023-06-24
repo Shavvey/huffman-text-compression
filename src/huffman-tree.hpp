@@ -7,6 +7,8 @@
 #include <queue>
 #include <string>
 #include <unordered_map>
+// namespacing all the huffman libraries because i really like typing :: in
+// every single line of code
 namespace hff {
 
 #define MAX_TREE_HEIGHT 100
@@ -45,7 +47,10 @@ struct hff::MinHeap *createAndBuildMinHeap(char[], int[], int);
 struct hff::MinHeapNode *buildHuffmanTree(char[], int[], int);
 void printCodes(hff::MinHeapNode *, int[], int);
 void huffmanCodes(char[], int[], int);
-// namespace hff
+int maxDepth(hff::MinHeapNode *);
+void pathRecursive(hff::MinHeapNode *, char ***, int, int, int, int);
+char ***printTree(hff::MinHeapNode *);
+void printCurrentTree(hff::MinHeapNode *);
 // Maybe encapsulate this stuff inside a class?
 class HuffmanTree {};
 } // namespace hff
