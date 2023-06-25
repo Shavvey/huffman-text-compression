@@ -322,34 +322,33 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   }
   // breaking input into word using string stream
   std::stringstream s(data);
-  std::string str;
-  std::getline(s, str);
-  printf("%s", str.c_str());
+  char c;
+  c = s.get();
   // since we don't need the frequency data after the heap is constructed
   // each of the frequncy values are just set to 0
-  hff::MinHeapNode *root = hff::newNode(std::stoi(str), 0);
+  hff::MinHeapNode *root = hff::newNode(c, 0);
   std::queue<hff::MinHeapNode *> q;
   q.push(root);
   while (!q.empty()) {
     hff::MinHeapNode *node = q.front();
     q.pop();
     // get another line from the string stream
-    getline(s, str);
+    c = s.get();
     // if "#" is present then children should be null
-    if (str == "#") {
+    if (c == '#') {
       node->left = NULL;
     } else {
       // create new left node and push it onto the queue
-      hff::MinHeapNode *leftNode = hff::newNode(std::stoi(str), 0);
+      hff::MinHeapNode *leftNode = hff::newNode(c, 0);
       node->left = leftNode;
       q.push(leftNode);
     }
-    getline(s, str);
-    if (str == "#") {
+    c = s.get();
+    if (c == '#') {
       node->right = NULL;
     } else {
       // create and new right node and push it onto the queue
-      hff::MinHeapNode *rightNode = hff::newNode(std::stoi(str), 0);
+      hff::MinHeapNode *rightNode = hff::newNode(c, 0);
       node->right = rightNode;
       q.push(rightNode);
     }

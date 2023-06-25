@@ -15,7 +15,6 @@ int main() {
   int i = 0;
 
   hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
-  printf("%c", rootFromString->right->data);
-  // hff::printCurrentTree(rootFromString);
+  hff::printCurrentTree(rootFromString);
   return 0;
 }
