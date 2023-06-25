@@ -33,9 +33,9 @@ struct MinHeap {
   struct MinHeapNode **array;
 };
 /*FUNCTION PROTOTYPING*/
-struct hff::MinHeapNode *newNode(char, unsigned);
-struct hff::MinHeap *createMinHeap(unsigned);
-struct hff::MinHeapNode *extractMin(struct hff::MinHeap *minHeap);
+hff::MinHeapNode *newNode(char, unsigned);
+hff::MinHeap *createMinHeap(unsigned);
+hff::MinHeapNode *extractMin(struct hff::MinHeap *minHeap);
 void swapMinHeapNode(hff::MinHeapNode **, hff::MinHeapNode **);
 void minHeapify(hff::MinHeap *, int);
 bool isSizeOne(hff::MinHeap *);
@@ -43,8 +43,8 @@ void insertMinHeap(hff::MinHeap *, hff::MinHeapNode *);
 void buildMinHeap(hff::MinHeap *);
 void printArr(int[], int);
 bool isLeaf(hff::MinHeapNode *);
-struct hff::MinHeap *createAndBuildMinHeap(char[], int[], int);
-struct hff::MinHeapNode *buildHuffmanTree(char[], int[], int);
+hff::MinHeap *createAndBuildMinHeap(char[], int[], int);
+hff::MinHeapNode *buildHuffmanTree(char[], int[], int);
 void printCodes(hff::MinHeapNode *, int[], int);
 void huffmanCodes(char[], int[], int);
 int maxDepth(hff::MinHeapNode *);
