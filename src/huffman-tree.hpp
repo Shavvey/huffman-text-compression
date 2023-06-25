@@ -33,6 +33,10 @@ struct MinHeap {
   // array of minheap node pointers
   struct MinHeapNode **array;
 };
+struct SerializedMinHeap {
+  int size;
+  std::vector<std::byte> serializedBitString;
+};
 /*FUNCTION PROTOTYPING*/
 hff::MinHeapNode *newNode(char, unsigned);
 hff::MinHeap *createMinHeap(unsigned);

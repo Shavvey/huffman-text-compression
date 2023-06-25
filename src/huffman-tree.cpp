@@ -320,9 +320,10 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
 
     return NULL;
   }
-  // breaking input into word using string stream
+  // using a stringstream to iterate over the string and get each character
   std::stringstream s(data);
   char c;
+  // get another character from stringstream
   c = s.get();
   // since we don't need the frequency data after the heap is constructed
   // each of the frequncy values are just set to 0
@@ -332,7 +333,7 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   while (!q.empty()) {
     hff::MinHeapNode *node = q.front();
     q.pop();
-    // get another line from the string stream
+    // get another character from the string stream
     c = s.get();
     // if "#" is present then children should be null
     if (c == '#') {
@@ -355,3 +356,4 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   }
   return root;
 }
+SerializedMinHeap serializeFromString(std::string heapString);
