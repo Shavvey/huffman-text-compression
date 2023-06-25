@@ -283,8 +283,9 @@ void hff::HuffmanTree::printHuffmanTree() {
 }
 std::string hff::minHeapToString(hff::MinHeapNode *root) {
   // probably should raise an error?
-  if (!root)
+  if (!root) {
     return "";
+  }
   // building a
   std::string s = "";
   // create a queue of node pointers to build the string
@@ -299,13 +300,16 @@ std::string hff::minHeapToString(hff::MinHeapNode *root) {
       // rebuilding the heap from a given string
       s.append("#");
     } else {
-      s.append(std::to_string(currentNode->data));
+      // printf("%c\n", currentNode->data);
+      s.push_back(currentNode->data);
     }
     if (currentNode != NULL) {
       q.push(currentNode->left);
       q.push(currentNode->right);
     }
   }
+  // null terminate the string
+  s.push_back('\n');
   // print the string to standard output, this is just for testing purposes
   std::cout << s;
   return s;

@@ -11,6 +11,11 @@ int main() {
   // generated huffman codes given each characters and their frequencies
   hff::huffmanCodes(arr, freq, size);
   hff::printCurrentTree(root);
-  hff::minHeapToString(root);
+  std::string heapString = hff::minHeapToString(root);
+  int i = 0;
+
+  hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
+  printf("%c", rootFromString->right->data);
+  // hff::printCurrentTree(rootFromString);
   return 0;
 }
