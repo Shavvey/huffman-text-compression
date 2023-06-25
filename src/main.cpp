@@ -11,5 +11,6 @@ int main() {
   // generated huffman codes given each characters and their frequencies
   hff::huffmanCodes(arr, freq, size);
   hff::printCurrentTree(root);
+  hff::minHeapToString(root);
   return 0;
 }

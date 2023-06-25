@@ -281,3 +281,74 @@ void hff::HuffmanTree::printHuffmanTree() {
     printf("\n");
   }
 }
+std::string hff::minHeapToString(hff::MinHeapNode *root) {
+  // probably should raise an error?
+  if (!root)
+    return "";
+  // building a
+  std::string s = "";
+  // create a queue of node pointers to build the string
+  std::queue<hff::MinHeapNode *> q;
+  q.push(root);
+  while (!q.empty()) {
+    hff::MinHeapNode *currentNode = q.front();
+    q.pop();
+    if (currentNode == NULL) {
+      // if current node is null append '#'
+      // which is a special character used to indication a null pointer, when
+      // rebuilding the heap from a given string
+      s.append("#");
+    } else {
+      s.append(std::to_string(currentNode->data));
+    }
+    if (currentNode != NULL) {
+      q.push(currentNode->left);
+      q.push(currentNode->right);
+    }
+  }
+  // print the string to standard output, this is just for testing purposes
+  std::cout << s;
+  return s;
+}
+
+hff::MinHeapNode *hff::minHeapFromString(std::string data) {
+  if (data.size() == 0) {
+
+    return NULL;
+  }
+  // breaking input into word using string stream
+  std::stringstream s(data);
+  std::string str;
+  std::getline(s, str);
+  printf("%s", str.c_str());
+  // since we don't need the frequency data after the heap is constructed
+  // each of the frequncy values are just set to 0
+  hff::MinHeapNode *root = hff::newNode(std::stoi(str), 0);
+  std::queue<hff::MinHeapNode *> q;
+  q.push(root);
+  while (!q.empty()) {
+    hff::MinHeapNode *node = q.front();
+    q.pop();
+    // get another line from the string stream
+    getline(s, str);
+    // if "#" is present then children should be null
+    if (str == "#") {
+      node->left = NULL;
+    } else {
+      // create new left node and push it onto the queue
+      hff::MinHeapNode *leftNode = hff::newNode(std::stoi(str), 0);
+      node->left = leftNode;
+      q.push(leftNode);
+    }
+    getline(s, str);
+    if (str == "#") {
+      node->right = NULL;
+    } else {
+      // create and new right node and push it onto the queue
+      hff::MinHeapNode *rightNode = hff::newNode(std::stoi(str), 0);
+      node->right = rightNode;
+      q.push(rightNode);
+    }
+  }
+  return root;
+}

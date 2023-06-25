@@ -5,13 +5,14 @@
 #include <cstddef>
 #include <iostream>
 #include <queue>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 // namespacing all the huffman libraries because i really like typing :: in
 // every single line of code
 namespace hff {
 
-#define MAX_TREE_HEIGHT 100
+#define MAX_TREE_HEIGHT 256
 
 /*DEFINTIONS*/
 struct MinHeapNode {
@@ -52,6 +53,8 @@ void pathRecursive(hff::MinHeapNode *, char ***, int, int, int, int);
 char ***printTree(hff::MinHeapNode *);
 void printCurrentTree(hff::MinHeapNode *);
 int power(int, int);
+std::string minHeapToString(hff::MinHeapNode *);
+hff::MinHeapNode *minHeapFromString(std::string);
 class HuffmanTree {
 public:
   // public fields!
