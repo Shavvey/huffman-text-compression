@@ -358,5 +358,13 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   return root;
 }
 SerializedMinHeap serializeFromString(std::string heapString) {
+  std::stringstream s(heapString);
+  // holds each char of the serialized min heap string
+  char data;
+  std::vector<std::byte> serializedBytes;
+  do {
+    data = s.get();
+
+  } while (data != '\n');
   return SerializedMinHeap();
 }

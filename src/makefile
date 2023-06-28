@@ -1,5 +1,5 @@
 # compiler and compiler flags
-CC = clang++ -std=c++17
+CC = clang++ -std=c++17 -Wall
 # source files
 SRC = huffman-tree.cpp huffman-tree.hpp main.cpp
 # object files

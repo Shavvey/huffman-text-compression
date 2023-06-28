@@ -38,12 +38,13 @@ struct MinHeap {
 // new struct to carry the serialized version of the min heap
 struct SerializedMinHeap {
   int size;
+  // using a vector that contains each byte
   std::vector<std::byte> data;
 };
 /*FUNCTION PROTOTYPING*/
 hff::MinHeapNode *newNode(char, unsigned);
 hff::MinHeap *createMinHeap(unsigned);
-hff::MinHeapNode *extractMin(struct hff::MinHeap *minHeap);
+hff::MinHeapNode *extractMin(hff::MinHeap *minHeap);
 void swapMinHeapNode(hff::MinHeapNode **, hff::MinHeapNode **);
 void minHeapify(hff::MinHeap *, int);
 bool isSizeOne(hff::MinHeap *);

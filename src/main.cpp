@@ -8,6 +8,9 @@ int main() {
   // the ammount of characters found = and stored in the array
   int size = sizeof(arr) / sizeof(arr[0]);
   hff::MinHeapNode *root = hff::buildHuffmanTree(arr, freq, size);
+  // making sure methods and class constructor is working properly
+  hff::HuffmanTree tree = hff::HuffmanTree(arr, freq, size);
+  tree.printHuffmanTree();
   // generated huffman codes given each characters and their frequencies
   hff::huffmanCodes(arr, freq, size);
   hff::printCurrentTree(root);
@@ -15,5 +18,5 @@ int main() {
 
   hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
   hff::printCurrentTree(rootFromString);
-  return 0;
+  return EXIT_SUCCESS;
 }
