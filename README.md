@@ -1,1 +1,1 @@
-# Huffam Text Compression Tree
+# Huffman Text Compression Tree
