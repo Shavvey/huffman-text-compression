@@ -2,6 +2,7 @@
 using namespace hff;
 
 hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
+  // allocate memory of the heap to store a new node
   MinHeapNode *node = (hff::MinHeapNode *)malloc(sizeof(MinHeapNode));
 
   node->left = node->right = NULL;
@@ -356,4 +357,6 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   }
   return root;
 }
-SerializedMinHeap serializeFromString(std::string heapString);
+SerializedMinHeap serializeFromString(std::string heapString) {
+  return SerializedMinHeap();
+}

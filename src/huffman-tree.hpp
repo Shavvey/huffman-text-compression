@@ -3,11 +3,13 @@
 /*IMPORTS*/
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <queue>
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 // namespacing all the huffman libraries because i really like typing :: in
 // every single line of code
 namespace hff {
@@ -33,9 +35,10 @@ struct MinHeap {
   // array of minheap node pointers
   struct MinHeapNode **array;
 };
+// new struct to carry the serialized version of the min heap
 struct SerializedMinHeap {
   int size;
-  std::vector<std::byte> serializedBitString;
+  std::vector<std::byte> data;
 };
 /*FUNCTION PROTOTYPING*/
 hff::MinHeapNode *newNode(char, unsigned);

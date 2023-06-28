@@ -12,7 +12,6 @@ int main() {
   hff::huffmanCodes(arr, freq, size);
   hff::printCurrentTree(root);
   std::string heapString = hff::minHeapToString(root);
-  int i = 0;
 
   hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
   hff::printCurrentTree(rootFromString);
