@@ -65,6 +65,8 @@ std::string minHeapToString(hff::MinHeapNode *);
 hff::MinHeapNode *minHeapFromString(std::string);
 void printBytes(hff::SerializedMinHeap);
 hff::SerializedMinHeap serializeFromString(std::string);
+std::string postProcessHeapString(std::string);
+std::string preProcessHeapString(std::string);
 class HuffmanTree {
 public:
   // public fields!

@@ -119,10 +119,9 @@ bool hff::isLeaf(hff::MinHeapNode *root) {
 }
 
 // Creates a min heap of a given capacity
-struct hff::MinHeap *hff::createAndBuildMinHeap(char data[], int freq[],
-                                                int size) {
+hff::MinHeap *hff::createAndBuildMinHeap(char data[], int freq[], int size) {
 
-  struct hff::MinHeap *minHeap = hff::createMinHeap(size);
+  hff::MinHeap *minHeap = hff::createMinHeap(size);
 
   for (int i = 0; i < size; ++i)
     minHeap->array[i] = hff::newNode(data[i], freq[i]);
@@ -355,14 +354,6 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   }
   return root;
 }
-std::string postProcessHeapString(std::string heapString) {
-  std::stringstream s(heapString);
-  std::string result;
-  unsigned char data;
-  do {
-  } while (data != '\n');
-  return "";
-}
 SerializedMinHeap hff::serializeFromString(std::string heapString) {
   SerializedMinHeap serialHeap;
   std::stringstream s(heapString);
@@ -385,6 +376,6 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
 void hff::printBytes(hff::SerializedMinHeap minHeap) {
   for (auto itr = minHeap.data.begin(); itr != minHeap.data.end(); ++itr) {
     // print out hexadecimal string
-    printf("%hhx", *itr);
+    printf("%hhx\n", *itr);
   }
 }
