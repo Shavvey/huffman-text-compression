@@ -359,23 +359,24 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
   std::stringstream s(heapString);
   int size = 0;
   // holds each char of the serialized min heap string
-  unsigned char data = '\n';
+  unsigned char data = '\0';
   std::vector<std::byte> serializedBytes;
-  do {
+  while (data != '\n') {
     // get a character from the stringstream
     data = s.get();
     std::byte bytes = std::byte(data);
     serializedBytes.push_back(bytes);
     size++;
-
-  } while (data != '\n');
-  serialHeap.size = size;
+  }
+  // decrement to account for null terminator in string which we dont need
+  serialHeap.size = --size;
   serialHeap.data = serializedBytes;
   return serialHeap;
 }
 void hff::printBytes(hff::SerializedMinHeap minHeap) {
   for (auto itr = minHeap.data.begin(); itr != minHeap.data.end(); ++itr) {
     // print out hexadecimal string
-    printf("%hhx\n", *itr);
+    printf("%hhx", *itr);
   }
+  printf("\n");
 }

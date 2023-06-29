@@ -10,12 +10,13 @@ int main() {
   hff::MinHeapNode *root = hff::buildHuffmanTree(arr, freq, size);
   // making sure methods and class constructor is working properly
   hff::HuffmanTree tree = hff::HuffmanTree(arr, freq, size);
-  tree.printHuffmanTree();
-  // generated huffman codes given each characters and their frequencies
+  // tree.printHuffmanTree();
+  //  generated huffman codes given each characters and their frequencies
   hff::huffmanCodes(arr, freq, size);
   hff::printCurrentTree(root);
   std::string heapString = hff::minHeapToString(root);
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
+  printf("%d\n", serialMinHeap.size);
   hff::printBytes(serialMinHeap);
   hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
   hff::printCurrentTree(rootFromString);
