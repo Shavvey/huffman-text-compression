@@ -63,10 +63,13 @@ void printCurrentTree(hff::MinHeapNode *);
 int power(int, int);
 std::string minHeapToString(hff::MinHeapNode *);
 hff::MinHeapNode *minHeapFromString(std::string);
+void printBytes(hff::SerializedMinHeap);
+hff::SerializedMinHeap serializeFromString(std::string);
 class HuffmanTree {
 public:
   // public fields!
   hff::MinHeapNode *root;
+  // class constructor
   HuffmanTree(char *data, int *freq, int size) {
     root = hff::buildHuffmanTree(data, freq, size);
   }

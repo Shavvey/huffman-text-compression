@@ -15,7 +15,8 @@ int main() {
   hff::huffmanCodes(arr, freq, size);
   hff::printCurrentTree(root);
   std::string heapString = hff::minHeapToString(root);
-
+  hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
+  hff::printBytes(serialMinHeap);
   hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
   hff::printCurrentTree(rootFromString);
   return EXIT_SUCCESS;

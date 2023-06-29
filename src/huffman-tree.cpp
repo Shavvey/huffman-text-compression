@@ -2,8 +2,8 @@
 using namespace hff;
 
 hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
-  // allocate memory of the heap to store a new node
-  MinHeapNode *node = (hff::MinHeapNode *)malloc(sizeof(MinHeapNode));
+  // allocate memory on the heap to store a new node
+  MinHeapNode *node = new MinHeapNode;
 
   node->left = node->right = NULL;
   node->data = data;
@@ -16,7 +16,7 @@ hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
 // a min heap of given capacity
 hff::MinHeap *hff::createMinHeap(unsigned capacity) {
   // entry pointer to minHeap, should be the root
-  hff::MinHeap *minHeap = (hff::MinHeap *)malloc(sizeof(hff::MinHeap));
+  hff::MinHeap *minHeap = new MinHeap;
 
   // current size is 0
   minHeap->size = 0;
@@ -221,6 +221,7 @@ void hff::pathRecursive(hff::MinHeapNode *root, char ***res, int d, int depth,
   // depth we return out of the function call
   if (root == NULL || d == depth) {
     // early return if root passed does not exist
+    // or max depth is reached
     return;
   }
   // calculate mid point, used to move left and right based on the midpoint of
@@ -237,7 +238,6 @@ char ***hff::printTree(hff::MinHeapNode *root) {
   int depth = maxDepth(root);
   int width = power(depth, 2) - 1;
 
-  int *return_size = &depth;
   // init the 2 dimensional character array, based on depth and width calc
   char ***res = (char ***)malloc(sizeof(char **) * depth);
   for (int i = 0; i < depth; i++) {
@@ -254,7 +254,6 @@ char ***hff::printTree(hff::MinHeapNode *root) {
 void hff::printCurrentTree(hff::MinHeapNode *root) {
   int depth = maxDepth(root);
   int width = power(depth, 2) - 1;
-  int *return_size;
   //  create the 2D representation of the character array
   char ***out = printTree(root);
   // traverse through array and print out result
@@ -271,7 +270,6 @@ void hff::printCurrentTree(hff::MinHeapNode *root) {
 void hff::HuffmanTree::printHuffmanTree() {
   int depth = maxDepth(root);
   int width = power(depth, 2) - 1;
-  int *return_size;
   //  create the 2D representation of the character array
   char ***out = printTree(root);
   // traverse through array and print out result
@@ -357,14 +355,36 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   }
   return root;
 }
-SerializedMinHeap serializeFromString(std::string heapString) {
+std::string postProcessHeapString(std::string heapString) {
   std::stringstream s(heapString);
+  std::string result;
+  unsigned char data;
+  do {
+  } while (data != '\n');
+  return "";
+}
+SerializedMinHeap hff::serializeFromString(std::string heapString) {
+  SerializedMinHeap serialHeap;
+  std::stringstream s(heapString);
+  int size = 0;
   // holds each char of the serialized min heap string
-  char data;
+  unsigned char data = '\n';
   std::vector<std::byte> serializedBytes;
   do {
+    // get a character from the stringstream
     data = s.get();
+    std::byte bytes = std::byte(data);
+    serializedBytes.push_back(bytes);
+    size++;
 
   } while (data != '\n');
-  return SerializedMinHeap();
+  serialHeap.size = size;
+  serialHeap.data = serializedBytes;
+  return serialHeap;
+}
+void hff::printBytes(hff::SerializedMinHeap minHeap) {
+  for (auto itr = minHeap.data.begin(); itr != minHeap.data.end(); ++itr) {
+    // print out hexadecimal string
+    printf("%hhx", *itr);
+  }
 }
