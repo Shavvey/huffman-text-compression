@@ -307,9 +307,9 @@ std::string hff::minHeapToString(hff::MinHeapNode *root) {
     }
   }
   // null terminate the string
-  s.push_back('\n');
+  s.push_back('\0');
   // print the string to standard output, this is just for testing purposes
-  std::cout << s;
+  std::cout << s << std::endl;
   return s;
 }
 
@@ -359,9 +359,9 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
   std::stringstream s(heapString);
   int size = 0;
   // holds each char of the serialized min heap string
-  unsigned char data = '\0';
+  unsigned char data = '\n';
   std::vector<std::byte> serializedBytes;
-  while (data != '\n') {
+  while (data != '\0') {
     // get a character from the stringstream
     data = s.get();
     std::byte bytes = std::byte(data);
@@ -378,5 +378,38 @@ void hff::printBytes(hff::SerializedMinHeap minHeap) {
     // print out hexadecimal string
     printf("%hhx", *itr);
   }
+  // print newline
   printf("\n");
+}
+
+// left-root-right
+// print out tree in a in order fashion
+void hff::printInOrder(hff::MinHeapNode *root) {
+  if (root == NULL) {
+    return;
+  }
+  hff::printInOrder(root->left);
+  printf(" %c", root->data);
+  hff::printInOrder(root->right);
+}
+
+// root-left-right
+// print out tree in a pre order fashion
+void hff::printPreOrder(hff::MinHeapNode *root) {
+  if (root == NULL) {
+    return;
+  }
+  printf(" %c", root->data);
+  hff::printInOrder(root->left);
+  hff::printPreOrder(root->right);
+}
+// left-right-root
+// prints out tree in a post order fashion
+void hff::printPostOrder(hff::MinHeapNode *root) {
+  if (root == NULL) {
+    return;
+  }
+  hff::printPostOrder(root->left);
+  hff::printPostOrder(root->right);
+  printf(" %c", root->data);
 }
