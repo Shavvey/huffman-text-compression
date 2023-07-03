@@ -65,8 +65,9 @@ std::string minHeapToString(hff::MinHeapNode *);
 hff::MinHeapNode *minHeapFromString(std::string);
 void printBytes(hff::SerializedMinHeap);
 hff::SerializedMinHeap serializeFromString(std::string);
-std::string postProcessString(std::string);
-std::string preProcessString(std::string);
+// giving up on string simplification for now
+// std::string postProcessString(std::string);
+// std::string preProcessString(std::string);
 void printInOrder(hff::MinHeapNode *);
 void printPreOrder(hff::MinHeapNode *);
 void printPostOrder(hff::MinHeapNode *);
