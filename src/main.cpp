@@ -20,5 +20,11 @@ int main() {
   hff::printBytes(serialMinHeap);
   hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
   hff::printCurrentTree(rootFromString);
+  hff::printInOrder(root);
+  printf("\n");
+  hff::printPreOrder(root);
+  printf("\n");
+  hff::printPostOrder(root);
+  printf("\n");
   return EXIT_SUCCESS;
 }

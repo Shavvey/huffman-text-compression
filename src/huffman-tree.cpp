@@ -413,3 +413,21 @@ void hff::printPostOrder(hff::MinHeapNode *root) {
   hff::printPostOrder(root->right);
   printf(" %c", root->data);
 }
+char hff::HuffmanTree::huffmanDecode(std::string bitString) {
+  std::stringstream s(bitString);
+  hff::MinHeapNode *current = root;
+  char data;
+  char c = s.get();
+  while (c == EOF) {
+    if (c == '1') {
+      data = (current->data != '$') ? current->data : '\0';
+      // traverse to right sub tree
+      current = current->right;
+    } else if (c == '0') {
+      data = (current->data != '$') ? current->data : '\0';
+      // travserse to left sub tree
+      current = current->left;
+    }
+  }
+  return data;
+}

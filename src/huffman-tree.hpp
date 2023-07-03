@@ -81,5 +81,6 @@ public:
   }
   // class methods declarations!
   void printHuffmanTree();
+  char huffmanDecode(std::string);
 };
 } // namespace hff
