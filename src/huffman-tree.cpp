@@ -434,3 +434,36 @@ char hff::HuffmanTree::huffmanDecode(std::string bitString) {
   }
   return data;
 }
+
+int hff::HuffmanTree::huffmanEncode(char charEncoded) {
+  int freq = huffmanCharCodes[charEncoded];
+  return freq;
+}
+
+void hff::populateCharCodes(hff::MinHeapNode *root, int arr[], int top,
+                            std::unordered_map<char, int> codes) {
+
+  // assign 0 to left edge and recur
+  if (root->left) {
+
+    arr[top] = 0;
+    // recurse using the left edge?
+    hff::printCodes(root->left, arr, top + 1);
+  }
+
+  // assign 1 to right edge and recur
+  if (root->right) {
+
+    arr[top] = 1;
+    // recurse using the right edge?
+    hff::printCodes(root->right, arr, top + 1);
+  }
+
+  if (hff::isLeaf(root)) {
+
+    std::cout << root->data << ": ";
+    printf("Data found! %c\n", root->data);
+    codes[root->data] = top;
+    printArr(arr, top);
+  }
+}

@@ -71,16 +71,22 @@ hff::SerializedMinHeap serializeFromString(std::string);
 void printInOrder(hff::MinHeapNode *);
 void printPreOrder(hff::MinHeapNode *);
 void printPostOrder(hff::MinHeapNode *);
+void populateCharCodes(MinHeapNode *, int *, int,
+                       std::unordered_map<char, int>);
 class HuffmanTree {
 public:
   // public fields!
   hff::MinHeapNode *root;
-  // class constructor
-  HuffmanTree(char *data, int *freq, int size) {
-    root = hff::buildHuffmanTree(data, freq, size);
-  }
+  std::unordered_map<char, int> huffmanCodes;
   // class methods declarations!
   void printHuffmanTree();
   char huffmanDecode(std::string);
+  int huffmanEncode(char);
+  // class constructor
+  HuffmanTree(char *data, int *freq, int size) {
+    root = hff::buildHuffmanTree(data, freq, size);
+    int arr[MAX_TREE_HEIGHT], top = 0;
+    hff::populateCharCodes(root, arr, top, huffmanCodes);
+  }
 };
 } // namespace hff
