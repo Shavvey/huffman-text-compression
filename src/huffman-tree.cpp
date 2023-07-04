@@ -418,16 +418,19 @@ char hff::HuffmanTree::huffmanDecode(std::string bitString) {
   hff::MinHeapNode *current = root;
   char data;
   char c = s.get();
-  while (c == EOF) {
+  // we can continue looping until the end of file is reached
+  for (int i = 0; i < bitString.length(); i++) {
     if (c == '1') {
-      data = (current->data != '$') ? current->data : '\0';
+      data = (isLeaf(root)) ? current->data : '\0';
       // traverse to right sub tree
       current = current->right;
     } else if (c == '0') {
-      data = (current->data != '$') ? current->data : '\0';
+      data = (isLeaf(root)) ? current->data : '\0';
       // travserse to left sub tree
       current = current->left;
     }
+    // get another character
+    c = s.get();
   }
   return data;
 }
