@@ -14,9 +14,9 @@ int main() {
   hff::printCurrentTree(root);
   std::string heapString = hff::minHeapToString(root);
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
-  printf("%d\n", serialMinHeap.size);
-  hff::MinHeapNode *rootFromString = hff::minHeapFromString(heapString);
-  hff::printCurrentTree(rootFromString);
-  printf("%d\n", tree.huffmanEncode('d'));
+  printf("%d\n", tree.huffmanEncode('c'));
+  int max[MAX_TREE_HEIGHT];
+  int top = 0;
+  hff::printCodes(root, max, top);
   return EXIT_SUCCESS;
 }

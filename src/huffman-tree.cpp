@@ -112,6 +112,13 @@ void hff::printArr(int arr[], int n) {
 
   std::cout << "\n";
 }
+int hff::sumArr(int arr[], int n) {
+  int sum = 0;
+  for (int i = 0; i < n; ++i) {
+    sum = sum + arr[i] * (power(2, n - i - 1));
+  }
+  return sum;
+}
 
 // Utility function to check if this node is leaf
 bool hff::isLeaf(hff::MinHeapNode *root) {
@@ -180,7 +187,7 @@ void hff::printCodes(hff::MinHeapNode *root, int arr[], int top) {
   if (hff::isLeaf(root)) {
 
     std::cout << root->data << ": ";
-    printArr(arr, top);
+    hff::printArr(arr, top);
   }
 }
 
@@ -436,19 +443,19 @@ char hff::HuffmanTree::huffmanDecode(std::string bitString) {
 }
 
 int hff::HuffmanTree::huffmanEncode(char charEncoded) {
-  int freq = huffmanCharCodes[charEncoded];
+  int freq = huffmanCodes[charEncoded];
   return freq;
 }
 
-void hff::populateCharCodes(hff::MinHeapNode *root, int arr[], int top,
-                            std::unordered_map<char, int> codes) {
+void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root, int arr[],
+                                         int top) {
 
   // assign 0 to left edge and recur
   if (root->left) {
 
     arr[top] = 0;
     // recurse using the left edge?
-    hff::printCodes(root->left, arr, top + 1);
+    hff::HuffmanTree::populateCharCodes(root->left, arr, top + 1);
   }
 
   // assign 1 to right edge and recur
@@ -456,14 +463,12 @@ void hff::populateCharCodes(hff::MinHeapNode *root, int arr[], int top,
 
     arr[top] = 1;
     // recurse using the right edge?
-    hff::printCodes(root->right, arr, top + 1);
+    hff::HuffmanTree::populateCharCodes(root->right, arr, top + 1);
   }
 
   if (hff::isLeaf(root)) {
 
-    std::cout << root->data << ": ";
-    printf("Data found! %c\n", root->data);
-    codes[root->data] = top;
-    printArr(arr, top);
+    huffmanCodes[root->data] = hff::sumArr(arr, top);
+    printf("Data stored: %d\n", huffmanCodes[root->data]);
   }
 }
