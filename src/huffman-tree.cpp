@@ -441,7 +441,7 @@ char hff::HuffmanTree::huffmanDecode(std::string bitString) {
   }
   return data;
 }
-
+// simple method to return the huffman code from a given char
 int hff::HuffmanTree::huffmanEncode(char charEncoded) {
   int freq = huffmanCodes[charEncoded];
   return freq;
