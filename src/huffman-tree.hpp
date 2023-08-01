@@ -13,9 +13,7 @@
 // namespacing all the huffman libraries because i really like typing :: in
 // every single line of code
 namespace hff {
-
 #define MAX_TREE_HEIGHT 256
-
 /*DEFINTIONS*/
 struct MinHeapNode {
   // input character for

@@ -154,7 +154,7 @@ hff::MinHeapNode *hff::buildHuffmanTree(char data[], int freq[], int size) {
     left = hff::extractMin(minHeap);
     right = hff::extractMin(minHeap);
     // $ is special character used to mark intermediate nodes in the heap
-    // thes intermediate nodes do not code for any characters
+    // these intermediate nodes do not code for any characters
     top = hff::newNode('$', left->freq + right->freq);
 
     top->left = left;
