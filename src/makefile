@@ -10,7 +10,7 @@ huffman: $(OBJS)
 
 # produce object file, do not run linker
 huffman-tree.o: $(SRC)
-	$(CC) -c $(SRC) huffman-tree.hpp
+	$(CC) -c $(SRC)
 
 
 # produce object file, do not run linker

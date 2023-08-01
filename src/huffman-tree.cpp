@@ -1,6 +1,5 @@
 #include "huffman-tree.hpp"
 using namespace hff;
-
 hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
   // allocate memory on the heap to store a new node
   MinHeapNode *node = new MinHeapNode;
@@ -388,7 +387,6 @@ void hff::printBytes(hff::SerializedMinHeap minHeap) {
   // print newline
   printf("\n");
 }
-
 // left-root-right
 // print out tree in a in order fashion
 void hff::printInOrder(hff::MinHeapNode *root) {
