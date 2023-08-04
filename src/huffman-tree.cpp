@@ -17,11 +17,11 @@ hff::MinHeap *hff::createMinHeap(unsigned capacity) {
   // entry pointer to minHeap, should be the root
   hff::MinHeap *minHeap = new MinHeap;
 
-  // current size is 0
+  // size initially is 0 when the min heap is created
   minHeap->size = 0;
 
   minHeap->capacity = capacity;
-
+  // allocate memory to min heap array based on total capacity given
   minHeap->array =
       (hff::MinHeapNode **)malloc(minHeap->capacity * sizeof(MinHeapNode *));
   return minHeap;
@@ -419,9 +419,11 @@ void hff::printPostOrder(hff::MinHeapNode *root) {
   printf(" %c", root->data);
 }
 char hff::HuffmanTree::huffmanDecode(std::string bitString) {
+  // cast bit string to a stream of characters
   std::stringstream s(bitString);
   hff::MinHeapNode *current = root;
   char data;
+  // get the first character
   char c = s.get();
   // we can continue looping until the end of file is reached
   for (int i = 0; i < bitString.length(); i++) {
