@@ -83,8 +83,11 @@ public:
   void populateCharCodes(MinHeapNode *, int[MAX_TREE_HEIGHT], int);
   // class constructor
   HuffmanTree(char *data, int *freq, int size) {
+    // build to minHeap and return a reference to it inside the root
     root = hff::buildHuffmanTree(data, freq, size);
+    // arr of values of character codes
     int arr[MAX_TREE_HEIGHT];
+    // used in recursive call in `populateCharCodes`
     int top = 0;
     populateCharCodes(root, arr, top);
   }

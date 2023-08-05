@@ -72,6 +72,7 @@ hff::MinHeapNode *hff::extractMin(hff::MinHeap *minHeap) {
   hff::MinHeapNode *temp = minHeap->array[0];
   minHeap->array[0] = minHeap->array[minHeap->size - 1];
 
+  // NOTE: look at documentation for extract min
   --minHeap->size;
   minHeapify(minHeap, 0);
 
