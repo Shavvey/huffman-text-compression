@@ -3,11 +3,10 @@ using namespace hff;
 hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
   // allocate memory on the heap to store a new node
   MinHeapNode *node = new MinHeapNode;
-
+  // assign fields of newly allocated node based on args
   node->left = node->right = NULL;
   node->data = data;
   node->freq = freq;
-
   return node;
 }
 
