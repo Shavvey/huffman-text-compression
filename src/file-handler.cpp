@@ -1,1 +1,9 @@
-int main(int argc, char *argv[]) { return 0; }
+#include <fstream>
+
+int main(int argc, char *argv[]) {
+  // first we need to open the file
+  // and find each character's occurences
+  // afterwards, the huffman tree can be constructed
+
+  return 0;
+}

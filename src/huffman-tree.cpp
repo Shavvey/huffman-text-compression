@@ -15,7 +15,6 @@ hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
 hff::MinHeap *hff::createMinHeap(unsigned capacity) {
   // entry pointer to minHeap, should be the root
   hff::MinHeap *minHeap = new MinHeap;
-
   // size initially is 0 when the min heap is created
   minHeap->size = 0;
 
