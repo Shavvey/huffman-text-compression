@@ -111,6 +111,9 @@ void hff::printArr(int arr[], int n) {
 
   std::cout << "\n";
 }
+// sum an array that is meant to represent a binary array
+// it returns a decimalized sum based on the binary digit
+// represented by the array
 int hff::sumArr(int arr[], int n) {
   int sum = 0;
   for (int i = 0; i < n; ++i) {
@@ -121,6 +124,7 @@ int hff::sumArr(int arr[], int n) {
 
 // Utility function to check if this node is leaf
 bool hff::isLeaf(hff::MinHeapNode *root) {
+  // if node a is a leaf, by definition it has no children
   return !(root->left) && !(root->right);
 }
 
