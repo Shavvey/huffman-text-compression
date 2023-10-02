@@ -450,8 +450,8 @@ int hff::HuffmanTree::huffmanEncode(char charEncoded) {
   return freq;
 }
 
-void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root, int arr[],
-                                         int top) {
+void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root,
+                                         int arr[MAX_TREE_HEIGHT], int top) {
 
   // assign 0 to left edge and recur
   if (root->left) {
