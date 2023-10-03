@@ -170,7 +170,7 @@ hff::MinHeapNode *hff::buildHuffmanTree(char data[], int freq[], int size) {
 
 void hff::printCodes(hff::MinHeapNode *root, int arr[], int top) {
 
-  // assign 0 to left edge and recur
+  // assign 0 to left edge and recurse
   if (root->left) {
 
     arr[top] = 0;
