@@ -97,9 +97,7 @@ void hff::insertMinHeap(hff::MinHeap *minHeap, hff::MinHeapNode *minHeapNode) {
 void hff::buildMinHeap(hff::MinHeap *minHeap) {
 
   int n = minHeap->size - 1;
-  int i;
-
-  for (i = (n - 1) / 2; i >= 0; --i)
+  for (int i = (n - 1) / 2; i >= 0; --i)
     hff::minHeapify(minHeap, i);
 }
 
@@ -364,6 +362,9 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   return root;
 }
 SerializedMinHeap hff::serializeFromString(std::string heapString) {
+  // struct that contains all the information stored inside minHeap,
+  // this will be stored inside the compress textfile,
+  // so that the uncompressed file can be recovered
   SerializedMinHeap serialHeap;
   std::stringstream s(heapString);
   int size = 0;
