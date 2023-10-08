@@ -1,15 +1,21 @@
 #pragma once
 #include <fstream>
-class FileRoutine {
+namespace FileRoutine {
+class FileHandler {
   // public fileds!
 public:
-  FileRoutine();
-  FileRoutine(FileRoutine &&) = default;
-  ~FileRoutine();
+  std::string filePath;
+  // default constructor and destructor are being used for now
+  FileHandler();
+  ~FileHandler();
   // private fields
 private:
+#define LIMIT 26
+  int size;
+  char fileChars[LIMIT];
+  int fileFreq[];
 };
 
-inline FileRoutine::FileRoutine() {}
-
-inline FileRoutine::~FileRoutine() {}
+void writeFile(std::string, char *, int);
+/*FUNCTION PROTOTYPING*/
+} // namespace FileRoutine
