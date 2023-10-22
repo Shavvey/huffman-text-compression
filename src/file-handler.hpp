@@ -16,6 +16,6 @@ private:
   int fileFreq[];
 };
 
-void writeFile(std::string, char *, int);
 /*FUNCTION PROTOTYPING*/
+void writeFile(std::string, char *, int);
 } // namespace FileRoutine

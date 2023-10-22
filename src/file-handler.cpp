@@ -13,4 +13,5 @@ void FileRoutine::writeFile(std::string filePath, char *stringMinHeap,
   // write the serialMinHeap string to the file
   file.write(stringMinHeap, sizeof(stringMinHeap));
 }
+
 void encodeFile() {}

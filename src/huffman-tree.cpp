@@ -72,6 +72,7 @@ hff::MinHeapNode *hff::extractMin(hff::MinHeap *minHeap) {
 
   // NOTE: look at documentation for extract min
   --minHeap->size;
+  // heapify the root node after extraction is performed
   minHeapify(minHeap, 0);
 
   return temp;
