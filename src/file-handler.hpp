@@ -1,4 +1,5 @@
 #pragma once
+#include "huffman-tree.hpp"
 #include <fstream>
 namespace FileRoutine {
 class FileHandler {
@@ -18,4 +19,5 @@ private:
 
 /*FUNCTION PROTOTYPING*/
 void writeFile(std::string, char *, int);
+std::byte getEncoding(hff::HuffmanTree);
 } // namespace FileRoutine
