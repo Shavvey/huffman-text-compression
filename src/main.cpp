@@ -15,7 +15,8 @@ int main() {
   hff::printCurrentTree(root);
   std::string heapString = hff::minHeapToString(root);
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
-  FileRoutine::writeFile("example.txt", heapString);
+  // write compressed version of example.txt here
+  FileRoutine::writeFile("example.bin", heapString);
   printf("%d\n", tree.huffmanEncode('c'));
   int max[MAX_TREE_HEIGHT];
   int top = 0;
