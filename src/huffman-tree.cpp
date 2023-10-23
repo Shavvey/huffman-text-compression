@@ -7,6 +7,7 @@ hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
   node->left = node->right = NULL;
   node->data = data;
   node->freq = freq;
+  // return new node so that it can be added to minHeap
   return node;
 }
 
@@ -89,6 +90,7 @@ void hff::insertMinHeap(hff::MinHeap *minHeap, hff::MinHeapNode *minHeapNode) {
   while (i && minHeapNode->freq < minHeap->array[(i - 1) / 2]->freq) {
 
     minHeap->array[i] = minHeap->array[(i - 1) / 2];
+    // look up parent node
     i = (i - 1) / 2;
   }
   minHeap->array[i] = minHeapNode;
@@ -371,6 +373,9 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
   int size = 0;
   // holds each char of the serialized min heap string
   unsigned char data = '\n';
+  // create a vector that will be the serialized version of heap
+  // afterward will will use this to write information to file about the
+  // compressed text
   std::vector<std::byte> serializedBytes;
   while (data != '\0') {
     // get a character from the stringstream

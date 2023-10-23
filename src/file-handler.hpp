@@ -18,6 +18,6 @@ private:
 };
 
 /*FUNCTION PROTOTYPING*/
-void writeFile(std::string, char *, int);
+void writeFile(std::string, std::string);
 std::byte getEncoding(hff::HuffmanTree);
 } // namespace FileRoutine

@@ -1,5 +1,5 @@
 // create only one header file definition
-
+#pragma once
 /*IMPORTS*/
 #include <algorithm>
 #include <cstddef>
