@@ -21,6 +21,6 @@ int main() {
   int max[MAX_TREE_HEIGHT];
   int top = 0;
   hff::printCodes(root, max, top);
-  FileRoutine::printDecodedMinHeap("example.bin", serialMinHeap);
+  hff::printBytes(serialMinHeap);
   return EXIT_SUCCESS;
 }
