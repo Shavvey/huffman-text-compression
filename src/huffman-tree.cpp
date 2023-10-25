@@ -384,8 +384,9 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
     serializedBytes.push_back(bytes);
     size++;
   }
-  // decrement to account for null terminator in string which we dont need
-  serialHeap.size = --size;
+  // we wan't to count the null terminator since it helps us read back the
+  // string?
+  serialHeap.size = size;
   serialHeap.data = serializedBytes;
   return serialHeap;
 }

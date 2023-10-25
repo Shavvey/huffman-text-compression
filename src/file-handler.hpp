@@ -20,4 +20,5 @@ private:
 /*FUNCTION PROTOTYPING*/
 void writeFile(std::string, std::string);
 std::byte getEncoding(hff::HuffmanTree);
+void printDecodedMinHeap(std::string, hff::SerializedMinHeap);
 } // namespace FileRoutine
