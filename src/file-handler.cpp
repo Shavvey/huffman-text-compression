@@ -5,6 +5,8 @@
 
 // uses a file path to append the size nad stringMinHeap
 // filePath: the file name and directory specified to create compressed file
+// NOTE: this isnt working you need to use something simpler for this jesus
+// christ
 void FileRoutine::writeFile(std::string filePath, std::string heapString) {
   // using basic file stream provided by cpp standard library
   std::ofstream file;
@@ -27,27 +29,7 @@ void FileRoutine::writeFile(std::string filePath, std::string heapString) {
 // byte will be used by write file to append to end of file
 std::byte FileRoutine::getEncoding(hff::HuffmanTree huffTree) {}
 
-// read byte from file based on length and filename
-static std::vector<char> readAllBytes(char const *filename) {
-  std::ifstream ifs(filename, std::ios::binary | std::ios::ate);
-  std::ifstream::pos_type pos = ifs.tellg();
-
-  if (pos == 0) {
-    return std::vector<char>{};
-  }
-
-  std::vector<char> result(pos);
-
-  ifs.seekg(0, std::ios::beg);
-  ifs.read(&result[0], pos);
-
-  return result;
-}
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
 void FileRoutine::printDecodedMinHeap(std::string filePath,
-
-                                      hff::SerializedMinHeap serialMinHeap) {
-  std::vector<char> result = readAllBytes(filePath.c_str());
-  std::cout << result.data() << std::endl;
-}
+                                      hff::SerializedMinHeap serialMinHeap) {}
