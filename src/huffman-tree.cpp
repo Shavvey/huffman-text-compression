@@ -1,4 +1,5 @@
 #include "huffman-tree.hpp"
+// include the namespace so i dont have to keep referencing it
 using namespace hff;
 hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
   // allocate memory on the heap to store a new node
@@ -15,6 +16,7 @@ hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
 // a min heap of given capacity
 hff::MinHeap *hff::createMinHeap(unsigned capacity) {
   // entry pointer to minHeap, should be the root
+  // allcoate memory for minHeap onto the heap
   hff::MinHeap *minHeap = new MinHeap;
   // size initially is 0 when the min heap is created
   minHeap->size = 0;
@@ -133,8 +135,9 @@ hff::MinHeap *hff::createAndBuildMinHeap(char data[], int freq[], int size) {
 
   hff::MinHeap *minHeap = hff::createMinHeap(size);
 
-  for (int i = 0; i < size; ++i)
+  for (int i = 0; i < size; ++i) {
     minHeap->array[i] = hff::newNode(data[i], freq[i]);
+  }
 
   minHeap->size = size;
   // build heap from the given character and frequency data
@@ -169,6 +172,8 @@ hff::MinHeapNode *hff::buildHuffmanTree(char data[], int freq[], int size) {
   return hff::extractMin(minHeap);
 }
 
+// recursive function to navigate the leafs of minheap node and print out the
+// weighting of encoded characters
 void hff::printCodes(hff::MinHeapNode *root, int arr[], int top) {
 
   // assign 0 to left edge and recurse

@@ -12,7 +12,7 @@ void FileRoutine::writeFile(std::string filePath, std::string heapString) {
   file.open(filePath, std::ios::binary | std::ios::out);
   // create a serialized minHeap from the created heap string
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
-  file.write((char *)&serialMinHeap.data, serialMinHeap.size);
+  file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
   file.close();
 }
 // after writing the stringMinHeap and size, write characters
@@ -23,20 +23,39 @@ std::byte FileRoutine::getEncoding(hff::HuffmanTree huffTree) {}
 
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
-void FileRoutine::printDecodedMinHeap(std::string filePath,
-                                      hff::SerializedMinHeap serialMinHeap) {
+void FileRoutine::printDecodedMinHeap(std::string filePath) {
   std::ifstream file;
   file.open(filePath, std::ios::binary | std::ios::in);
   char c;
   int index = 0;
-
-  printf("Heap size %d\n", serialMinHeap.size);
-  while (index < serialMinHeap.size) {
-    file.get(c);
-    for (int i = 0; i < 8; i++) {
-      std::cout << ((c >> i) & 1);
-    }
-    std::cout << '\t';
+  std::string heapString;
+  file.get(c);
+  // find the null terminator of the string again
+  while (c != '\0') {
+    std::bitset<8> b((unsigned char)c);
+    std::cout << b;
+    std::cout << '\t' << (char)b.to_ulong();
+    std::cout << std::endl;
+    heapString.push_back((char)b.to_ulong());
     index++;
+    file.get(c);
   }
+  std::cout << "Recovered string: " + heapString << std::endl;
+}
+const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
+  std::ifstream file;
+  file.open(filePath, std::ios::binary | std::ios::in);
+  char c;
+  int index = 0;
+  std::string heapString;
+  file.get(c);
+  // find the null terminator of the string again
+  while (c != '\0') {
+    std::bitset<8> b((unsigned char)c);
+    std::cout << b;
+    heapString.push_back((char)b.to_ulong());
+    index++;
+    file.get(c);
+  }
+  return heapString;
 }

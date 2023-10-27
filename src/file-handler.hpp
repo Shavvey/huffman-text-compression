@@ -13,12 +13,13 @@ public:
 private:
 #define LIMIT 26
   int size;
-  char fileChars[LIMIT];
-  int fileFreq[];
+  std::vector<char> fileChars;
+  std::vector<int> fileFreq;
 };
 
 /*FUNCTION PROTOTYPING*/
 void writeFile(std::string, std::string);
 std::byte getEncoding(hff::HuffmanTree);
-void printDecodedMinHeap(std::string, hff::SerializedMinHeap);
+void printDecodedMinHeap(std::string);
+const std::string getSerialMinHeap(std::string);
 } // namespace FileRoutine
