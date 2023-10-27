@@ -17,10 +17,12 @@ int main() {
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
   // write compressed version of example.txt here
   FileRoutine::writeFile("example.bin", heapString);
+
   printf("%d\n", tree.huffmanEncode('c'));
   int max[MAX_TREE_HEIGHT];
   int top = 0;
   hff::printCodes(root, max, top);
-  hff::printBytes(serialMinHeap);
+  // hff::printBytes(serialMinHeap);
+  FileRoutine::printDecodedMinHeap("example.bin", serialMinHeap);
   return EXIT_SUCCESS;
 }
