@@ -19,7 +19,10 @@ void FileRoutine::writeFile(std::string filePath, std::string heapString) {
 // encodings, for this we need the frequnecy data and found characters
 // to construct a minheap that can give us encodings
 // byte will be used by write file to append to end of file
-std::byte FileRoutine::getEncoding(hff::HuffmanTree huffTree) {}
+std::byte FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
+  unsigned char data = huffTree.huffmanEncode(c);
+  return (std::byte)data;
+}
 
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
@@ -27,7 +30,6 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
   std::ifstream file;
   file.open(filePath, std::ios::binary | std::ios::in);
   char c;
-  int index = 0;
   std::string heapString;
   file.get(c);
   // find the null terminator of the string again
@@ -37,7 +39,6 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
     std::cout << '\t' << (char)b.to_ulong();
     std::cout << std::endl;
     heapString.push_back((char)b.to_ulong());
-    index++;
     file.get(c);
   }
   std::cout << "Recovered string: " + heapString << std::endl;
@@ -46,7 +47,6 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
   std::ifstream file;
   file.open(filePath, std::ios::binary | std::ios::in);
   char c;
-  int index = 0;
   std::string heapString;
   file.get(c);
   // find the null terminator of the string again
@@ -54,7 +54,6 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
     std::bitset<8> b((unsigned char)c);
     std::cout << b;
     heapString.push_back((char)b.to_ulong());
-    index++;
     file.get(c);
   }
   return heapString;
