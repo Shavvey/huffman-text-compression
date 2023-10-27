@@ -1,20 +1,26 @@
 #pragma once
 #include "huffman-tree.hpp"
 #include <fstream>
+#include <list>
 namespace FileRoutine {
 class FileHandler {
   // public fileds!
 public:
   std::string filePath;
   // default constructor and destructor are being used for now
-  FileHandler();
-  ~FileHandler();
+  FileHandler(std::string fileInputPath, std::string fileOutputPath){
+      // call write methods to that process input file
+      // call write methods that turn processed data into the compressed huffman
+      // version
+  };
   // private fields
 private:
 #define LIMIT 26
   int size;
-  std::vector<char> fileChars;
-  std::vector<int> fileFreq;
+  // encountered characters
+  std::list<char> fileChars;
+  // the relative frequencies of each character encoutered in the file
+  std::list<int> fileFreq;
 };
 
 /*FUNCTION PROTOTYPING*/
