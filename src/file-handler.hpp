@@ -12,6 +12,7 @@ public:
       // call write methods to that process input file
       // call write methods that turn processed data into the compressed huffman
       // version
+
   };
   // private fields
 private:
@@ -28,4 +29,5 @@ void writeFile(std::string, std::string);
 std::byte getEncoding(hff::HuffmanTree, char);
 void printDecodedMinHeap(std::string);
 const std::string getSerialMinHeap(std::string);
+
 } // namespace FileRoutine
