@@ -20,11 +20,11 @@ public:
 private:
   // size of the file?
   int size;
-  typedef std::pair<char, int> charFreq;
   // should be a list of encountered characters there relative frequencies in
   // the file
-
-  std::list<charFreq> charFreqList;
+  // using an unordered_map to map characters inside a file to relative
+  // frequency
+  std::unordered_map<char, int> charFreqMap;
 };
 
 /*FUNCTION PROTOTYPING*/

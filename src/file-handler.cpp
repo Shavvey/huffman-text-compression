@@ -43,8 +43,7 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
   std::cout << "Recovered string: " + heapString << std::endl;
 }
 const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
-  std::ifstream file;
-  file.open(filePath, std::ios::binary | std::ios::in);
+  std::ifstream file(filePath, std::ios::binary | std::ios::in);
   char c;
   std::string heapString;
   file.get(c);
@@ -58,10 +57,29 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
     heapString.push_back((char)b.to_ulong());
     file.get(c);
   }
+  // closing the file, even though it file stream will probably be destructed
+  // anyway
+  file.close();
   return heapString;
 }
 // process the file produce charFreqList
 void FileRoutine::FileHandler::processFile(std::string filePath) {
   // open file stream and read from it
   std::ifstream file(filePath, std::ios::in);
+  char fileChar;
+  // read until the end of file
+  while (!file.eof()) {
+    // get the next fileChar in the file
+    file.get(fileChar);
+    // create an iterator based on found char
+    std::unordered_map<char, int>::iterator found = charFreqMap.find(fileChar);
+    // if the char isn't found inside the hash table then we create a new entry
+    if (found == charFreqMap.end()) {
+      // insert file char pair and get key value to one
+      charFreqMap.insert({fileChar, 1});
+    } else {
+      // increment the key value if the fileChar has already been found
+      found->second = found->second + 1;
+    }
+  }
 }
