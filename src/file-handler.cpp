@@ -60,3 +60,8 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
   }
   return heapString;
 }
+// process the file produce charFreqList
+void FileRoutine::FileHandler::processFile(std::string filePath) {
+  // open file stream and read from it
+  std::ifstream file(filePath, std::ios::in);
+}

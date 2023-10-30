@@ -4,6 +4,8 @@
 #include <list>
 namespace FileRoutine {
 class FileHandler {
+  // class method declarations
+  void processFile(std::string);
   // public fileds!
 public:
   std::string filePath;
@@ -16,12 +18,13 @@ public:
   };
   // private fields
 private:
-#define LIMIT 26
+  // size of the file?
   int size;
-  // encountered characters
-  std::list<char> fileChars;
-  // the relative frequencies of each character encoutered in the file
-  std::list<int> fileFreq;
+  typedef std::pair<char, int> charFreq;
+  // should be a list of encountered characters there relative frequencies in
+  // the file
+
+  std::list<charFreq> charFreqList;
 };
 
 /*FUNCTION PROTOTYPING*/
