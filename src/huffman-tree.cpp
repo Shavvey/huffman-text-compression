@@ -48,12 +48,13 @@ void hff::minHeapify(hff::MinHeap *minHeap, int index) {
   int right = 2 * index + 2;
 
   if (left < minHeap->size &&
-      minHeap->array[left]->freq < minHeap->array[smallest]->freq)
+      minHeap->array[left]->freq < minHeap->array[smallest]->freq) {
     smallest = left;
-
+  }
   if (right < minHeap->size &&
-      minHeap->array[right]->freq < minHeap->array[smallest]->freq)
+      minHeap->array[right]->freq < minHeap->array[smallest]->freq) {
     smallest = right;
+  }
 
   if (smallest != index) {
     // swap nodes and call heapify

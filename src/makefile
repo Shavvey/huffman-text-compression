@@ -20,6 +20,7 @@ file-handler.o: $(SRC)
 main.o: $(SRC)
 	$(CC) -c $(SRC)
 
+# clean make target needs a .PHONY keyword to tell make that this is not a file
 .PHONY: clean
 clean: $(OBJS)
 	rm $(OBJS) *.gch
