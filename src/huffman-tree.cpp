@@ -221,7 +221,9 @@ int hff::maxDepth(hff::MinHeapNode *root) {
   if (root == NULL) {
     return 0;
   }
+  // recurse down the left tree
   int left_depth = maxDepth(root->left);
+  // recurse down the right tree
   int right_depth = maxDepth(root->right);
   // compare left and left depth values
   int max_val = max(left_depth, right_depth);

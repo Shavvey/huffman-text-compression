@@ -23,6 +23,6 @@ int main() {
   int top = 0;
   hff::printCodes(root, max, top);
   // hff::printBytes(serialMinHeap);
-  FileRoutine::printDecodedMinHeap("example.bin", serialMinHeap);
+  FileRoutine::printDecodedMinHeap("example.bin");
   return EXIT_SUCCESS;
 }

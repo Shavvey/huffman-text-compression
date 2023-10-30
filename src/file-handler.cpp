@@ -1,4 +1,3 @@
-#pragma once
 #include "file-handler.hpp"
 #include <cstdint>
 #include <fstream>
@@ -49,10 +48,13 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
   char c;
   std::string heapString;
   file.get(c);
-  // find the null terminator of the string again
+  // read the file until the null terminator is reached
+  // this should be the end of the heapstring
   while (c != '\0') {
+    // extract the byte from teh file
     std::bitset<8> b((unsigned char)c);
     std::cout << b;
+    // build heapstring back up from each byte read from file
     heapString.push_back((char)b.to_ulong());
     file.get(c);
   }
