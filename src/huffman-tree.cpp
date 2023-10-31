@@ -20,10 +20,13 @@ hff::MinHeap *hff::createMinHeap(unsigned capacity) {
   hff::MinHeap *minHeap = new MinHeap;
   // size initially is 0 when the min heap is created
   minHeap->size = 0;
-
+  // capacity of the minheap, this tells use how much space we need to allocate
+  // using malloc
   minHeap->capacity = capacity;
   // allocate memory to min heap array based on total capacity given
   minHeap->array =
+      // we could use something more advanced since we in c plus plus land, but
+      // we won't ;)
       (hff::MinHeapNode **)malloc(minHeap->capacity * sizeof(MinHeapNode *));
   return minHeap;
 }

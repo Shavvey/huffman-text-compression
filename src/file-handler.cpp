@@ -83,3 +83,14 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
     }
   }
 }
+char *FileRoutine::FileHandler::getFileCharacters() {
+  const int size = charFreqMap.size();
+
+  char fileCharacters[size];
+  int index = 0;
+  for (auto itr : charFreqMap) {
+    fileCharacters[index] = itr.first;
+    index++;
+  }
+  return fileCharacters;
+}

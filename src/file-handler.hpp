@@ -6,6 +6,7 @@ namespace FileRoutine {
 class FileHandler {
   // class method declarations
   void processFile(std::string);
+  char *getFileCharacters();
   // public fileds!
 public:
   std::string filePath;
