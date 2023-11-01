@@ -85,12 +85,31 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
 }
 char *FileRoutine::FileHandler::getFileCharacters() {
   const int size = charFreqMap.size();
-
   char fileCharacters[size];
   int index = 0;
   for (auto itr : charFreqMap) {
     fileCharacters[index] = itr.first;
     index++;
   }
-  return fileCharacters;
+  // changinge this to a pointer
+  char *fileChar = new char[size];
+  fileChar = fileCharacters;
+  // once we have process the map char and frequnecy data we can delete these
+  // pointer
+  return fileChar;
+}
+int *FileRoutine::FileHandler::getFileFrequencies() {
+  // declare an array that can hold all the data from `charFreqMap`
+  const int size = charFreqMap.size();
+  int fileFrequencies[size];
+  int index = 0;
+  // iterate across all of the ints fields in `charFreqMap` and store them in
+  // the array
+  for (auto itr : charFreqMap) {
+    fileFrequencies[index] = itr.second;
+    index++;
+  }
+  int *fileFreq = new int[size];
+  fileFreq = fileFrequencies;
+  return fileFreq;
 }

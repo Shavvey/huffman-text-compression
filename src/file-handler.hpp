@@ -7,6 +7,7 @@ class FileHandler {
   // class method declarations
   void processFile(std::string);
   char *getFileCharacters();
+  int *getFileFrequencies();
   // public fileds!
 public:
   std::string filePath;
