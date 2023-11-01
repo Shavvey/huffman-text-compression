@@ -69,6 +69,7 @@ hff::SerializedMinHeap serializeFromString(std::string);
 void printInOrder(hff::MinHeapNode *);
 void printPreOrder(hff::MinHeapNode *);
 void printPostOrder(hff::MinHeapNode *);
+int getParent(int);
 int sumArr(int *, int);
 class HuffmanTree {
 public:

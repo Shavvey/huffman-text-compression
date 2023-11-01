@@ -101,6 +101,7 @@ void hff::insertMinHeap(hff::MinHeap *minHeap, hff::MinHeapNode *minHeapNode) {
   }
   minHeap->array[i] = minHeapNode;
 }
+int hff::getParent(int child) { return (child - 1) / 2; }
 
 // A standard function to build min heap
 void hff::buildMinHeap(hff::MinHeap *minHeap) {
