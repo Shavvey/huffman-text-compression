@@ -33,6 +33,8 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
   file.get(c);
   // find the null terminator of the string again
   while (c != '\0') {
+    // construct a 8-bit binary string for each character
+    // this is essentially just a fancy of way of grabin each byte in file
     std::bitset<8> b((unsigned char)c);
     std::cout << b;
     std::cout << '\t' << (char)b.to_ulong();
