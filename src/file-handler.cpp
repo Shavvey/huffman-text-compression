@@ -20,6 +20,7 @@ void FileRoutine::writeFile(std::string filePath, std::string heapString) {
 // byte will be used by write file to append to end of file
 std::byte FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   unsigned char data = huffTree.huffmanEncode(c);
+  // return the data in byte form
   return (std::byte)data;
 }
 
