@@ -18,6 +18,13 @@ public:
       // version
 
   };
+  // when file handler is destroyed we should free the pointers for the file
+  // frequencies and
+  //  file characters
+  ~FileHandler() {
+    delete fileFreq;
+    delete fileChars;
+  }
   // private fields
 private:
   // size of the file?
@@ -27,6 +34,8 @@ private:
   // using an unordered_map to map characters inside a file to relative
   // frequency
   std::unordered_map<char, int> charFreqMap;
+  int *fileFreq;
+  char *fileChars;
 };
 
 /*FUNCTION PROTOTYPING*/
