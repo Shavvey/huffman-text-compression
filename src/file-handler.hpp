@@ -52,5 +52,5 @@ std::string getEncoding(hff::HuffmanTree, char);
 void printDecodedMinHeap(std::string);
 const std::string getSerialMinHeap(std::string);
 
-std::string convertToBinary(unsigned int);
+std::string convertToBinary(struct hff::huffCode);
 } // namespace FileRoutine

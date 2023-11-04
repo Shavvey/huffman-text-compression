@@ -17,18 +17,22 @@ void FileRoutine::writeFile(std::string filePath, std::string heapString) {
 // return bitstring of encoding, can recast to back to binary
 std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   struct hff::huffCode code = huffTree.huffmanEncode(c);
-  std::string s = convertToBinary((unsigned)code.sum);
-  std::cout << s << std::endl;
+  printf("Code: %d\n", code.sum);
+  printf("Size: %d\n", code.size);
+  std::string s = convertToBinary(code);
   return s;
 }
 
-std::string FileRoutine::convertToBinary(unsigned int n) {
-  std::string s;
-  if (n / 2 != 0) {
-    convertToBinary(n / 2);
+std::string FileRoutine::convertToBinary(struct hff::huffCode code) {
+  uint b = (uint)code.sum;
+  std::string binary = "";
+  uint mask = code.size * 2;
+  while (mask > 0) {
+    binary += ((b & mask) == 0) ? '0' : '1';
+    mask >>= 1;
   }
-  s.push_back(n % 2);
-  return s;
+  // std::cout << binary << std::endl;
+  return binary;
 }
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
