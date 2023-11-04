@@ -465,9 +465,9 @@ char hff::HuffmanTree::huffmanDecode(std::string bitString) {
   return data;
 }
 // simple method to return the huffman code from a given char
-int hff::HuffmanTree::huffmanEncode(char charEncoded) {
-  int freq = huffmanCodes[charEncoded];
-  return freq;
+struct huffCode hff::HuffmanTree::huffmanEncode(char charEncoded) {
+  struct huffCode code = huffmanCodes[charEncoded];
+  return code;
 }
 
 void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root,
@@ -490,8 +490,10 @@ void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root,
   }
 
   if (hff::isLeaf(root)) {
-
-    huffmanCodes[root->data] = hff::sumArr(arr, top);
-    printf("Data stored: %d\n", huffmanCodes[root->data]);
+    struct huffCode code;
+    code.sum = hff::sumArr(arr, top);
+    code.size = top;
+    huffmanCodes[root->data] = code;
+    printf("Data stored: %d\n", huffmanCodes[root->data].sum);
   }
 }

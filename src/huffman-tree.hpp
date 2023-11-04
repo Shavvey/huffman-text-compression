@@ -33,6 +33,11 @@ struct MinHeap {
   // array of minheap node pointers
   struct MinHeapNode **array;
 };
+// just a simple struct to represent the huffman code
+struct huffCode {
+  int sum;
+  int size;
+};
 // new struct to carry the serialized version of the min heap
 struct SerializedMinHeap {
   int size;
@@ -75,11 +80,11 @@ class HuffmanTree {
 public:
   // public fields!
   hff::MinHeapNode *root;
-  std::unordered_map<char, int> huffmanCodes;
+  std::unordered_map<char, struct huffCode> huffmanCodes;
   // class methods declarations!
   void printHuffmanTree();
   char huffmanDecode(std::string);
-  int huffmanEncode(char);
+  struct huffCode huffmanEncode(char);
 
   void populateCharCodes(MinHeapNode *, int[MAX_TREE_HEIGHT], int);
   // class constructor

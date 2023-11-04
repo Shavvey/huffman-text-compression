@@ -14,16 +14,22 @@ void FileRoutine::writeFile(std::string filePath, std::string heapString) {
   file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
   file.close();
 }
-// after writing the stringMinHeap and size, write characters
-// encodings, for this we need the frequnecy data and found characters
-// to construct a minheap that can give us encodings
-// byte will be used by write file to append to end of file
-std::byte FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
-  unsigned char data = huffTree.huffmanEncode(c);
-  // return the data in byte form
-  return (std::byte)data;
+// return bitstring of encoding, can recast to back to binary
+std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
+  struct hff::huffCode code = huffTree.huffmanEncode(c);
+  std::string s = convertToBinary((unsigned)code.sum);
+  std::cout << s << std::endl;
+  return s;
 }
 
+std::string FileRoutine::convertToBinary(unsigned int n) {
+  std::string s;
+  if (n / 2 != 0) {
+    convertToBinary(n / 2);
+  }
+  s.push_back(n % 2);
+  return s;
+}
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
 void FileRoutine::printDecodedMinHeap(std::string filePath) {

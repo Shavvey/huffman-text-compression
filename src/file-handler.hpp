@@ -48,8 +48,9 @@ private:
 // write file with the proper huffman encodings
 void writeFile(std::string, std::string);
 // get each encoding from the huffman tree
-std::byte getEncoding(hff::HuffmanTree, char);
+std::string getEncoding(hff::HuffmanTree, char);
 void printDecodedMinHeap(std::string);
 const std::string getSerialMinHeap(std::string);
 
+std::string convertToBinary(unsigned int);
 } // namespace FileRoutine
