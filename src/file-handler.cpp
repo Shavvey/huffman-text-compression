@@ -75,7 +75,8 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
   file.close();
   return heapString;
 }
-// process the file produce charFreqList
+// process the file produce charFreqList, this list can then be
+// decomposed into file frequency and file character arrays
 void FileRoutine::FileHandler::processFile(std::string filePath) {
   // open file stream and read from it
   std::ifstream file(filePath, std::ios::in);
@@ -96,6 +97,7 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
     }
   }
 }
+// returns a pointer to an array that holds file characters
 char *FileRoutine::FileHandler::getFileCharacters() {
   const int size = charFreqMap.size();
   char fileCharacters[size];
@@ -111,6 +113,8 @@ char *FileRoutine::FileHandler::getFileCharacters() {
   // pointer
   return fileChar;
 }
+// a pointer to an array that holds the file frequencies of each characters
+// inside the file
 int *FileRoutine::FileHandler::getFileFrequencies() {
   // declare an array that can hold all the data from `charFreqMap`
   const int size = charFreqMap.size();

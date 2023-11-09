@@ -222,6 +222,7 @@ int hff::power(int base, int exponent) {
   // i really like ternary operators
   return (exponent != 0) ? base * power(base, exponent - 1) : 1;
 }
+// compute the max depth of a given node using recursion
 int hff::maxDepth(hff::MinHeapNode *root) {
   if (root == NULL) {
     return 0;
@@ -230,7 +231,7 @@ int hff::maxDepth(hff::MinHeapNode *root) {
   int left_depth = maxDepth(root->left);
   // recurse down the right tree
   int right_depth = maxDepth(root->right);
-  // compare left and left depth values
+  // compare left and right depth values
   int max_val = max(left_depth, right_depth);
   return max_val + 1;
 }
