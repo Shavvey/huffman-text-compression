@@ -7,21 +7,24 @@ namespace FileRoutine {
 class FileHandler {
   // class method declarations
   void processFile(std::string);
+  // i should probably make this functions!
   char *getFileCharacters();
   int *getFileFrequencies();
   void printFileFrequnecies();
   void printFileCharacters();
+  // driver methods, should be built with the smaller functions and methods!!
+  void huffmanEncrypt();
+  void huffmanDecrypt();
   // public fileds!
 public:
   std::string fileIn;
   std::string fileOut;
-  // default constructor and destructor are being used for now
   FileHandler(std::string fileInputPath, std::string fileOutputPath) {
-    // call write methods to that process input file
-    // call write methods that turn processed data into the compressed huffman
-    // version
     fileIn = fileInputPath;
     fileOut = fileOutputPath;
+    // for the constructor all we need is to store filepath for our input and
+    // output
+    // decryption and encryption methods should do the rest
   };
   // when file handler is destroyed we should free the pointers for the file
   // frequencies and
@@ -51,6 +54,5 @@ void writeFile(std::string, std::string);
 std::string getEncoding(hff::HuffmanTree, char);
 void printDecodedMinHeap(std::string);
 const std::string getSerialMinHeap(std::string);
-
 std::string convertToBinary(struct hff::huffCode);
 } // namespace FileRoutine
