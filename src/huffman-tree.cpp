@@ -6,7 +6,9 @@ hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
   MinHeapNode *node = new MinHeapNode;
   // assign fields of newly allocated node based on args
   node->left = node->right = NULL;
+  // set data field using the passed arg
   node->data = data;
+  // set freq field using the passed arg
   node->freq = freq;
   // return new node so that it can be added to minHeap
   return node;
