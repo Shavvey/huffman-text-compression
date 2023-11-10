@@ -10,6 +10,7 @@ class FileHandler {
   // i should probably make this functions!
   char *getFileCharacters();
   int *getFileFrequencies();
+  // test methods to make sure the file frequencies and chars are remembered
   void printFileFrequnecies();
   void printFileCharacters();
   // driver methods, should be built with the smaller functions and methods!!
@@ -30,9 +31,9 @@ public:
   // frequencies and
   //  file characters
   ~FileHandler() {
+    // free up the fileFreq and fileChars pointers
     delete fileFreq;
     delete fileChars;
-    charFreqMap.clear();
   }
   // private fields
 private:

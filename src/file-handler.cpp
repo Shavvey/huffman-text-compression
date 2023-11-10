@@ -130,3 +130,17 @@ int *FileRoutine::FileHandler::getFileFrequencies() {
   fileFreq = fileFrequencies;
   return fileFreq;
 }
+void FileRoutine::FileHandler::huffmanEncrypt() {
+  // process the input file, returing the map of chars and frequency data
+  processFile(fileIn);
+  // get file frequency and file character information
+  fileFreq = getFileFrequencies();
+  fileChars = getFileCharacters();
+  printFileCharacters();
+  printFileFrequnecies();
+}
+
+// testing methods just to make sure the character and frequency array hold the
+// correct things
+void FileRoutine::FileHandler::printFileCharacters() {}
+void FileRoutine::FileHandler::printFileFrequnecies() {}
