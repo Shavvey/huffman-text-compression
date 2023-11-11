@@ -5,10 +5,8 @@
 // uses a file path to append the size and stringMinHeap
 // filePath: the file name and directory specified to create compressed file
 void FileRoutine::writeFile(std::string filePath, std::string heapString) {
-  // using basic file stream provided by cpp standard library
-  std::ofstream file;
   // open file using fstream in binary mode
-  file.open(filePath, std::ios::binary | std::ios::out);
+  std::ofstream file(filePath, std::ios::binary | std::ios::out);
   // create a serialized minHeap from the created heap string
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
   file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);

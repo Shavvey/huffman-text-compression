@@ -27,9 +27,6 @@ public:
     // output
     // decryption and encryption methods should do the rest
   };
-  // when file handler is destroyed we should free the pointers for the file
-  // frequencies and
-  //  file characters
   ~FileHandler() {}
   // private fields
   // size of the file?
