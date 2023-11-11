@@ -16,7 +16,6 @@ int main() {
   std::string heapString = hff::minHeapToString(root);
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
   // write compressed version of example.txt here
-  FileRoutine::writeFile("example.bin", heapString);
   printf("%d\n", tree.huffmanEncode('d').sum);
   int max[MAX_TREE_HEIGHT];
   int top = 0;
@@ -24,5 +23,7 @@ int main() {
   FileRoutine::printDecodedMinHeap("example.bin");
   FileRoutine::FileHandler fileHandle("example.txt", "example.bin");
   fileHandle.huffmanEncrypt();
+
+  FileRoutine::writeFile("example.bin", heapString);
   return EXIT_SUCCESS;
 }

@@ -113,13 +113,28 @@ void FileRoutine::FileHandler::getFileFrequencies() {
     fileFreq.push_back(i);
   }
 }
+
 void FileRoutine::FileHandler::huffmanEncrypt() {
   // process the input file, returing the map of chars and frequency data
   processFile(fileIn);
   // get file frequency and file character information
   getFileCharacters();
   getFileFrequencies();
-  // print  them out
-  // printFileCharacters();
-  // printFileFrequnecies();
+  int freq[fileFreq.size()];
+  int k = 0;
+  // grab reference for each element in the list
+  for (int const &i : fileFreq) {
+    freq[k++] = i;
+  }
+  char arr[fileChars.size()];
+  k = 0;
+  for (int const &i : fileChars) {
+    arr[k++] = i;
+  }
+  int size = sizeof(arr) / sizeof(arr[0]);
+  // construct huffman tree based on data
+  std::cout << "Constructing Huffman Tree\n";
+  hff::HuffmanTree tree(arr, freq, size);
+  // print out tree if you would like, (kinda messy for large trees)
+  tree.printHuffmanTree();
 }
