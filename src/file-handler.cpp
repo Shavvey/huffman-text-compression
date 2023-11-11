@@ -98,49 +98,28 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
   }
 }
 // returns a pointer to an array that holds file characters
-char *FileRoutine::FileHandler::getFileCharacters() {
-  const int size = charFreqMap.size();
-  char fileCharacters[size];
-  int index = 0;
+void FileRoutine::FileHandler::getFileCharacters() {
+
   for (auto itr : charFreqMap) {
-    fileCharacters[index] = itr.first;
-    index++;
+    char c = itr.first;
+    fileChars.push_back(c);
   }
-  // changinge this to a pointer
-  char *fileChar = new char[size];
-  fileChar = fileCharacters;
-  // once we have process the map char and frequnecy data we can delete these
-  // pointer
-  return fileChar;
 }
 // a pointer to an array that holds the file frequencies of each characters
 // inside the file
-int *FileRoutine::FileHandler::getFileFrequencies() {
-  // declare an array that can hold all the data from `charFreqMap`
-  const int size = charFreqMap.size();
-  int fileFrequencies[size];
-  int index = 0;
-  // iterate across all of the ints fields in `charFreqMap` and store them in
-  // the array
+void FileRoutine::FileHandler::getFileFrequencies() {
   for (auto itr : charFreqMap) {
-    fileFrequencies[index] = itr.second;
-    index++;
+    int i = itr.second;
+    fileFreq.push_back(i);
   }
-  int *fileFreq = new int[size];
-  fileFreq = fileFrequencies;
-  return fileFreq;
 }
 void FileRoutine::FileHandler::huffmanEncrypt() {
   // process the input file, returing the map of chars and frequency data
   processFile(fileIn);
   // get file frequency and file character information
-  fileFreq = getFileFrequencies();
-  fileChars = getFileCharacters();
-  printFileCharacters();
-  printFileFrequnecies();
+  getFileCharacters();
+  getFileFrequencies();
+  // print  them out
+  // printFileCharacters();
+  // printFileFrequnecies();
 }
-
-// testing methods just to make sure the character and frequency array hold the
-// correct things
-void FileRoutine::FileHandler::printFileCharacters() {}
-void FileRoutine::FileHandler::printFileFrequnecies() {}

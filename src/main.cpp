@@ -18,11 +18,11 @@ int main() {
   // write compressed version of example.txt here
   FileRoutine::writeFile("example.bin", heapString);
   printf("%d\n", tree.huffmanEncode('d').sum);
-  std::string s = FileRoutine::getEncoding(tree, 'e');
-  std::cout << "Bit string of e:" << s << std::endl;
   int max[MAX_TREE_HEIGHT];
   int top = 0;
   hff::printCodes(root, max, top);
   FileRoutine::printDecodedMinHeap("example.bin");
+  FileRoutine::FileHandler fileHandle("example.txt", "example.bin");
+  fileHandle.huffmanEncrypt();
   return EXIT_SUCCESS;
 }

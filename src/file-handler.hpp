@@ -6,10 +6,11 @@
 namespace FileRoutine {
 class FileHandler {
   // class method declarations
+public:
   void processFile(std::string);
   // i should probably make this functions!
-  char *getFileCharacters();
-  int *getFileFrequencies();
+  void getFileCharacters();
+  void getFileFrequencies();
   // test methods to make sure the file frequencies and chars are remembered
   void printFileFrequnecies();
   void printFileCharacters();
@@ -17,7 +18,6 @@ class FileHandler {
   void huffmanEncrypt();
   void huffmanDecrypt();
   // public fileds!
-public:
   std::string fileIn;
   std::string fileOut;
   FileHandler(std::string fileInputPath, std::string fileOutputPath) {
@@ -30,13 +30,8 @@ public:
   // when file handler is destroyed we should free the pointers for the file
   // frequencies and
   //  file characters
-  ~FileHandler() {
-    // free up the fileFreq and fileChars pointers
-    delete fileFreq;
-    delete fileChars;
-  }
+  ~FileHandler() {}
   // private fields
-private:
   // size of the file?
   int size;
   // should be a list of encountered characters there relative frequencies in
@@ -44,8 +39,8 @@ private:
   // using an unordered_map to map characters inside a file to relative
   // frequency
   std::unordered_map<char, int> charFreqMap;
-  int *fileFreq;
-  char *fileChars;
+  std::list<char> fileChars;
+  std::list<int> fileFreq;
 };
 
 /*FUNCTION PROTOTYPING*/
