@@ -128,11 +128,13 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   int k = 0;
   // grab reference for each element in the list
   for (int const &i : fileFreq) {
+    // put each file frequency into the array
     freq[k++] = i;
   }
   char arr[fileChars.size()];
   k = 0;
   for (int const &i : fileChars) {
+    // put each file char into the array
     arr[k++] = i;
   }
   int size = sizeof(arr) / sizeof(arr[0]);
@@ -141,4 +143,7 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   hff::HuffmanTree tree(arr, freq, size);
   // print out tree if you would like, (kinda messy for large trees)
   tree.printHuffmanTree();
+  // create heap string can represents the `minHeap`
+  std::string heapString = hff::minHeapToString(tree.root);
+  writeSerialMinHeap(fileOut, heapString);
 }
