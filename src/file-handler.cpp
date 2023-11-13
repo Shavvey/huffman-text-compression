@@ -49,9 +49,14 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
     // construct a 8-bit binary string for each character
     // this is essentially just a fancy of way of grabin each byte in file
     std::bitset<8> b((unsigned char)c);
-    std::cout << b;
-    std::cout << '\t' << (char)b.to_ulong();
-    std::cout << std::endl;
+    if (c == '\n') {
+      std::cout << "00000010";
+      std::cout << '\t' << "\\n" << std::endl;
+    } else {
+      std::cout << b;
+      std::cout << '\t' << (char)b.to_ulong();
+      std::cout << std::endl;
+    }
     heapString.push_back((char)b.to_ulong());
     file.get(c);
   }
@@ -146,4 +151,22 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   // create heap string can represents the `minHeap`
   std::string heapString = hff::minHeapToString(tree.root);
   writeSerialMinHeap(fileOut, heapString);
+  // open input file
+  std::ifstream fileInput(fileIn, std::ios::in);
+  // open ouput file stream in output and append mode
+  std::ofstream fileOutput(fileOut,
+                           std::ios::binary | std::ios::app | std::ios::out);
+  char fileChar;
+  std::cout << "==Encoding Huffman Codes== \n";
+  while (!fileInput.eof()) {
+    // get the fileChar from the in file
+    fileInput.get(fileChar);
+    std::string huffCode = getEncoding(tree, fileChar);
+    int size = huffCode.size();
+    // write the huffcode to the specified file output
+    fileOutput.write(huffCode.c_str(), size);
+  }
+  // just testing out if we can still find the minHeap string after
+  // huffman codes can be generated and written to the output file
+  printDecodedMinHeap(fileOut);
 }
