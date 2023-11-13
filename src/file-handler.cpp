@@ -109,7 +109,7 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
 // returns a pointer to an array that holds file characters
 void FileRoutine::FileHandler::getFileCharacters() {
 
-  for (auto itr : charFreqMap) {
+  for (const std::pair<int, char> itr : charFreqMap) {
     char c = itr.first;
     fileChars.push_back(c);
   }
@@ -117,7 +117,7 @@ void FileRoutine::FileHandler::getFileCharacters() {
 // a pointer to an array that holds the file frequencies of each characters
 // inside the file
 void FileRoutine::FileHandler::getFileFrequencies() {
-  for (auto itr : charFreqMap) {
+  for (const std::pair<int, char> itr : charFreqMap) {
     int i = itr.second;
     fileFreq.push_back(i);
   }
@@ -169,4 +169,26 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   // just testing out if we can still find the minHeap string after
   // huffman codes can be generated and written to the output file
   printDecodedMinHeap(fileOut);
+  // file input and file output
+  fileInput.close();
+  fileOutput.close();
+}
+void FileRoutine::FileHandler::huffmanDecrypt() {
+  std::string decodedMinHeap = FileRoutine::getSerialMinHeap(fileOut);
+  // create root for huffman tree based on decoded string of `minHeap`
+  hff::MinHeapNode *root = hff::minHeapFromString(decodedMinHeap);
+  // loop through file and determine when the null character is hit
+  int nullFlag = 0;
+  // construct file handler based on file output (the binary target)
+  std::ifstream fileInput(fileOut, std::ios::in);
+  char fileChar;
+  while (fileInput.eof()) {
+    // get character from file input
+    fileInput.get(fileChar);
+    if (fileChar == '\0') {
+      nullFlag = 1;
+    }
+    if (nullFlag) {
+    }
+  }
 }
