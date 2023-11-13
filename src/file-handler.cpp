@@ -4,12 +4,16 @@
 
 // uses a file path to append the size and stringMinHeap
 // filePath: the file name and directory specified to create compressed file
-void FileRoutine::writeFile(std::string filePath, std::string heapString) {
+// heapString: a string of character that can be used to rebuild the minHeap,
+// which is the data structure chosen for the huffman encoding tree
+void FileRoutine::writeSerialMinHeap(std::string filePath,
+                                     std::string heapString) {
   // open file using fstream in binary mode
   std::ofstream file(filePath, std::ios::binary | std::ios::out);
   // create a serialized minHeap from the created heap string
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
   file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
+  // close the file
   file.close();
 }
 // return bitstring of encoding, can recast to back to binary
@@ -87,8 +91,10 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
     std::unordered_map<char, int>::iterator found = charFreqMap.find(fileChar);
     // if the char isn't found inside the hash table then we create a new entry
     if (found == charFreqMap.end()) {
-      // insert file char pair and get key value to one
+      // insert file char pair and set key value to one
       charFreqMap.insert({fileChar, 1});
+      // once the key value pair is created, we can increment
+      // the frequnecy value for each successive look we do in the file
     } else {
       // increment the key value if the fileChar has already been found
       found->second = found->second + 1;

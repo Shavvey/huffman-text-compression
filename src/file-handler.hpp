@@ -36,13 +36,17 @@ public:
   // using an unordered_map to map characters inside a file to relative
   // frequency
   std::unordered_map<char, int> charFreqMap;
+  // a store of file characters inside a linked list
+  // this will be broken down into a simpler array so that
+  // huffman code can use it in it's constructor
   std::list<char> fileChars;
+  // a store of file frequencies, it's the same as `fileChars`
   std::list<int> fileFreq;
 };
 
 /*FUNCTION PROTOTYPING*/
 // write file with the proper huffman encodings
-void writeFile(std::string, std::string);
+void writeSerialMinHeap(std::string, std::string);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree, char);
 void printDecodedMinHeap(std::string);
