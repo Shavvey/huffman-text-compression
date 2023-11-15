@@ -192,3 +192,17 @@ void FileRoutine::FileHandler::huffmanDecrypt() {
     }
   }
 }
+
+std::bitset<8> FileRoutine::getByteFromChar(char c) {
+  // simple function to return a cast from char
+  return std::bitset<8>(c);
+}
+
+char FileRoutine::decodeFileChar(std::string fileIn, hff::MinHeapNode *root,
+                                 int length) {
+  // 1: represents moving down the right subtree
+  // 0: represnets movving down the left subtree
+  // loop until we've tranversed the tree
+  while (!hff::isLeaf(root)) {
+  }
+}
