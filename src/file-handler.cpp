@@ -147,7 +147,7 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   std::cout << "Constructing Huffman Tree\n";
   hff::HuffmanTree tree(arr, freq, size);
   // print out tree if you would like, (kinda messy for large trees)
-  tree.printHuffmanTree();
+  hff::printCurrentTree(tree.root);
   // create heap string can represents the `minHeap`
   std::string heapString = hff::minHeapToString(tree.root);
   writeSerialMinHeap(fileOut, heapString);
@@ -170,6 +170,8 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   // huffman codes can be generated and written to the output file
   printDecodedMinHeap(fileOut);
   // file input and file output
+  int len[MAX_TREE_HEIGHT], top = 0;
+  hff::printCodes(tree.root, len, top);
   fileInput.close();
   fileOutput.close();
 }
@@ -182,6 +184,9 @@ void FileRoutine::FileHandler::huffmanDecrypt() {
   // construct file handler based on file output (the binary target)
   std::ifstream fileInput(fileOut, std::ios::in);
   char fileChar;
+  // track the ammount of times we have iterated through, after null is
+  // encountered
+  int iter_length = 0;
   while (fileInput.eof()) {
     // get character from file input
     fileInput.get(fileChar);
@@ -189,6 +194,22 @@ void FileRoutine::FileHandler::huffmanDecrypt() {
       nullFlag = 1;
     }
     if (nullFlag) {
+
+      hff::MinHeapNode *tree = root;
+      fileInput.get(fileChar);
+      // copy root pointer
+      while (!hff::isLeaf(root)) {
+        std::bitset<8> byte;
+        int length = iter_length % 8;
+        if (length == 0) {
+          // grab new byte each 8 iteration lengths
+          byte = getByteFromChar(fileChar);
+        }
+        (byte[length]) ? tree = tree->left : tree = tree->right;
+        iter_length++;
+      }
+      // once we have hit a leaf, we have found our character, so write it.
+      printf("Data decoded %c\n", tree->data);
     }
   }
 }
@@ -196,13 +217,4 @@ void FileRoutine::FileHandler::huffmanDecrypt() {
 std::bitset<8> FileRoutine::getByteFromChar(char c) {
   // simple function to return a cast from char
   return std::bitset<8>(c);
-}
-
-char FileRoutine::decodeFileChar(std::string fileIn, hff::MinHeapNode *root,
-                                 int length) {
-  // 1: represents moving down the right subtree
-  // 0: represnets movving down the left subtree
-  // loop until we've tranversed the tree
-  while (!hff::isLeaf(root)) {
-  }
 }

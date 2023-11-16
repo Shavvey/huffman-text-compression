@@ -53,5 +53,5 @@ void printDecodedMinHeap(std::string);
 const std::string getSerialMinHeap(std::string);
 std::string convertToBinary(struct hff::huffCode);
 std::bitset<8> getByteFromChar(char);
-char decodeFileChar(std::string, hff::MinHeapNode *, int);
+char decodeFileChar(char, hff::MinHeapNode *, int);
 } // namespace FileRoutine
