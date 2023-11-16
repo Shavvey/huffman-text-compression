@@ -1,6 +1,7 @@
 #include "file-handler.hpp"
 #include <cstdint>
 #include <fstream>
+#include <stack>
 
 // uses a file path to append the size and stringMinHeap
 // filePath: the file name and directory specified to create compressed file
@@ -19,22 +20,32 @@ void FileRoutine::writeSerialMinHeap(std::string filePath,
 // return bitstring of encoding, can recast to back to binary
 std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   struct hff::huffCode code = huffTree.huffmanEncode(c);
-  std::string s = convertToBinary(code);
-  return s;
+  // NOTE: delete this afterwards, this is just for testing
+  printf("Code's value %d\n", code.sum);
+  printf("Code's size %d\n", code.size);
+  // inti empty string
+  return convertToBinary(code.sum);
 }
 
-std::string FileRoutine::convertToBinary(struct hff::huffCode code) {
-  uint b = (uint)code.sum;
-  std::string binary = "";
-  uint mask = code.size * 2;
-  while (mask > 0) {
-    // used mask to and with unsigned input, to find each digit
-    // one at a time
-    binary += ((b & mask) == 0) ? '0' : '1';
-    mask >>= 1;
+std::string FileRoutine::convertToBinary(unsigned int n) {
+  std::stack<char> charStack;
+  while (n != 0) {
+    char c = (n % 2) ? '1' : '0';
+    printf("%c", c);
+    // push binary digit onto stack
+    charStack.push(c);
+    n /= 2;
   }
-  std::cout << binary << std::endl;
-  return binary;
+  printf("\n");
+  // reverse order to construct binary string
+  std::string binarystring;
+  while (!charStack.empty()) {
+    char c = charStack.top();
+    charStack.pop();
+    binarystring.push_back(c);
+  }
+  std::cout << binarystring << std::endl;
+  return binarystring;
 }
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function

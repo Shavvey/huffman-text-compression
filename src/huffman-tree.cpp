@@ -1,7 +1,7 @@
 #include "huffman-tree.hpp"
 // include the namespace so i dont have to keep referencing it
 using namespace hff;
-hff::MinHeapNode *hff::newNode(char data, unsigned freq) {
+hff::MinHeapNode *hff::newNode(char data, unsigned int freq) {
   // allocate memory on the heap to store a new node
   MinHeapNode *node = new MinHeapNode;
   // assign fields of newly allocated node based on args
@@ -340,7 +340,6 @@ std::string hff::minHeapToString(hff::MinHeapNode *root) {
 
 hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   if (data.size() == 0) {
-
     return NULL;
   }
   // using a stringstream to iterate over the string and get each character
