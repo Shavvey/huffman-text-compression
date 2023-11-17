@@ -7,6 +7,5 @@ int main() {
   // and do a bunch of sutff with it
   FileRoutine::FileHandler fileHandle("example.txt", "example.bin");
   fileHandle.huffmanEncrypt();
-  fileHandle.huffmanDecrypt();
   return EXIT_SUCCESS;
 }

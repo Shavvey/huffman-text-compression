@@ -12,9 +12,15 @@ void FileRoutine::writeSerialMinHeap(std::string filePath,
   // open file using fstream in binary mode
   std::ofstream file(filePath, std::ofstream::binary | std::ios::out);
   // create a serialized minHeap from the created heap string
+  // cast to c-like string and write to the file based on size of string
+  std::vector<std::byte> bytes;
+  bytes.reserve(std::size(heapString));
+  // lambda expression to convert heapstring to bytes
+  std::transform(std::begin(heapString), std::end(heapString),
+                 std::back_inserter(bytes),
+                 [](char c) { return std::byte(c); });
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
-  file.write(reinterpret_cast<char *>(serialMinHeap.data.data()),
-             serialMinHeap.size);
+  file.write((char *)&bytes, heapString.size());
   // close the file
   file.close();
 }
