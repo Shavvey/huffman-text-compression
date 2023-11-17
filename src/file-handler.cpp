@@ -10,10 +10,11 @@
 void FileRoutine::writeSerialMinHeap(std::string filePath,
                                      std::string heapString) {
   // open file using fstream in binary mode
-  std::ofstream file(filePath, std::ios::binary | std::ios::out);
+  std::ofstream file(filePath, std::ofstream::binary | std::ios::out);
   // create a serialized minHeap from the created heap string
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
-  file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
+  file.write(reinterpret_cast<char *>(serialMinHeap.data.data()),
+             serialMinHeap.size);
   // close the file
   file.close();
 }
@@ -24,21 +25,25 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   printf("Code's value %d\n", code.sum);
   printf("Code's size %d\n", code.size);
   // inti empty string
-  return convertToBinary(code.sum);
+  std::string binarystring = convertToBinary(code.sum);
+  printf("Codes's binary string %s\n", binarystring.c_str());
+  return binarystring;
 }
 
 std::string FileRoutine::convertToBinary(unsigned int n) {
   std::stack<char> charStack;
   while (n != 0) {
     char c = (n % 2) ? '1' : '0';
-    printf("%c", c);
-    // push binary digit onto stack
+    // printf("%c", c);
+    //  push binary digit onto stack
     charStack.push(c);
     n /= 2;
   }
   printf("\n");
   // reverse order to construct binary string
   std::string binarystring;
+  // use the stack to reverse the binary characters and
+  // use this to create the final binary string
   while (!charStack.empty()) {
     char c = charStack.top();
     charStack.pop();
@@ -74,7 +79,7 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
   std::cout << "Recovered string: " + heapString << std::endl;
 }
 const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
-  std::ifstream file(filePath, std::ios::binary | std::ios::in);
+  std::ifstream file(filePath, std::ifstream::binary | std::ios::in);
   char c;
   std::string heapString;
   file.get(c);
@@ -97,7 +102,7 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
 // decomposed into file frequency and file character arrays
 void FileRoutine::FileHandler::processFile(std::string filePath) {
   // open file stream and read from it
-  std::ifstream file(filePath, std::ios::in);
+  std::ifstream file(filePath, std::ios::in | std::ifstream::binary);
   char fileChar;
   // read until the end of file
   while (!file.eof()) {
@@ -136,7 +141,7 @@ void FileRoutine::FileHandler::getFileFrequencies() {
 
 void FileRoutine::FileHandler::huffmanEncrypt() {
   // process the input file, returing the map of chars and frequency data
-  processFile(fileIn);
+  processFile(fileDecoded);
   // get file frequency and file character information
   getFileCharacters();
   getFileFrequencies();
@@ -161,12 +166,12 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   hff::printCurrentTree(tree.root);
   // create heap string can represents the `minHeap`
   std::string heapString = hff::minHeapToString(tree.root);
-  writeSerialMinHeap(fileOut, heapString);
+  writeSerialMinHeap(fileEncoded, heapString);
   // open input file
-  std::ifstream fileInput(fileIn, std::ios::in);
+  std::ifstream fileInput(fileDecoded, std::ios::in);
   // open ouput file stream in output and append mode
-  std::ofstream fileOutput(fileOut,
-                           std::ios::binary | std::ios::app | std::ios::out);
+  std::ofstream fileOutput(fileEncoded, std::ofstream::binary | std::ios::app |
+                                            std::ios::out);
   char fileChar;
   std::cout << "==Encoding Huffman Codes== \n";
   while (!fileInput.eof()) {
@@ -179,7 +184,7 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   }
   // just testing out if we can still find the minHeap string after
   // huffman codes can be generated and written to the output file
-  printDecodedMinHeap(fileOut);
+  printDecodedMinHeap(fileEncoded);
   // file input and file output
   int len[MAX_TREE_HEIGHT], top = 0;
   hff::printCodes(tree.root, len, top);
@@ -187,13 +192,13 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   fileOutput.close();
 }
 void FileRoutine::FileHandler::huffmanDecrypt() {
-  std::string decodedMinHeap = FileRoutine::getSerialMinHeap(fileOut);
+  std::string decodedMinHeap = FileRoutine::getSerialMinHeap(fileEncoded);
   // create root for huffman tree based on decoded string of `minHeap`
   hff::MinHeapNode *root = hff::minHeapFromString(decodedMinHeap);
   // loop through file and determine when the null character is hit
   int nullFlag = 0;
   // construct file handler based on file output (the binary target)
-  std::ifstream fileInput(fileOut, std::ios::in);
+  std::ifstream fileInput(fileEncoded, std::ios::in);
   char fileChar;
   // track the ammount of times we have iterated through, after null is
   // encountered

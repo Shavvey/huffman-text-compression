@@ -18,11 +18,11 @@ public:
   void huffmanEncrypt();
   void huffmanDecrypt();
   // public fileds!
-  std::string fileIn;
-  std::string fileOut;
-  FileHandler(std::string fileInputPath, std::string fileOutputPath) {
-    fileIn = fileInputPath;
-    fileOut = fileOutputPath;
+  std::string fileDecoded;
+  std::string fileEncoded;
+  FileHandler(std::string fileEncodePath, std::string fileDecodePath) {
+    fileDecoded = fileEncodePath;
+    fileEncoded = fileDecodePath;
     // for the constructor all we need is to store filepath for our input and
     // output
     // decryption and encryption methods should do the rest
