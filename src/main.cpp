@@ -7,5 +7,8 @@ int main() {
   // and do a bunch of sutff with it
   FileRoutine::FileHandler fileHandle("example.txt", "example.bin");
   fileHandle.huffmanEncrypt();
+  FileRoutine::printDecodedMinHeap(fileHandle.fileEncoded);
+  std::bitset<4> bit("111");
+  std::cout << bit << std::endl;
   return EXIT_SUCCESS;
 }

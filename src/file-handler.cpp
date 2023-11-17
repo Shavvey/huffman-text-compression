@@ -20,7 +20,7 @@ void FileRoutine::writeSerialMinHeap(std::string filePath,
                  std::back_inserter(bytes),
                  [](char c) { return std::byte(c); });
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
-  file.write((char *)&bytes, heapString.size());
+  file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
   // close the file
   file.close();
 }
@@ -37,6 +37,9 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
 }
 
 std::string FileRoutine::convertToBinary(unsigned int n) {
+  if (n == 0) {
+    return "0";
+  }
   std::stack<char> charStack;
   while (n != 0) {
     char c = (n % 2) ? '1' : '0';
@@ -45,7 +48,6 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
     charStack.push(c);
     n /= 2;
   }
-  printf("\n");
   // reverse order to construct binary string
   std::string binarystring;
   // use the stack to reverse the binary characters and
@@ -55,7 +57,6 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
     charStack.pop();
     binarystring.push_back(c);
   }
-  std::cout << binarystring << std::endl;
   return binarystring;
 }
 // I want to be able to recover minHeap from the binary written inside the file
@@ -180,14 +181,7 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
                                             std::ios::out);
   char fileChar;
   std::cout << "==Encoding Huffman Codes== \n";
-  while (!fileInput.eof()) {
-    // get the fileChar from the in file
-    fileInput.get(fileChar);
-    std::string huffCode = getEncoding(tree, fileChar);
-    int size = huffCode.size();
-    // write the huffcode to the specified file output
-    fileOutput.write(huffCode.c_str(), size);
-  }
+
   // just testing out if we can still find the minHeap string after
   // huffman codes can be generated and written to the output file
   printDecodedMinHeap(fileEncoded);

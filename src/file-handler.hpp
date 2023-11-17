@@ -28,6 +28,7 @@ public:
     // decryption and encryption methods should do the rest
   };
   ~FileHandler() {}
+  int MAX_CODE_LENGTH;
   // private fields
   // size of the file?
   int size;
@@ -54,4 +55,5 @@ const std::string getSerialMinHeap(std::string);
 std::string convertToBinary(unsigned int);
 std::bitset<8> getByteFromChar(char);
 char decodeFileChar(char, hff::MinHeapNode *, int);
+
 } // namespace FileRoutine
