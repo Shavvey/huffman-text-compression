@@ -20,31 +20,22 @@ public:
   // public fileds!
   std::string fileDecoded;
   std::string fileEncoded;
-  FileHandler(std::string fileEncodePath, std::string fileDecodePath) {
+  FileHandler(std::string fileEncodePath, std::string fileDecodePath,
+              bool flag) {
     // file with the huffman encodings we create
     fileDecoded = fileEncodePath;
     // file with just the plaintext characters
     fileEncoded = fileDecodePath;
     // for the constructor all we need is to store filepath for our input and
     // output
-    // decryption and encryption methods should do the rest
   };
   ~FileHandler() {}
-  int MAX_CODE_LENGTH;
-  // private fields
-  // size of the file?
+  int const MAX_CODE_LENGTH;
   int size;
-  // should be a list of encountered characters there relative frequencies in
-  // the file
-  // using an unordered_map to map characters inside a file to relative
-  // frequency
   std::unordered_map<char, int> charFreqMap;
-  // a store of file characters inside a linked list
-  // this will be broken down into a simpler array so that
-  // huffman code can use it in it's constructor
   std::list<char> fileChars;
-  // a store of file frequencies, it's the same as `fileChars`
   std::list<int> fileFreq;
+  hff::MinHeapNode *root_tree;
 };
 
 /*FUNCTION PROTOTYPING*/
