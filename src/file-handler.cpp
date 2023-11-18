@@ -129,9 +129,16 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
     }
   }
 }
+// simple string padding funciton that adds zeroes until target is reached
+void FileRoutine::rightPaddingZeroes(std::string *inputString, int pad_length) {
+  int size = (*inputString).size();
+  while ((pad_length - size) > 0) {
+    (*inputString).push_back('0');
+    size++;
+  }
+}
 // returns a pointer to an array that holds file characters
 void FileRoutine::FileHandler::getFileCharacters() {
-
   for (const std::pair<int, char> itr : charFreqMap) {
     char c = itr.first;
     fileChars.push_back(c);

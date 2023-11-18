@@ -8,7 +8,9 @@ int main() {
   FileRoutine::FileHandler fileHandle("example.txt", "example.bin");
   fileHandle.huffmanEncrypt();
   FileRoutine::printDecodedMinHeap(fileHandle.fileEncoded);
-  std::bitset<4> bit("111");
-  std::cout << bit << std::endl;
+  std::string s = "111";
+  // pass by reference of the string
+  FileRoutine::rightPaddingZeroes(&s, 4);
+  std::cout << s << std::endl;
   return EXIT_SUCCESS;
 }

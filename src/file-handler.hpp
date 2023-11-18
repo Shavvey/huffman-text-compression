@@ -55,5 +55,5 @@ const std::string getSerialMinHeap(std::string);
 std::string convertToBinary(unsigned int);
 std::bitset<8> getByteFromChar(char);
 char decodeFileChar(char, hff::MinHeapNode *, int);
-
+void rightPaddingZeroes(std::string *, int);
 } // namespace FileRoutine
