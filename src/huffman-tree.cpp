@@ -407,7 +407,7 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
 void hff::printBytes(hff::SerializedMinHeap minHeap) {
   for (auto itr = minHeap.data.begin(); itr != minHeap.data.end(); ++itr) {
     // print out hexadecimal string
-    printf("%hhx", *itr);
+    printf("%hhx", static_cast<unsigned char>(*itr));
   }
   // print newline
   printf("\n");

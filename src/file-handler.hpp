@@ -21,7 +21,9 @@ public:
   std::string fileDecoded;
   std::string fileEncoded;
   FileHandler(std::string fileEncodePath, std::string fileDecodePath) {
+    // file with the huffman encodings we create
     fileDecoded = fileEncodePath;
+    // file with just the plaintext characters
     fileEncoded = fileDecodePath;
     // for the constructor all we need is to store filepath for our input and
     // output
@@ -56,4 +58,5 @@ std::string convertToBinary(unsigned int);
 std::bitset<8> getByteFromChar(char);
 char decodeFileChar(char, hff::MinHeapNode *, int);
 void rightPaddingZeroes(std::string *, int);
+void huffmanTreeFromFile();
 } // namespace FileRoutine

@@ -32,6 +32,10 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   printf("Code's size %d\n", code.size);
   // inti empty string
   std::string binarystring = convertToBinary(code.sum);
+  // pad the string with zeroes to the right until the string is 4 characters
+  // this makes each huffman code provided a fixed length, and thus decoding
+  // should be easier
+  rightPaddingZeroes(&binarystring, 4);
   printf("Codes's binary string %s\n", binarystring.c_str());
   return binarystring;
 }
@@ -198,6 +202,9 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   fileInput.close();
   fileOutput.close();
 }
+
+void FileRoutine::huffmanTreeFromFile() {}
+
 void FileRoutine::FileHandler::huffmanDecrypt() {
   std::string decodedMinHeap = FileRoutine::getSerialMinHeap(fileEncoded);
   // create root for huffman tree based on decoded string of `minHeap`
