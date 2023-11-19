@@ -216,45 +216,12 @@ void FileRoutine::rightPaddingZeroes(std::string *inputString, int pad_length) {
     size++;
   }
 }
-// returns a pointer to an array that holds file characters
-void FileRoutine::FileHandler::getFileCharacters() {
-  for (const std::pair<int, char> itr : charFreqMap) {
-    char c = itr.first;
-    fileChars.push_back(c);
-  }
-}
-// a pointer to an array that holds the file frequencies of each characters
-// inside the file
-void FileRoutine::FileHandler::getFileFrequencies() {
-  for (const std::pair<int, char> itr : charFreqMap) {
-    int i = itr.second;
-    fileFreq.push_back(i);
-  }
-}
 
 void FileRoutine::FileHandler::huffmanEncrypt() {
   // process the input file, returing the map of chars and frequency data
   processFile(fileDecoded);
-  // get file frequency and file character information
-  getFileCharacters();
-  getFileFrequencies();
-  int freq[fileFreq.size()];
-  int k = 0;
-  // grab reference for each element in the list
-  for (int const &i : fileFreq) {
-    // put each file frequency into the array
-    freq[k++] = i;
-  }
-  char arr[fileChars.size()];
-  k = 0;
-  for (int const &i : fileChars) {
-    // put each file char into the array
-    arr[k++] = i;
-  }
-  int size = sizeof(arr) / sizeof(arr[0]);
-  // construct huffman tree based on data
   std::cout << "Constructing Huffman Tree\n";
-  hff::HuffmanTree tree(arr, freq, size);
+  hff::HuffmanTree tree(charFreqMap);
   // print out tree if you would like, (kinda messy for large trees)
   hff::printCurrentTree(tree.root);
   // create heap string can represents the `minHeap`

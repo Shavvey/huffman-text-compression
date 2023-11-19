@@ -27,12 +27,12 @@ public:
     fileEncoded = fileDecodePath;
     // 1: procceed with encyption routine
     // 0: proceed with decrypiton routine
+    std::unordered_map<char, int> charFreqMap;
+
+    processFile(fileDecodePath);
   };
   ~FileHandler() {}
-  int size;
   std::unordered_map<char, int> charFreqMap;
-  std::list<char> fileChars;
-  std::list<int> fileFreq;
 };
 
 /*FUNCTION PROTOTYPING*/
