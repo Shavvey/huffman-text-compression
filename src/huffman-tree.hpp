@@ -94,5 +94,20 @@ public:
     int top = 0;
     populateCharCodes(root, arr, top);
   }
+  // secondary constructor where it takes the map of characters and their
+  // individual file frequencies, used in file handler for some things
+  HuffmanTree(std::unordered_map<char, int> fileCharFreq) {
+    int const size = fileCharFreq.size();
+    int freq[size];
+    char chars[size];
+    int k = 0;
+    for (auto itr = fileCharFreq.begin(); itr != fileCharFreq.end(); itr++) {
+      chars[k] = itr->first;
+      freq[k] = itr->second;
+      ++k;
+    }
+    // build huffman tree based on map of characters and their file frequencies
+    root = hff::buildHuffmanTree(chars, freq, size);
+  }
 };
 } // namespace hff

@@ -8,7 +8,7 @@
 // initially i was using `bitset` to write
 // values, but it seems I needed to read and write
 // the bits direclty, so I need to make much dumber functions
-// to accomplish this, so I guess I need to keep that in mind
+// to accomplish this.
 
 // source:
 // https://leimao.github.io/blog/CPP-Read-Write-Arbitrary-Bits/#Introduction
@@ -31,8 +31,9 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
 }
 
 // used when we need to get a bit representation of each value
-// important thing to know is that we need th num bits a value type represents
-// for example normally an int is 4 bytes, so we set num_bits to be 4
+// important thing to know is that we need the number of bits a value type
+// represents for example normally an int is 4 bytes, so we set `num_bits` to be
+// 4
 template <typename T>
 std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset) {
   // collect bits into this vector
