@@ -1,7 +1,81 @@
 #include "file-handler.hpp"
+#include <bitset>
+#include <cassert>
+#include <cmath>
 #include <cstdint>
 #include <fstream>
 #include <stack>
+// initially i was using `bitset` to write
+// values, but it seems I needed to read and write
+// the bits direclty, so I need to make much dumber functions
+// to accomplish this, so I guess I need to keep that in mind
+
+// source:
+// https://leimao.github.io/blog/CPP-Read-Write-Arbitrary-Bits/#Introduction
+// overloading the basic << operator for vecotrs
+// just a nicer way to display these values, because
+// i am going to be using *a lot* of vectors
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
+  os << "[";
+  // look through each entry and print them
+  for (int i = 0; i < v.size(); ++i) {
+    os << v[i];
+    // print comma to seperate values a litter better
+    if (v != v.size() - 1) {
+      os << ", ";
+    }
+  }
+  os << "]";
+  return os;
+}
+
+// used when we need to get a bit representation of each value
+// important thing to know is that we need th num bits a value type represents
+// for example normally an int is 4 bytes, so we set num_bits to be 4
+template <typename T>
+std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset) {
+  // collect bits into this vector
+  std::vector<bool> bits;
+  size_t value_bits = sizeof(value) * 8;
+  // assert trips we start getting bits outside target value
+  assert(num_bits + offset <= value_bits);
+  for (int i = 0; i < num_bits; i++) {
+    bool bit = (value >> (value_bits - 1 - offset - i)) & 1U;
+    bits.push_back(bit);
+  }
+  // returrn the collected bits from the given value types
+  return bits;
+}
+// get value from the bit representation
+template <typename T>
+T get_value(const std::vector<bool> &bits, unsigned int num_bits,
+            unsigned int offset) {
+  T value = 0;
+  for (int i = 0; i < num_bits; i++) {
+    bool bit = bits.at(i);
+    unsigned int shift = sizeof(T) - 1 - offset - i;
+    if (bit == true) {
+      value |= (1U << shift);
+    }
+  }
+  return value;
+}
+
+// append more bits to an already existing given bitset with the other bits
+template <typename T>
+void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
+                   size_t bitset_size) {
+  for (int i = 0; i < values.size(); i++) {
+    T value = values.at(i);
+    std::vector<bool> bits =
+        get_bits(value, bitset_size, sizeof(value) * 8 - bitset_size);
+
+    // append given bits
+
+    bitsets.insert(bitsets.end(), bits.begin(), bits.end());
+  }
+}
 
 // uses a file path to append the size and stringMinHeap
 // filePath: the file name and directory specified to create compressed file

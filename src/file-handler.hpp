@@ -20,22 +20,19 @@ public:
   // public fileds!
   std::string fileDecoded;
   std::string fileEncoded;
-  FileHandler(std::string fileEncodePath, std::string fileDecodePath,
-              bool flag) {
+  FileHandler(std::string fileEncodePath, std::string fileDecodePath) {
     // file with the huffman encodings we create
     fileDecoded = fileEncodePath;
     // file with just the plaintext characters
     fileEncoded = fileDecodePath;
-    // for the constructor all we need is to store filepath for our input and
-    // output
+    // 1: procceed with encyption routine
+    // 0: proceed with decrypiton routine
   };
   ~FileHandler() {}
-  int const MAX_CODE_LENGTH;
   int size;
   std::unordered_map<char, int> charFreqMap;
   std::list<char> fileChars;
   std::list<int> fileFreq;
-  hff::MinHeapNode *root_tree;
 };
 
 /*FUNCTION PROTOTYPING*/
