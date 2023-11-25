@@ -48,7 +48,9 @@ std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset) {
   // returrn the collected bits from the given value types
   return bits;
 }
-// get value from the bit representation
+
+// get value from the bit representation, in order to do this we need to know
+// the size, in the number of bits, of the value type being extracted
 template <typename T>
 T get_value(const std::vector<bool> &bits, unsigned int num_bits,
             unsigned int offset) {
@@ -91,9 +93,11 @@ void FileRoutine::writeSerialMinHeap(std::string filePath,
   std::vector<std::byte> bytes;
   bytes.reserve(std::size(heapString));
   // lambda expression to convert heapstring to bytes
-  std::transform(std::begin(heapString), std::end(heapString),
-                 std::back_inserter(bytes),
-                 [](char c) { return std::byte(c); });
+  // std::transform(std::begin(heapString), std::end(heapString),
+  //                std::back_inserter(bytes),
+  //                [](char c) { return std::byte(c); });
+
+  // create a serialized min heap from the heap string
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
   file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
   // close the file
