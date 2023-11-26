@@ -1,4 +1,4 @@
-# Huffman Text Compression Tree
+# Huffman Tree Text Compression
 
 ## Description
 

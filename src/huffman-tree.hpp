@@ -10,6 +10,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
 // namespacing all the huffman libraries because i really like typing :: in
 // every single line of code
 namespace hff {

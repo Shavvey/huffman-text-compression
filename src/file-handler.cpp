@@ -17,6 +17,7 @@
 // i am going to be using *a lot* of vectors
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
+  // print out brackets to nake it look prettier
   os << "[";
   // look through each entry and print them
   for (int i = 0; i < v.size(); ++i) {
@@ -26,6 +27,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
       os << ", ";
     }
   }
+  // print out brackets
   os << "]";
   return os;
 }
@@ -124,6 +126,7 @@ const std::vector<bool> read_bitsets(const std::string &filepath) {
       bitsets.insert(bitsets.end(), bits.begin(), bits.end());
     }
   }
+  // contruct valid bitset
   std::vector<bool> valid_bitsets{bitsets.begin(),
                                   bitsets.begin() + num_valid_bits};
   return valid_bitsets;
@@ -336,6 +339,8 @@ void FileRoutine::FileHandler::huffmanDecrypt() {
           byte = getByteFromChar(fileChar);
         }
         (byte[length]) ? tree = tree->left : tree = tree->right;
+        // using iter length to decode each byte and retrieve a new bytes each
+        // time the old one is exhausted
         iter_length++;
       }
       // once we have hit a leaf, we have found our character, so write it.
