@@ -79,7 +79,54 @@ void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
     bitsets.insert(bitsets.end(), bits.begin(), bits.end());
   }
 }
+void write_bitsets(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
+                   const std::string &filepath) {
+  // size of bitset should be divisible by 8, otherwise throw an error
+  assert(bitsets.size() % 8 == 0);
+  std::fstream fhand;
+  // trunc will clear the file
+  fhand.open(filepath, fhand.binary | fhand.trunc | fhand.out);
+  if (!fhand.is_open()) {
+    std::cerr << "Failed to open " << filepath << std::endl;
+  } else {
+    fhand.write(reinterpret_cast<char *>(&num_valid_bits),
+                sizeof(num_valid_bits));
+    size_t num_bytes = bitsets.size() / 8;
+    for (int i = 0; i < num_bytes; i++) {
+      // ch: 00000000
+      char ch = 0;
+      for (int j = 0; j < 8; j++) {
+        int k = i * 8 + j;
+        ch |= (bitsets.at(k) << (8 - j - 1));
+      }
+      fhand.write(&ch, sizeof(ch));
+    }
+  }
+  fhand.close();
+}
 
+// read bit set from a written file
+const std::vector<bool> read_bitsets(const std::string &filepath) {
+  std::fstream fhand;
+  std::vector<bool> bitsets;
+  uint32_t num_valid_bits = 0;
+  fhand.open(filepath, fhand.binary | fhand.in);
+  if (!fhand.is_open()) {
+    std::cerr << "Failed to open " << filepath << std::endl;
+  } else {
+    fhand.read(reinterpret_cast<char *>(&num_valid_bits),
+               sizeof(num_valid_bits));
+    while (fhand.peek() != EOF) {
+      char ch;
+      fhand.read(&ch, sizeof(ch));
+      std::vector<bool> bits = getBits(ch, sizeof(ch) * 8, 0);
+      bitsets.insert(bitsets.end(), bits.begin(), bits.end());
+    }
+  }
+  std::vector<bool> valid_bitsets{bitsets.begin(),
+                                  bitsets.begin() + num_valid_bits};
+  return valid_bitsets;
+}
 // uses a file path to append the size and stringMinHeap
 // filePath: the file name and directory specified to create compressed file
 // heapString: a string of character that can be used to rebuild the minHeap,
