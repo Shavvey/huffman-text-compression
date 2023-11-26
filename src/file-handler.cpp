@@ -79,6 +79,7 @@ void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
     bitsets.insert(bitsets.end(), bits.begin(), bits.end());
   }
 }
+
 void write_bitsets(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
                    const std::string &filepath) {
   // size of bitset should be divisible by 8, otherwise throw an error
@@ -127,6 +128,7 @@ const std::vector<bool> read_bitsets(const std::string &filepath) {
                                   bitsets.begin() + num_valid_bits};
   return valid_bitsets;
 }
+
 // uses a file path to append the size and stringMinHeap
 // filePath: the file name and directory specified to create compressed file
 // heapString: a string of character that can be used to rebuild the minHeap,
@@ -150,6 +152,7 @@ void FileRoutine::writeSerialMinHeap(std::string filePath,
   // close the file
   file.close();
 }
+
 // return bitstring of encoding, can recast to back to binary
 std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   struct hff::huffCode code = huffTree.huffmanEncode(c);
@@ -189,6 +192,7 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
   }
   return binarystring;
 }
+
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
 void FileRoutine::printDecodedMinHeap(std::string filePath) {
@@ -215,6 +219,7 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
   }
   std::cout << "Recovered string: " + heapString << std::endl;
 }
+
 const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
   std::ifstream file(filePath, std::ifstream::binary | std::ios::in);
   char c;
@@ -235,6 +240,7 @@ const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
   file.close();
   return heapString;
 }
+
 // process the file produce charFreqList, this list can then be
 // decomposed into file frequency and file character arrays
 void FileRoutine::FileHandler::processFile(std::string filePath) {
@@ -259,6 +265,7 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
     }
   }
 }
+
 // simple string padding funciton that adds zeroes until target is reached
 void FileRoutine::rightPaddingZeroes(std::string *inputString, int pad_length) {
   int size = (*inputString).size();
