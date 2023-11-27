@@ -143,6 +143,9 @@ const std::vector<bool> read_bitsets(const std::string &filepath) {
 }
 
 // get the filesize using a given filepath
+// param: filepath: specify the filepath to open
+// returns a count based on the number of byte exist between
+// the start and the end of the file
 const long get_filesize(const std::string &filepath) {
   long filesize = 0;
   // create file handler using file stream constructor
@@ -152,7 +155,9 @@ const long get_filesize(const std::string &filepath) {
     // print to standard error if we can't open the file
     std::cerr << "Failed to open " << filepath << std::endl;
   } else {
+    // goto end of the file
     file_handler.seekg(0, std::ios::end);
+    // return the file stream position, this will be used to find filesize
     filesize = file_handler.tellg();
   }
   return filesize;
@@ -170,11 +175,6 @@ void FileRoutine::writeSerialMinHeap(std::string filePath,
   // cast to c-like string and write to the file based on size of string
   std::vector<std::byte> bytes;
   bytes.reserve(std::size(heapString));
-  // lambda expression to convert heapstring to bytes
-  // std::transform(std::begin(heapString), std::end(heapString),
-  //                std::back_inserter(bytes),
-  //                [](char c) { return std::byte(c); });
-
   // create a serialized min heap from the heap string
   hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
   file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
