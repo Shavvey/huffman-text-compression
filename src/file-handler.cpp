@@ -81,6 +81,16 @@ void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
     bitsets.insert(bitsets.end(), bits.begin(), bits.end());
   }
 }
+// fill a given bitset so that its size is divisible by 8,
+// so that we can write the bitset using each byte
+void fill_bitset(std::vector<bool> &bitsets) {
+  // If the size of bitsets is not divisible by 8,
+  // Append 0s to the end to make the size of bitsets divisible by 8.
+  size_t original_size = bitsets.size();
+  for (int i = 0; i < (8 - original_size % 8) % 8; i++) {
+    bitsets.push_back(0);
+  }
+}
 
 void write_bitsets(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
                    const std::string &filepath) {
@@ -130,6 +140,22 @@ const std::vector<bool> read_bitsets(const std::string &filepath) {
   std::vector<bool> valid_bitsets{bitsets.begin(),
                                   bitsets.begin() + num_valid_bits};
   return valid_bitsets;
+}
+
+// get the filesize using a given filepath
+const long get_filesize(const std::string &filepath) {
+  long filesize = 0;
+  // create file handler using file stream constructor
+  std::fstream file_handler;
+  file_handler.open(filepath, file_handler.binary | file_handler.in);
+  if (!file_handler.is_open()) {
+    // print to standard error if we can't open the file
+    std::cerr << "Failed to open " << filepath << std::endl;
+  } else {
+    file_handler.seekg(0, std::ios::end);
+    filesize = file_handler.tellg();
+  }
+  return filesize;
 }
 
 // uses a file path to append the size and stringMinHeap
