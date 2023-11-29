@@ -334,48 +334,4 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
 
 void FileRoutine::huffmanTreeFromFile() {}
 
-void FileRoutine::FileHandler::huffmanDecrypt() {
-  std::string decodedMinHeap = FileRoutine::getSerialMinHeap(fileEncoded);
-  // create root for huffman tree based on decoded string of `minHeap`
-  hff::MinHeapNode *root = hff::minHeapFromString(decodedMinHeap);
-  // loop through file and determine when the null character is hit
-  int nullFlag = 0;
-  // construct file handler based on file output (the binary target)
-  std::ifstream fileInput(fileEncoded, std::ios::in);
-  char fileChar;
-  // track the ammount of times we have iterated through, after null is
-  // encountered
-  int iter_length = 0;
-  while (fileInput.eof()) {
-    // get character from file input
-    fileInput.get(fileChar);
-    if (fileChar == '\0') {
-      nullFlag = 1;
-    }
-    if (nullFlag) {
-
-      hff::MinHeapNode *tree = root;
-      fileInput.get(fileChar);
-      // copy root pointer
-      while (!hff::isLeaf(root)) {
-        std::bitset<8> byte;
-        int length = iter_length % 8;
-        if (length == 0) {
-          // grab new byte each 8 iteration lengths
-          byte = getByteFromChar(fileChar);
-        }
-        (byte[length]) ? tree = tree->left : tree = tree->right;
-        // using iter length to decode each byte and retrieve a new bytes each
-        // time the old one is exhausted
-        iter_length++;
-      }
-      // once we have hit a leaf, we have found our character, so write it.
-      printf("Data decoded %c\n", tree->data);
-    }
-  }
-}
-
-std::bitset<8> FileRoutine::getByteFromChar(char c) {
-  // simple function to return a cast from char
-  return std::bitset<8>(c);
-}
+void FileRoutine::FileHandler::huffmanDecrypt() {}

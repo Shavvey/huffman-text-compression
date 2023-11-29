@@ -1,6 +1,7 @@
 #include "huffman-tree.hpp"
 // include the namespace so i dont have to keep referencing it
 using namespace hff;
+
 hff::MinHeapNode *hff::newNode(char data, unsigned int freq) {
   // allocate memory on the heap to store a new node
   MinHeapNode *node = new MinHeapNode;
@@ -51,7 +52,8 @@ void hff::minHeapify(hff::MinHeap *minHeap, int index) {
   int left = 2 * index + 1;
   // compute the right child of the inedex heap node
   int right = 2 * index + 2;
-
+  // using size as a sentinel value, while preforming swaps down the tree if
+  // needed
   if (left < minHeap->size &&
       minHeap->array[left]->freq < minHeap->array[smallest]->freq) {
     smallest = left;
@@ -103,7 +105,12 @@ void hff::insertMinHeap(hff::MinHeap *minHeap, hff::MinHeapNode *minHeapNode) {
   }
   minHeap->array[i] = minHeapNode;
 }
+// get parent from its child
 int hff::getParent(int child) { return (child - 1) / 2; }
+// get left child from parent
+int hff::getLeftChild(int parent) { return 2 * parent + 1; }
+// get right child from parent
+int hff::getRightChild(int parent) { return 2 * parent; }
 
 // A standard function to build min heap
 void hff::buildMinHeap(hff::MinHeap *minHeap) {

@@ -76,6 +76,8 @@ void printInOrder(hff::MinHeapNode *);
 void printPreOrder(hff::MinHeapNode *);
 void printPostOrder(hff::MinHeapNode *);
 int getParent(int);
+int getLeftChild(int);
+int getRightChild(int);
 int sumArr(int *, int);
 class HuffmanTree {
 public:
