@@ -46,12 +46,13 @@ std::string convertToBinary(unsigned int);
 char decodeFileChar(char, hff::MinHeapNode *, int);
 void rightPaddingZeroes(std::string *, int);
 void huffmanTreeFromFile();
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const std::vector<T> &v);
+std::ostream &operator<<(std::ostream &os, const std::vector<bool> &v);
+std::ostream &operator<<(std::ostream &os, int arr[]);
 template <typename T> std::vector<bool> getBits(T, unsigned int, unsigned int);
 template <typename T>
 T getValue(const std::vector<bool> &, unsigned int, unsigned int);
 template <typename T>
 void append_bitset(std::vector<bool> &, const std::vector<T> &, size_t);
 void fill_bitset(std::vector<bool> &);
+void test(std::vector<bool> *v);
 } // namespace FileRoutine

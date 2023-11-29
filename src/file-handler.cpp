@@ -1,10 +1,15 @@
 #include "file-handler.hpp"
+#include <algorithm>
 #include <bitset>
 #include <cassert>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <stack>
+#include <string>
+#include <vector>
 // initially i was using `bitset` to write
 // values, but it seems I needed to read and write
 // the bits direclty, so I need to make much dumber functions
@@ -15,20 +20,28 @@
 // overloading the basic << operator for vecotrs
 // just a nicer way to display these values, because
 // i am going to be using *a lot* of vectors
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
+std::ostream &FileRoutine::operator<<(std::ostream &os,
+                                      const std::vector<bool> &v) {
   // print out brackets to nake it look prettier
   os << "[";
   // look through each entry and print them
   for (int i = 0; i < v.size(); ++i) {
-    os << v[i];
+    os << v.at(i);
     // print comma to seperate values a litter better
-    if (v != v.size() - 1) {
+    if (i != v.size() - 1) {
       os << ", ";
     }
   }
   // print out brackets
   os << "]";
+  return os;
+}
+
+std::ostream &FileRoutine::operator<<(std::ostream &os, int arr[]) {
+  for (int i = 0; i < 10; i++) {
+    std::cout << arr[i] << " ";
+  }
+  std::cout << std::endl;
   return os;
 }
 
@@ -331,7 +344,6 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   fileInput.close();
   fileOutput.close();
 }
-
 void FileRoutine::huffmanTreeFromFile() {}
 
 void FileRoutine::FileHandler::huffmanDecrypt() {}
