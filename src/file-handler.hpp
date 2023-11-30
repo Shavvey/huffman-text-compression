@@ -48,14 +48,13 @@ void rightPaddingZeroes(std::string *, int);
 void huffmanTreeFromFile();
 std::ostream &operator<<(std::ostream &os, const std::vector<bool> &v);
 std::ostream &operator<<(std::ostream &os, int arr[]);
-template <typename T> std::vector<bool> getBits(T, unsigned int, unsigned int);
-template <typename T>
+std::vector<bool> getBits(int, unsigned int, unsigned int);
+template <class T>
 T getValue(const std::vector<bool> &, unsigned int, unsigned int);
-template <typename T>
+template <class T>
 void append_bitset(std::vector<bool> &, const std::vector<T> &, size_t);
 void fillBitset(std::vector<bool> &);
 void writeBitset(const std::vector<bool> &, uint32_t, const std::string &);
 const std::vector<bool> readBitset(const std::string &);
 const long getFileSize(const std::string &);
-
 } // namespace FileRoutine

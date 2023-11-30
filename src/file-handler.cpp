@@ -49,8 +49,8 @@ std::ostream &FileRoutine::operator<<(std::ostream &os, int arr[]) {
 // important thing to know is that we need the number of bits a value type
 // represents for example normally an int is 4 bytes, so we set `num_bits` to be
 // 4
-template <typename T>
-std::vector<bool> FileRoutine::getBits(T value, unsigned int num_bits,
+
+std::vector<bool> FileRoutine::getBits(int value, unsigned int num_bits,
                                        unsigned int offset) {
   // collect bits into this vector
   std::vector<bool> bits;
@@ -67,7 +67,7 @@ std::vector<bool> FileRoutine::getBits(T value, unsigned int num_bits,
 
 // get value from the bit representation, in order to do this we need to know
 // the size, in the number of bits, of the value type being extracted
-template <typename T>
+template <class T>
 T FileRoutine::getValue(const std::vector<bool> &bits, unsigned int num_bits,
                         unsigned int offset) {
   T value = 0;
@@ -82,7 +82,7 @@ T FileRoutine::getValue(const std::vector<bool> &bits, unsigned int num_bits,
 }
 
 // append more bits to an already existing given bitset with the other bits
-template <typename T>
+template <class T>
 void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
                    size_t bitset_size) {
   for (int i = 0; i < values.size(); i++) {
@@ -95,6 +95,7 @@ void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
     bitsets.insert(bitsets.end(), bits.begin(), bits.end());
   }
 }
+
 // fill a given bitset so that its size is divisible by 8,
 // so that we can write the bitset using each byte
 void FileRoutine::fillBitset(std::vector<bool> &bitsets) {
@@ -106,6 +107,7 @@ void FileRoutine::fillBitset(std::vector<bool> &bitsets) {
   }
 }
 
+// write the bitset given a filename
 void FileRoutine::writeBitset(const std::vector<bool> &bitsets,
                               uint32_t num_valid_bits,
                               const std::string &filepath) {

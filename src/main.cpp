@@ -15,5 +15,10 @@ int main() {
   using namespace FileRoutine;
   std::cout << arr << arr2;
   std::cout << v << std::endl;
+  int j = 4;
+  int k = 32;
+  int i = 0;
+  std::vector<bool> bitset = FileRoutine::getBits(j, k, i);
+  std::cout << bitset;
   return EXIT_SUCCESS;
 }
