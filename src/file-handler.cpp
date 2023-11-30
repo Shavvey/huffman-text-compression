@@ -50,7 +50,8 @@ std::ostream &FileRoutine::operator<<(std::ostream &os, int arr[]) {
 // represents for example normally an int is 4 bytes, so we set `num_bits` to be
 // 4
 template <typename T>
-std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset) {
+std::vector<bool> FileRoutine::getBits(T value, unsigned int num_bits,
+                                       unsigned int offset) {
   // collect bits into this vector
   std::vector<bool> bits;
   size_t value_bits = sizeof(value) * 8;
@@ -67,8 +68,8 @@ std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset) {
 // get value from the bit representation, in order to do this we need to know
 // the size, in the number of bits, of the value type being extracted
 template <typename T>
-T get_value(const std::vector<bool> &bits, unsigned int num_bits,
-            unsigned int offset) {
+T FileRoutine::getValue(const std::vector<bool> &bits, unsigned int num_bits,
+                        unsigned int offset) {
   T value = 0;
   for (int i = 0; i < num_bits; i++) {
     bool bit = bits.at(i);
@@ -96,7 +97,7 @@ void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
 }
 // fill a given bitset so that its size is divisible by 8,
 // so that we can write the bitset using each byte
-void fill_bitset(std::vector<bool> &bitsets) {
+void FileRoutine::fillBitset(std::vector<bool> &bitsets) {
   // If the size of bitsets is not divisible by 8,
   // Append 0s to the end to make the size of bitsets divisible by 8.
   size_t original_size = bitsets.size();
@@ -105,8 +106,9 @@ void fill_bitset(std::vector<bool> &bitsets) {
   }
 }
 
-void write_bitsets(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
-                   const std::string &filepath) {
+void FileRoutine::writeBitset(const std::vector<bool> &bitsets,
+                              uint32_t num_valid_bits,
+                              const std::string &filepath) {
   // size of bitset should be divisible by 8, otherwise throw an error
   assert(bitsets.size() % 8 == 0);
   std::fstream fhand;
@@ -132,7 +134,7 @@ void write_bitsets(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
 }
 
 // read bit set from a written file
-const std::vector<bool> read_bitsets(const std::string &filepath) {
+const std::vector<bool> FileRoutine::readBitset(const std::string &filepath) {
   std::fstream fhand;
   std::vector<bool> bitsets;
   uint32_t num_valid_bits = 0;
@@ -145,7 +147,7 @@ const std::vector<bool> read_bitsets(const std::string &filepath) {
     while (fhand.peek() != EOF) {
       char ch;
       fhand.read(&ch, sizeof(ch));
-      std::vector<bool> bits = getBits(ch, sizeof(ch) * 8, 0);
+      std::vector<bool> bits = FileRoutine::getBits(ch, sizeof(ch) * 8, 0);
       bitsets.insert(bitsets.end(), bits.begin(), bits.end());
     }
   }
@@ -159,7 +161,7 @@ const std::vector<bool> read_bitsets(const std::string &filepath) {
 // param: filepath: specify the filepath to open
 // returns a count based on the number of byte exist between
 // the start and the end of the file
-const long get_filesize(const std::string &filepath) {
+const long FileRoutine::getFileSize(const std::string &filepath) {
   long filesize = 0;
   // create file handler using file stream constructor
   std::fstream file_handler;
@@ -180,8 +182,8 @@ const long get_filesize(const std::string &filepath) {
 // filePath: the file name and directory specified to create compressed file
 // heapString: a string of character that can be used to rebuild the minHeap,
 // which is the data structure chosen for the huffman encoding tree
-void FileRoutine::writeSerialMinHeap(std::string filePath,
-                                     std::string heapString) {
+void FileRoutine::writeSerialMinHeap(const std::string filePath,
+                                     const std::string heapString) {
   // open file using fstream in binary mode
   std::ofstream file(filePath, std::ofstream::binary | std::ios::out);
   // create a serialized minHeap from the created heap string
@@ -237,7 +239,7 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
 
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
-void FileRoutine::printDecodedMinHeap(std::string filePath) {
+void FileRoutine::printDecodedMinHeap(const std::string filePath) {
   std::ifstream file;
   file.open(filePath, std::ios::binary | std::ios::in);
   char c;
@@ -261,8 +263,9 @@ void FileRoutine::printDecodedMinHeap(std::string filePath) {
   }
   std::cout << "Recovered string: " + heapString << std::endl;
 }
+std::vector<bool> getBitsetFromString(const std::string &s) {}
 
-const std::string FileRoutine::getSerialMinHeap(std::string filePath) {
+const std::string FileRoutine::getSerialMinHeap(const std::string filePath) {
   std::ifstream file(filePath, std::ifstream::binary | std::ios::in);
   char c;
   std::string heapString;

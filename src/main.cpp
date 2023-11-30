@@ -11,7 +11,7 @@ int main() {
   int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
   int arr2[10] = {11, 22, 33, 44, 55, 66, 77, 88, 99, 100};
   std::vector<bool> v = {1, 0, 1, 0, 1, 0, 1};
-  // Cascading of operators
+  // use ostream override in FileRoutine for this
   using namespace FileRoutine;
   std::cout << arr << arr2;
   std::cout << v << std::endl;
