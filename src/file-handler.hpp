@@ -57,4 +57,5 @@ void fillBitset(std::vector<bool> &);
 void writeBitset(const std::vector<bool> &, uint32_t, const std::string &);
 const std::vector<bool> readBitset(const std::string &);
 const long getFileSize(const std::string &);
+std::vector<bool> bitsFromString(const std::string &);
 } // namespace FileRoutine

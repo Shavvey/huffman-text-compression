@@ -7,13 +7,11 @@ int main() {
   // and do a bunch of sutff with it
   FileRoutine::FileHandler fileHandle("example.txt", "example.bin");
   fileHandle.huffmanEncrypt();
-  FileRoutine::printDecodedMinHeap(fileHandle.fileEncoded);
   // use ostream override in FileRoutine for this
   using namespace FileRoutine;
-  char j = 'c';
-  int k = 8;
-  int i = 0;
-  std::vector<bool> bitset = FileRoutine::getBits(j, k, i);
+  std::string s = "cole";
+  std::cout << "size of string: " << s.size() << std::endl;
+  std::vector<bool> bitset = bitsFromString(s);
   std::cout << bitset << std::endl;
   return EXIT_SUCCESS;
 }

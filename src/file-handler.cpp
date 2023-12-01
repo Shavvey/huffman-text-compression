@@ -186,17 +186,9 @@ const long FileRoutine::getFileSize(const std::string &filepath) {
 // which is the data structure chosen for the huffman encoding tree
 void FileRoutine::writeSerialMinHeap(const std::string filePath,
                                      const std::string heapString) {
-  // open file using fstream in binary mode
-  std::ofstream file(filePath, std::ofstream::binary | std::ios::out);
-  // create a serialized minHeap from the created heap string
-  // cast to c-like string and write to the file based on size of string
-  std::vector<std::byte> bytes;
-  bytes.reserve(std::size(heapString));
-  // create a serialized min heap from the heap string
-  hff::SerializedMinHeap serialMinHeap = hff::serializeFromString(heapString);
-  file.write((char *)serialMinHeap.data.data(), serialMinHeap.size);
-  // close the file
-  file.close();
+
+  std::vector<bool> bitsetHeapString = FileRoutine::bitsFromString(heapString);
+  writeBitset(bitsetHeapString, bitsetHeapString.size(), filePath);
 }
 
 // return bitstring of encoding, can recast to back to binary
@@ -266,17 +258,15 @@ void FileRoutine::printDecodedMinHeap(const std::string filePath) {
   std::cout << "Recovered string: " + heapString << std::endl;
 }
 
-std::vector<bool> getBitsetFromString(const std::string &s) {
+std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
   // number of bits for each charcter
   const int NUM_BITS{8};
   const int OFFSET{0};
-  int i = 0;
   std::vector<bool> bits;
   // reserve bitset size given that this is a strin of ascii characters
-  // so each characters should be 8 bits
-  bits.reserve(s.size() * NUM_BITS);
-  char value = s.at(i);
-  while (value != '\0') {
+  // ignore the null characters of string
+  for (int j = 0; j < s.size(); j++) {
+    char value = s.at(j);
     // collect bits into this vector
     size_t value_bits = sizeof(value) * 8;
     // assert trips we start getting bits outside target value
@@ -285,7 +275,6 @@ std::vector<bool> getBitsetFromString(const std::string &s) {
       bool bit = (value >> (value_bits - 1 - OFFSET - i)) & 1U;
       bits.push_back(bit);
     }
-    // returrn the collected bits from the given value types
   }
   return bits;
 }
