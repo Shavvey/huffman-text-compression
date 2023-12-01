@@ -8,17 +8,12 @@ int main() {
   FileRoutine::FileHandler fileHandle("example.txt", "example.bin");
   fileHandle.huffmanEncrypt();
   FileRoutine::printDecodedMinHeap(fileHandle.fileEncoded);
-  int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-  int arr2[10] = {11, 22, 33, 44, 55, 66, 77, 88, 99, 100};
-  std::vector<bool> v = {1, 0, 1, 0, 1, 0, 1};
   // use ostream override in FileRoutine for this
   using namespace FileRoutine;
-  std::cout << arr << arr2;
-  std::cout << v << std::endl;
-  int j = 4;
-  int k = 32;
+  char j = 'c';
+  int k = 8;
   int i = 0;
   std::vector<bool> bitset = FileRoutine::getBits(j, k, i);
-  std::cout << bitset;
+  std::cout << bitset << std::endl;
   return EXIT_SUCCESS;
 }
