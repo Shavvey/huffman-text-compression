@@ -48,7 +48,10 @@ void rightPaddingZeroes(std::string *, int);
 void huffmanTreeFromFile();
 std::ostream &operator<<(std::ostream &os, const std::vector<bool> &v);
 std::ostream &operator<<(std::ostream &os, int arr[]);
-std::vector<bool> getBits(char, unsigned int, unsigned int);
+// generic template function
+template <typename T>
+std::vector<bool> getBits(T value, unsigned int, unsigned int);
+
 template <class T>
 T getValue(const std::vector<bool> &, unsigned int, unsigned int);
 template <class T>

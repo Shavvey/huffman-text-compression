@@ -49,8 +49,8 @@ std::ostream &FileRoutine::operator<<(std::ostream &os, int arr[]) {
 // important thing to know is that we need the number of bits a value type
 // represents for example normally an int is 4 bytes, so we set `num_bits` to be
 // 4
-
-std::vector<bool> FileRoutine::getBits(char value, unsigned int num_bits,
+template <typename T>
+std::vector<bool> FileRoutine::getBits(T value, unsigned int num_bits,
                                        unsigned int offset) {
   // collect bits into this vector
   std::vector<bool> bits;
@@ -180,14 +180,14 @@ const long FileRoutine::getFileSize(const std::string &filepath) {
   return filesize;
 }
 
-// uses a file path to append the size and stringMinHeap
 // filePath: the file name and directory specified to create compressed file
 // heapString: a string of character that can be used to rebuild the minHeap,
 // which is the data structure chosen for the huffman encoding tree
 void FileRoutine::writeSerialMinHeap(const std::string filePath,
                                      const std::string heapString) {
-
+  // convert heap string to bitset
   std::vector<bool> bitsetHeapString = FileRoutine::bitsFromString(heapString);
+  // then write bitset to file
   writeBitset(bitsetHeapString, bitsetHeapString.size(), filePath);
 }
 
@@ -279,6 +279,7 @@ std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
   return bits;
 }
 
+// get the serial min heap back from the file
 const std::string FileRoutine::getSerialMinHeap(const std::string filePath) {
   std::ifstream file(filePath, std::ifstream::binary | std::ios::in);
   char c;
