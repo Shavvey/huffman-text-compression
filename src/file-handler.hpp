@@ -23,9 +23,9 @@ public:
   FileHandler(const std::string fileEncodePath,
               const std::string fileDecodePath) {
     // file with the huffman encodings we create
-    fileDecoded = fileEncodePath;
+    fileDecoded = fileDecodePath;
     // file with just the plaintext characters
-    fileEncoded = fileDecodePath;
+    fileEncoded = fileEncodePath;
 
     processFile(fileDecodePath);
   };

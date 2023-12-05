@@ -358,7 +358,7 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   printDecodedMinHeap(fileEncoded);
   // file input and file output
   int len[MAX_TREE_HEIGHT], top = 0;
-  hff::printCodes(tree.root, len, top);
+  // hff::printCodes(tree.root, len, top);
   fileInput.close();
   fileOutput.close();
 }
