@@ -187,6 +187,10 @@ void FileRoutine::writeSerialMinHeap(const std::string filePath,
                                      const std::string heapString) {
   // convert heap string to bitset
   std::vector<bool> bitsetHeapString = FileRoutine::bitsFromString(heapString);
+  int size = heapString.size();
+  std::vector<bool> sizeBitsetField = getBits(size, sizeof(int) * 8, 0);
+  // write the size of the bitset
+  writeBitset(sizeBitsetField, sizeBitsetField.size(), filePath);
   // then write bitset to file
   writeBitset(bitsetHeapString, bitsetHeapString.size(), filePath);
 }
