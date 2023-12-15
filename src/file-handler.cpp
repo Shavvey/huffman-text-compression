@@ -276,12 +276,24 @@ void FileRoutine::printDecodedMinHeap(const std::string filePath) {
   std::cout << "bit representation of heapstring: " << string_bitset
             << std::endl;
   std::string heapstring;
-  for (std::vector<bool>::const_iterator itr = string_bitset.begin();
-       itr != string_bitset.end(); itr = itr + 8) {
+  std::reverse(string_bitset.begin(), string_bitset.end());
+  std::vector<bool>::const_iterator itr = string_bitset.begin();
+  // decode string bitset
+  while (itr != string_bitset.end()) {
     std::bitset<8> byte;
     for (int i = 0; i < 8; i++) {
+      byte[i] = *itr;
+      itr++;
     }
+    std::cout << byte.to_string() << std::endl;
+    char c = (char)byte.to_ulong();
+    std::cout << c << std::endl;
+    heapstring.push_back(c);
   }
+  // reverse heapstring
+  std::reverse(heapstring.begin(), heapstring.end());
+  // print out heapstring
+  std::cout << heapstring << std::endl;
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
