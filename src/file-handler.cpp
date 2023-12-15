@@ -110,14 +110,14 @@ void FileRoutine::fillBitset(std::vector<bool> &bitsets) {
 // write the bitset given a filename
 void FileRoutine::writeBitset(const std::vector<bool> &bitsets,
                               uint32_t num_valid_bits,
-                              const std::string &filepath) {
+                              const std::string &filePath) {
   // size of bitset should be divisible by 8, otherwise throw an error
   assert(bitsets.size() % 8 == 0);
   std::fstream fhand;
   // trunc will clear the file
-  fhand.open(filepath, fhand.binary | fhand.trunc | fhand.out);
+  fhand.open(filePath, fhand.binary | fhand.trunc | fhand.out);
   if (!fhand.is_open()) {
-    std::cerr << "Failed to open " << filepath << std::endl;
+    std::cerr << "Failed to open " << filePath << std::endl;
   } else {
     fhand.write(reinterpret_cast<char *>(&num_valid_bits),
                 sizeof(num_valid_bits));
