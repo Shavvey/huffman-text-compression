@@ -37,7 +37,7 @@ public:
 
 /*FUNCTION PROTOTYPING*/
 // write file with the proper huffman encodings
-void writeSerialMinHeap(const std::string, const std::string);
+void writeSerialMinHeap(const std::string &, const std::string &);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree, char);
 void printDecodedMinHeap(const std::string);
@@ -52,9 +52,9 @@ std::ostream &operator<<(std::ostream &os, int arr[]);
 template <typename T>
 std::vector<bool> getBits(T value, unsigned int, unsigned int);
 
-template <class T>
+template <typename T>
 T getValue(const std::vector<bool> &, unsigned int, unsigned int);
-template <class T>
+template <typename T>
 void append_bitset(std::vector<bool> &, const std::vector<T> &, size_t);
 void fillBitset(std::vector<bool> &);
 void writeBitset(const std::vector<bool> &, uint32_t, const std::string &);

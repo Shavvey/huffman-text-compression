@@ -8,10 +8,5 @@ int main() {
   FileRoutine::FileHandler fileHandle("example.bin", "example.txt");
   fileHandle.huffmanEncrypt();
   // use ostream override in FileRoutine for this
-  using namespace FileRoutine;
-  std::string s = "cole";
-  std::cout << "size of string: " << s.size() << std::endl;
-  std::vector<bool> bitset = bitsFromString(s);
-  std::cout << bitset << std::endl;
   return EXIT_SUCCESS;
 }
