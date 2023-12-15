@@ -245,28 +245,43 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
 int FileRoutine::intFromBits(const std::vector<bool> &v) {
   int retval = 0;
   int i = 0;
-  for (std::vector<bool>::const_iterator it = v.begin(); it != v.end();
-       it++, i++) {
-    if (*it) {
+  for (std::vector<bool>::const_iterator itr = v.begin(); itr != v.end();
+       itr++, i++) {
+    if (*itr) {
       retval |= 1 << i;
     }
   }
   return retval;
 }
-// I want to be able to recover minHeap from the binary written inside the file
-// using this function
-// TODO: I need to make this function work properly again sigh..
 void FileRoutine::printDecodedMinHeap(const std::string filePath) {
+  // recover the bitset from the file
   std::vector<bool> bitset = readBitset(filePath);
-  // decoded bits from filek
-  std::cout << "bitset recovered from file: " << bitset << std::endl;
-  // reverse the bitset
-  std::reverse(bitset.begin(), bitset.end());
-  std::vector<bool> int_bitset(bitset.end() - 32, bitset.end());
-
-  std::cout << "bitset recovered from file: " << int_bitset << std::endl;
+  // reverse the bit order
+  std::reverse(bitset.begin(), bitset.begin() + (sizeof(int) * 8));
+  // return the region at stores a integer value, this stores
+  // the size of the heapstring as a 32-bit int
+  std::vector<bool> int_bitset(bitset.begin(),
+                               bitset.begin() + (sizeof(int) * 8));
+  // NOTE: this only works for little-endian, what hell am I going to do for
+  // little endian machines?
+  //  recover integer value
   int size = intFromBits(int_bitset);
+  // print out size of heapstring based on `int_bitset` field
   std::cout << "size of heap string: " << size << std::endl;
+  // get region that hold the string representation of heap
+  std::vector<bool> string_bitset(
+      bitset.begin() + (sizeof(int) * 8),
+      bitset.begin() + (sizeof(int) * 8 + sizeof(char) * size * 8));
+
+  std::cout << "bit representation of heapstring: " << string_bitset
+            << std::endl;
+  std::string heapstring;
+  for (std::vector<bool>::const_iterator itr = string_bitset.begin();
+       itr != string_bitset.end(); itr = itr + 8) {
+    std::bitset<8> byte;
+    for (int i = 0; i < 8; i++) {
+    }
+  }
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
