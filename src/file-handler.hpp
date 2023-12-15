@@ -37,7 +37,7 @@ public:
 
 /*FUNCTION PROTOTYPING*/
 // write file with the proper huffman encodings
-void writeSerialMinHeap(const std::string &, const std::string &);
+void writeSerialMinHeap(const std::string, const std::string);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree, char);
 void printDecodedMinHeap(const std::string);

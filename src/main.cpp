@@ -1,4 +1,6 @@
+// include code that interacts with the encrypted and decrypted files
 #include "file-handler.hpp"
+// include code that create the huffman tree
 #include "huffman-tree.hpp"
 
 int main() {

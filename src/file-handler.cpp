@@ -115,7 +115,7 @@ void FileRoutine::writeBitset(const std::vector<bool> &bitsets,
   assert(bitsets.size() % 8 == 0);
   std::fstream fhand;
   // trunc will clear the file
-  fhand.open(filepath, fhand.binary | fhand.trunc | fhand.out | fhand.app);
+  fhand.open(filepath, fhand.binary | fhand.trunc | fhand.out);
   if (!fhand.is_open()) {
     std::cerr << "Failed to open " << filepath << std::endl;
   } else {
@@ -184,20 +184,22 @@ const long FileRoutine::getFileSize(const std::string &filepath) {
 // filePath: the file name and directory specified to create compressed file
 // heapString: a string of character that can be used to rebuild the minHeap,
 // which is the data structure chosen for the huffman encoding tree
-void FileRoutine::writeSerialMinHeap(const std::string &filePath,
-                                     const std::string &heapString) {
+void FileRoutine::writeSerialMinHeap(const std::string filePath,
+                                     const std::string heapString) {
   // convert heap string to bitset
   std::vector<bool> bitsetHeapString = FileRoutine::bitsFromString(heapString);
+  std::cout << "Bits of the string: " << bitsetHeapString << std::endl;
   int size = heapString.size();
-  std::cout << "size of bit string" << size << std::endl;
+  std::cout << "Size of bit string:" << size << std::endl;
   std::vector<bool> bitsetField = getBits<int>(size, sizeof(int) * 8, 0);
-  std::cout << "bitset containing the size of bit string" << bitsetField
+  std::cout << "Bitset containing the size of bit string:" << bitsetField
             << std::endl;
   // append bitset of entire heapstring to the end of the bitset field
   bitsetField.insert(bitsetField.end(), bitsetHeapString.begin(),
                      bitsetHeapString.end());
+  std::cout << "The entire bitset:" << bitsetField << std::endl;
+  // write this bitset to the file
   writeBitset(bitsetField, bitsetField.size(), filePath);
-  // then write bitset to file
 }
 
 // return bitstring of encoding, can recast to back to binary
@@ -242,7 +244,7 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
 
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
-// TODO: I need to fix this function, it won't work with the new encodings
+// TODO: I need to make this function work properly again sigh..
 void FileRoutine::printDecodedMinHeap(const std::string filePath) {}
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
