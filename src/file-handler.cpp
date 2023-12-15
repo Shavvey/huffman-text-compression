@@ -241,11 +241,33 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
   }
   return binarystring;
 }
-
+// an integer value from a given bits inside vector v
+int FileRoutine::intFromBits(const std::vector<bool> &v) {
+  int retval = 0;
+  int i = 0;
+  for (std::vector<bool>::const_iterator it = v.begin(); it != v.end();
+       it++, i++) {
+    if (*it) {
+      retval |= 1 << i;
+    }
+  }
+  return retval;
+}
 // I want to be able to recover minHeap from the binary written inside the file
 // using this function
 // TODO: I need to make this function work properly again sigh..
-void FileRoutine::printDecodedMinHeap(const std::string filePath) {}
+void FileRoutine::printDecodedMinHeap(const std::string filePath) {
+  std::vector<bool> bitset = readBitset(filePath);
+  // decoded bits from filek
+  std::cout << "bitset recovered from file: " << bitset << std::endl;
+  // reverse the bitset
+  std::reverse(bitset.begin(), bitset.end());
+  std::vector<bool> int_bitset(bitset.end() - 32, bitset.end());
+
+  std::cout << "bitset recovered from file: " << int_bitset << std::endl;
+  int size = intFromBits(int_bitset);
+  std::cout << "size of heap string: " << size << std::endl;
+}
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
   // number of bits for each charcter
