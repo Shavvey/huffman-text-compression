@@ -257,37 +257,37 @@ void FileRoutine::printDecodedMinHeap(const std::string filePath) {
   // recover the bitset from the file
   std::vector<bool> bitset = readBitset(filePath);
   // reverse the bit order
-  std::reverse(bitset.begin(), bitset.begin() + (sizeof(int) * 8));
   // return the region at stores a integer value, this stores
   // the size of the heapstring as a 32-bit int
-  std::vector<bool> int_bitset(bitset.begin(),
+  std::vector<bool> INT_BITSET(bitset.begin(),
                                bitset.begin() + (sizeof(int) * 8));
   // NOTE: this only works for little-endian, what hell am I going to do for
   // little endian machines?
+  std::reverse(INT_BITSET.begin(), INT_BITSET.end());
   //  recover integer value
-  int size = intFromBits(int_bitset);
+  int size = intFromBits(INT_BITSET);
   // print out size of heapstring based on `int_bitset` field
   std::cout << "size of heap string: " << size << std::endl;
   // get region that hold the string representation of heap
-  std::vector<bool> string_bitset(
+  std::vector<bool> STRING_BITSET(
       bitset.begin() + (sizeof(int) * 8),
       bitset.begin() + (sizeof(int) * 8 + sizeof(char) * size * 8));
-
-  std::cout << "bit representation of heapstring: " << string_bitset
+  std::vector<bool> TEXT_BITSET(bitset.begin() +
+                                    (sizeof(int) * 8 + sizeof(char) * size * 8),
+                                bitset.end());
+  std::cout << "bit representation of heapstring: " << STRING_BITSET
             << std::endl;
   std::string heapstring;
-  std::reverse(string_bitset.begin(), string_bitset.end());
-  std::vector<bool>::const_iterator itr = string_bitset.begin();
+  std::reverse(STRING_BITSET.begin(), STRING_BITSET.end());
+  std::vector<bool>::const_iterator itr = STRING_BITSET.begin();
   // decode string bitset
-  while (itr != string_bitset.end()) {
+  while (itr != STRING_BITSET.end()) {
     std::bitset<8> byte;
     for (int i = 0; i < 8; i++) {
       byte[i] = *itr;
       itr++;
     }
-    std::cout << byte.to_string() << std::endl;
     char c = (char)byte.to_ulong();
-    std::cout << c << std::endl;
     heapstring.push_back(c);
   }
   // reverse heapstring
