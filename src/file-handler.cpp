@@ -14,7 +14,6 @@
 // values, but it seems I needed to read and write
 // the bits direclty, so I need to make much dumber functions
 // to accomplish this.
-
 // source:
 // https://leimao.github.io/blog/CPP-Read-Write-Arbitrary-Bits/#Introduction
 // overloading the basic << operator for vecotrs
@@ -63,22 +62,6 @@ std::vector<bool> FileRoutine::getBits(T value, unsigned int num_bits,
   }
   // returrn the collected bits from the given value types
   return bits;
-}
-
-// get value from the bit representation, in order to do this we need to know
-// the size, in the number of bits, of the value type being extracted
-template <class T>
-T FileRoutine::getValue(const std::vector<bool> &bits, unsigned int num_bits,
-                        unsigned int offset) {
-  T value = 0;
-  for (int i = 0; i < num_bits; i++) {
-    bool bit = bits.at(i);
-    unsigned int shift = sizeof(T) - 1 - offset - i;
-    if (bit == true) {
-      value |= (1U << shift);
-    }
-  }
-  return value;
 }
 
 // append more bits to an already existing given bitset with the other bits
@@ -199,6 +182,7 @@ void FileRoutine::writeSerialMinHeap(const std::string filePath,
                      bitsetHeapString.end());
   std::cout << "The entire bitset:" << bitsetField << std::endl;
   // write this bitset to the file
+  std::reverse(bitsetField.begin(), bitsetField.end());
   writeBitset(bitsetField, bitsetField.size(), filePath);
 }
 
@@ -213,7 +197,6 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   // pad the string with zeroes to the right until the string is 4 characters
   // this makes each huffman code provided a fixed length, and thus decoding
   // should be easier
-  rightPaddingZeroes(&binarystring, 4);
   printf("Codes's binary string %s\n", binarystring.c_str());
   return binarystring;
 }
@@ -259,41 +242,35 @@ void FileRoutine::printDecodedMinHeap(const std::string filePath) {
   // reverse the bit order
   // return the region at stores a integer value, this stores
   // the size of the heapstring as a 32-bit int
-  std::vector<bool> INT_BITSET(bitset.begin(),
-                               bitset.begin() + (sizeof(int) * 8));
-  // NOTE: this only works for little-endian, what hell am I going to do for
-  // little endian machines?
-  std::reverse(INT_BITSET.begin(), INT_BITSET.end());
-  //  recover integer value
-  int size = intFromBits(INT_BITSET);
-  // print out size of heapstring based on `int_bitset` field
-  std::cout << "size of heap string: " << size << std::endl;
-  // get region that hold the string representation of heap
-  std::vector<bool> STRING_BITSET(
-      bitset.begin() + (sizeof(int) * 8),
-      bitset.begin() + (sizeof(int) * 8 + sizeof(char) * size * 8));
-  std::vector<bool> TEXT_BITSET(bitset.begin() +
-                                    (sizeof(int) * 8 + sizeof(char) * size * 8),
-                                bitset.end());
-  std::cout << "bit representation of heapstring: " << STRING_BITSET
+  std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
+
+  std::cout << "Full bitset recovered from file" << bitset << std::endl;
+  std::cout << "Integer bitset representing size (should be 36)" << INT_BITSET
             << std::endl;
-  std::string heapstring;
-  std::reverse(STRING_BITSET.begin(), STRING_BITSET.end());
+  int size = intFromBits(INT_BITSET);
+  std::cout << "Size from int bitset: " << size << std::endl;
+  std::vector<bool> STRING_BITSET(
+      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
+      bitset.end() - (sizeof(int) * 8));
+  std::vector<bool> TEXT_BITSET(
+      bitset.begin(),
+      bitset.begin() + (sizeof(char) * size * 8 + sizeof(int) * 8));
+  std::cout << "Expected string bitset: " << STRING_BITSET << std::endl;
   std::vector<bool>::const_iterator itr = STRING_BITSET.begin();
-  // decode string bitset
+  std::string heapstring;
   while (itr != STRING_BITSET.end()) {
+    // construct a new byte as new bool are read
     std::bitset<8> byte;
     for (int i = 0; i < 8; i++) {
       byte[i] = *itr;
       itr++;
     }
+    // convert new decoded byte into a char
     char c = (char)byte.to_ulong();
     heapstring.push_back(c);
   }
-  // reverse heapstring
   std::reverse(heapstring.begin(), heapstring.end());
-  // print out heapstring
-  std::cout << heapstring << std::endl;
+  std::cout << "decoed heapstring: " << heapstring << std::endl;
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
@@ -315,28 +292,6 @@ std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
     }
   }
   return bits;
-}
-
-// get the serial min heap back from the file
-const std::string FileRoutine::getSerialMinHeap(const std::string filePath) {
-  std::ifstream file(filePath, std::ifstream::binary | std::ios::in);
-  char c;
-  std::string heapString;
-  file.get(c);
-  // read the file until the null terminator is reached
-  // this should be the end of the heapstring
-  while (c != '\0') {
-    // extract the byte from teh file
-    std::bitset<8> b((unsigned char)c);
-    std::cout << b;
-    // build heapstring back up from each byte read from file
-    heapString.push_back((char)b.to_ulong());
-    file.get(c);
-  }
-  // closing the file, even though it file stream will probably be destructed
-  // anyway
-  file.close();
-  return heapString;
 }
 
 // process the file produce charFreqList, this list can then be

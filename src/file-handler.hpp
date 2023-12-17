@@ -6,6 +6,7 @@
 namespace FileRoutine {
 class FileHandler {
   // class method declarations
+
 public:
   void processFile(std::string);
   // i should probably make this functions!
@@ -42,30 +43,21 @@ int intFromBits(const std::vector<bool> &v);
 void writeSerialMinHeap(const std::string, const std::string);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
-
 void printDecodedMinHeap(const std::string filepath);
-
-const std::string getSerialMinHeap(const std::string filePath);
-
 std::string convertToBinary(unsigned int);
-
-char decodeFileChar(char, hff::MinHeapNode *, int);
-
+char decodeFileChar(char c, hff::MinHeapNode *treeNode, int bin);
 void rightPaddingZeroes(std::string *, int);
-
 void huffmanTreeFromFile();
-
 std::ostream &operator<<(std::ostream &os, const std::vector<bool> &v);
 std::ostream &operator<<(std::ostream &os, int arr[]);
-// generic template function
+
 template <typename T>
 std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset);
 
 template <typename T>
-T getValue(const std::vector<bool> &, unsigned int, unsigned int);
-template <typename T>
 void append_bitset(std::vector<bool> &, const std::vector<T> &, size_t);
-void fillBitset(std::vector<bool> &);
+
+void fillBitset(std::vector<bool> &bitset);
 void writeBitset(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
                  const std::string &filePath);
 const std::vector<bool> readBitset(const std::string &filePath);
