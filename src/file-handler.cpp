@@ -167,8 +167,8 @@ const long FileRoutine::getFileSize(const std::string &filepath) {
 // filePath: the file name and directory specified to create compressed file
 // heapString: a string of character that can be used to rebuild the minHeap,
 // which is the data structure chosen for the huffman encoding tree
-void FileRoutine::writeSerialMinHeap(const std::string filePath,
-                                     const std::string heapString) {
+void FileRoutine::writeEncodings(const std::string filePath,
+                                 const std::string heapString) {
   // convert heap string to bitset
   std::vector<bool> bitsetHeapString = FileRoutine::bitsFromString(heapString);
   std::cout << "Bits of the string: " << bitsetHeapString << std::endl;
@@ -254,7 +254,7 @@ void FileRoutine::printDecodedMinHeap(const std::string filePath) {
       bitset.end() - (sizeof(int) * 8));
   std::vector<bool> TEXT_BITSET(
       bitset.begin(),
-      bitset.begin() + (sizeof(char) * size * 8 + sizeof(int) * 8));
+      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8));
   std::cout << "Expected string bitset: " << STRING_BITSET << std::endl;
   std::vector<bool>::const_iterator itr = STRING_BITSET.begin();
   std::string heapstring;
@@ -270,7 +270,9 @@ void FileRoutine::printDecodedMinHeap(const std::string filePath) {
     heapstring.push_back(c);
   }
   std::reverse(heapstring.begin(), heapstring.end());
-  std::cout << "decoed heapstring: " << heapstring << std::endl;
+  std::cout << "decoded heapstring: " << heapstring << std::endl;
+  std::cout << "Text bitset, should be empty in this case: " << TEXT_BITSET
+            << std::endl;
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
@@ -337,17 +339,16 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   hff::printCurrentTree(tree.root);
   // create heap string can represents the `minHeap`
   std::string heapString = hff::minHeapToString(tree.root);
-  writeSerialMinHeap(fileEncoded, heapString);
+  writeEncodings(fileEncoded, heapString);
   // open input file
   std::ifstream fileInput(fileDecoded, std::ios::in);
   // open ouput file stream in output and append mode
   std::ofstream fileOutput(fileEncoded, std::ofstream::binary | std::ios::app |
                                             std::ios::out);
   char fileChar;
-  std::cout << "==Encoding Huffman Codes== \n";
+  std::cout << "==Encoding Huffman Codes==" << std::endl;
+  // TODO: write a new encoding process
 
-  // just testing out if we can still find the minHeap string after
-  // huffman codes can be generated and written to the output file
   printDecodedMinHeap(fileEncoded);
   // file input and file output
   int len[MAX_TREE_HEIGHT], top = 0;

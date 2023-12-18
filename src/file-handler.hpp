@@ -40,7 +40,7 @@ public:
 // write file with the proper huffman encodings
 
 int intFromBits(const std::vector<bool> &v);
-void writeSerialMinHeap(const std::string, const std::string);
+void writeEncodings(const std::string, const std::string);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
 void printDecodedMinHeap(const std::string filepath);
