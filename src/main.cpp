@@ -10,5 +10,13 @@ int main() {
   FileRoutine::FileHandler fileHandle("example.bin", "example.txt");
   fileHandle.huffmanEncrypt();
   // use ostream override in FileRoutine for this
+  struct hff::huffCode code;
+  code.sum = 16;
+  code.size = 4;
+  using namespace FileRoutine;
+
+  std::vector<bool> bits = huffCodeToBits(code);
+  std::cout << "Bits created: " << bits << std::endl;
+
   return EXIT_SUCCESS;
 }

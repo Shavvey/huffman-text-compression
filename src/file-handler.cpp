@@ -181,12 +181,15 @@ void FileRoutine::writeEncodings(const std::string filePath,
   bitsetField.insert(bitsetField.end(), bitsetHeapString.begin(),
                      bitsetHeapString.end());
   std::cout << "The entire bitset:" << bitsetField << std::endl;
+
   // write this bitset to the file
   std::reverse(bitsetField.begin(), bitsetField.end());
   writeBitset(bitsetField, bitsetField.size(), filePath);
 }
 
 // return bitstring of encoding, can recast to back to binary
+// TODO: modify this to have the encodings return a vector of bool, the thing we
+// now use to write to the file
 std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   struct hff::huffCode code = huffTree.huffmanEncode(c);
   // NOTE: delete this afterwards, this is just for testing
@@ -214,16 +217,26 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
     n /= 2;
   }
   // reverse order to construct binary string
-  std::string binarystring;
-  // use the stack to reverse the binary characters and
-  // use this to create the final binary string
-  while (!charStack.empty()) {
-    char c = charStack.top();
-    charStack.pop();
-    binarystring.push_back(c);
-  }
+  std::string binarystring(charStack.top(), charStack.size());
+  std::reverse(binarystring.begin(), binarystring.end());
   return binarystring;
 }
+
+// convert the huff code given to a simple vector in the smallest availalbe size
+std::vector<bool> FileRoutine::huffCodeToBits(struct hff::huffCode &code) {
+  std::vector<bool> bit_set;
+  int n = code.sum;
+  while (n != 0) {
+    // check divisibility, if current number has a factor of two return true,
+    // otherwise false
+    bool b = (n % 2) ? 1 : 0;
+    bit_set.push_back(b);
+    // divide sum by two
+    n /= 2;
+  }
+  return bit_set;
+}
+
 // an integer value from a given bits inside vector v
 int FileRoutine::intFromBits(const std::vector<bool> &v) {
   int retval = 0;
@@ -310,7 +323,8 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
     std::unordered_map<char, int>::iterator found = charFreqMap.find(fileChar);
     // if the char isn't found inside the hash table then we create a new entry
     if (found == charFreqMap.end()) {
-      // insert file char pair and set key value to one
+      // insert file char pair and set key value to one, this happens each newly
+      // encountered char not already inside dictionary/map
       charFreqMap.insert({fileChar, 1});
       // once the key value pair is created, we can increment
       // the frequnecy value for each successive look we do in the file

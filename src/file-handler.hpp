@@ -63,4 +63,5 @@ void writeBitset(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
 const std::vector<bool> readBitset(const std::string &filePath);
 const long getFileSize(const std::string &filepath);
 std::vector<bool> bitsFromString(const std::string &string);
+std::vector<bool> huffCodeToBits(struct hff::huffCode &code);
 } // namespace FileRoutine
