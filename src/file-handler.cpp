@@ -224,15 +224,18 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
 
 // convert the huff code given to a simple vector in the smallest availalbe size
 std::vector<bool> FileRoutine::huffCodeToBits(struct hff::huffCode &code) {
-  std::vector<bool> bit_set;
+  std::vector<bool> bit_set(code.size);
+
   int n = code.sum;
+  int i = 0;
   while (n != 0) {
     // check divisibility, if current number has a factor of two return true,
     // otherwise false
     bool b = (n % 2) ? 1 : 0;
-    bit_set.push_back(b);
+    bit_set.at(i) = b;
     // divide sum by two
     n /= 2;
+    i++;
   }
   return bit_set;
 }

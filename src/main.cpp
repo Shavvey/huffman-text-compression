@@ -11,8 +11,8 @@ int main() {
   fileHandle.huffmanEncrypt();
   // use ostream override in FileRoutine for this
   struct hff::huffCode code;
-  code.sum = 16;
-  code.size = 4;
+  code.sum = 0;
+  code.size = 2;
   using namespace FileRoutine;
 
   std::vector<bool> bits = huffCodeToBits(code);
