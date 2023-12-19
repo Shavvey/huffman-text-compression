@@ -203,7 +203,10 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
   printf("Codes's binary string %s\n", binarystring.c_str());
   return binarystring;
 }
-
+std::vector<bool> FileRoutine::getBitsFromCode(hff::HuffmanTree tree, char c) {
+  struct hff::huffCode code = tree.huffmanEncode(c);
+  return huffCodeToBits(code);
+}
 std::string FileRoutine::convertToBinary(unsigned int n) {
   if (n == 0) {
     return "0";
@@ -211,7 +214,6 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
   std::stack<char> charStack;
   while (n != 0) {
     char c = (n % 2) ? '1' : '0';
-    // printf("%c", c);
     //  push binary digit onto stack
     charStack.push(c);
     n /= 2;

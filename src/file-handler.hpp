@@ -43,6 +43,7 @@ int intFromBits(const std::vector<bool> &v);
 void writeEncodings(const std::string, const std::string);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
+std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
 void printDecodedMinHeap(const std::string filepath);
 std::string convertToBinary(unsigned int);
 char decodeFileChar(char c, hff::MinHeapNode *treeNode, int bin);

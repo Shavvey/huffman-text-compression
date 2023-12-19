@@ -17,6 +17,5 @@ int main() {
 
   std::vector<bool> bits = huffCodeToBits(code);
   std::cout << "Bits created: " << bits << std::endl;
-
   return EXIT_SUCCESS;
 }
