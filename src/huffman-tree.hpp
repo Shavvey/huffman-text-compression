@@ -117,5 +117,7 @@ public:
     // build huffman tree based on map of characters and their file frequencies
     root = hff::buildHuffmanTree(chars, freq, size);
   }
+  // simple destructor that unallocates memory for the root node of the minheap
+  ~HuffmanTree() { delete root; }
 };
 } // namespace hff

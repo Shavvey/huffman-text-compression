@@ -1,4 +1,6 @@
+// only one header defintion of the file
 #pragma once
+// include all the definitions of for the huffman tree
 #include "huffman-tree.hpp"
 #include <fstream>
 #include <list>
