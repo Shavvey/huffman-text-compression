@@ -91,30 +91,52 @@ void FileRoutine::fillBitset(std::vector<bool> &bitsets) {
 }
 
 // write the bitset given a filename
-void FileRoutine::writeBitset(const std::vector<bool> &bitsets,
-                              uint32_t num_valid_bits,
+void FileRoutine::writeBitset(const std::vector<bool> &bitset,
+                              uint32_t numValidBits,
                               const std::string &filePath) {
   // size of bitset should be divisible by 8, otherwise throw an error
-  assert(bitsets.size() % 8 == 0);
+  assert(bitset.size() % 8 == 0);
   std::fstream fhand;
   // trunc will clear the file
   fhand.open(filePath, fhand.binary | fhand.trunc | fhand.out);
   if (!fhand.is_open()) {
     std::cerr << "Failed to open " << filePath << std::endl;
   } else {
-    fhand.write(reinterpret_cast<char *>(&num_valid_bits),
-                sizeof(num_valid_bits));
-    size_t num_bytes = bitsets.size() / 8;
-    for (int i = 0; i < num_bytes; i++) {
+    fhand.write(reinterpret_cast<char *>(&numValidBits), sizeof(numValidBits));
+    size_t numByte = bitset.size() / 8;
+    for (int i = 0; i < numByte; i++) {
       // ch: 00000000
-      char ch = 0;
+      char c = 0;
       for (int j = 0; j < 8; j++) {
         int k = i * 8 + j;
-        ch |= (bitsets.at(k) << (8 - j - 1));
+        c |= (bitset.at(k) << (8 - j - 1));
       }
-      fhand.write(&ch, sizeof(ch));
+      fhand.write(&c, sizeof(c));
     }
   }
+  fhand.close();
+}
+
+void FileRoutine::flushBitSet(const std::vector<bool> &bitset,
+                              uint32_t numValidBits,
+                              const std::string &filePath) {
+  assert(bitset.size() % 8 == 0);
+  std::fstream fhand(filePath, fhand.binary | fhand.out | fhand.app);
+  if (!fhand.is_open()) {
+    std::cerr << "Failed to open " << filePath << std::endl;
+  } else {
+    fhand.write(reinterpret_cast<char *>(&numValidBits), sizeof(numValidBits));
+    size_t numBytes = bitset.size() / 8;
+    for (int i = 0; i < numBytes; i++) {
+      char c = 0;
+      for (int j = 0; j < 8; j++) {
+        int k = i * 8 + j;
+        c |= (bitset.at(k)) << (8 - j - 1);
+      }
+      fhand.write(&c, sizeof(c));
+    }
+  }
+  // exit of out file
   fhand.close();
 }
 
