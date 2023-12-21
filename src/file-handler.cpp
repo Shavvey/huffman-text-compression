@@ -117,49 +117,31 @@ void FileRoutine::writeBitset(const std::vector<bool> &bitset,
   fhand.close();
 }
 
-void FileRoutine::FileHandler::writeEncryptedFileChars() {
+std::vector<bool>
+FileRoutine::FileHandler::getEncryptedFileChar(const hff::HuffmanTree &tree) {
   std::vector<bool> bitset;
-  hff::HuffmanTree tree(charFreqMap);
-  int numValidBits = bitset.size();
   // output file, should produced the encrypted text
-  std::ofstream fileOut(fileEncoded,
-                        fileOut.binary | fileOut.out | fileOut.app);
+  std::ofstream fileOut;
+  fileOut.open(fileEncoded, fileOut.binary | fileOut.out | fileOut.app);
 
   // input file, should the plaintext characters
-  std::ifstream fileIn(fileDecoded, fileIn.in);
+  std::ifstream fileIn;
+  fileIn.open(fileDecoded, fileIn.in);
   // holds each char from `fileIn`
   char fileChar;
   // while we have not reached the end of file
   while (!fileIn.eof()) {
     fileIn.get(fileChar);
+    std::cout << "File char being encoded: " << fileChar << std::endl;
     std::vector<bool> huffCodeBits = getBitsFromCode(tree, fileChar);
+    std::cout << "File char conversion to bits: " << huffCodeBits << std::endl;
+    // inser huff codes bits into the larger bitset
+    bitset.insert(bitset.end(), huffCodeBits.begin(), huffCodeBits.end());
   }
-  fileOut.close();
-}
-// NOTE: helper function for `writeEncryptedFileChars`, uses a filestream to
-// write binary to a file
-// very similar implementation to writeBitset
-void FileRoutine::FileHandler::flushBitset(std::ofstream &fileIn,
-                                           const std::vector<bool> &bitset) {
-  // size of bitset should be divisible by 8, otherwise throw an error
-  uint32_t numValidBits = bitset.size();
-  assert(numValidBits % 8 == 0);
-  // trunc will clear the file
-  if (!fileIn.is_open()) {
-    std::cerr << "Failed to open " << fileEncoded << std::endl;
-  } else {
-    fileIn.write(reinterpret_cast<char *>(&numValidBits), sizeof(numValidBits));
-    size_t numByte = bitset.size() / 8;
-    for (int i = 0; i < numByte; i++) {
-      // ch: 00000000
-      char c = 0;
-      for (int j = 0; j < 8; j++) {
-        int k = i * 8 + j;
-        c |= (bitset.at(k) << (8 - j - 1));
-      }
-      fileIn.write(&c, sizeof(c));
-    }
-  }
+  fileIn.close();
+  fillBitset(bitset);
+  std::cout << "Final bitset created: " << bitset << std::endl;
+  return bitset;
 }
 
 // read bit set from a written file
@@ -211,8 +193,9 @@ const long FileRoutine::getFileSize(const std::string &filepath) {
 // filePath: the file name and directory specified to create compressed file
 // heapString: a string of character that can be used to rebuild the minHeap,
 // which is the data structure chosen for the huffman encoding tree
-void FileRoutine::writeEncodings(const std::string filePath,
-                                 const std::string heapString) {
+void FileRoutine::FileHandler::writeEncodings(const std::string &filePath,
+                                              const std::string &heapString,
+                                              const hff::HuffmanTree &tree) {
   // convert heap string to bitset
   std::vector<bool> bitsetHeapString = FileRoutine::bitsFromString(heapString);
   std::cout << "Bits of the string: " << bitsetHeapString << std::endl;
@@ -225,10 +208,14 @@ void FileRoutine::writeEncodings(const std::string filePath,
   bitsetField.insert(bitsetField.end(), bitsetHeapString.begin(),
                      bitsetHeapString.end());
   std::cout << "The entire bitset:" << bitsetField << std::endl;
-
+  std::vector<bool> textBitset = getEncryptedFileChar(tree);
+  // append text bitset to final bitset
+  bitsetField.insert(bitsetField.end(), textBitset.begin(), textBitset.end());
   // write this bitset to the file
   std::reverse(bitsetField.begin(), bitsetField.end());
   writeBitset(bitsetField, bitsetField.size(), filePath);
+  // use helper function to write the encryped text chracters
+  getEncryptedFileChar(tree);
 }
 
 // return bitstring of encoding, can recast to back to binary
@@ -248,6 +235,7 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
 std::vector<bool> FileRoutine::getBitsFromCode(hff::HuffmanTree tree, char c) {
   // look up code from its char
   struct hff::huffCode code = tree.huffmanEncode(c);
+  std::cout << "Sum of code huff code: " << code.sum << std::endl;
   // convert huff code to a bits
   return huffCodeToBits(code);
 }
@@ -405,12 +393,13 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   hff::printCurrentTree(tree.root);
   // create heap string can represents the `minHeap`
   std::string heapString = hff::minHeapToString(tree.root);
-  writeEncodings(fileEncoded, heapString);
   // open input file
-  printDecodedMinHeap(fileEncoded);
+  // write the encrypted file chars
   // file input and file output
   int len[MAX_TREE_HEIGHT], top = 0;
-  hff::printCodes(tree.root, len, top);
+  tree.populateCharCodes(tree.root, len, top);
+  writeEncodings(fileEncoded, heapString, tree);
+  printDecodedMinHeap(fileEncoded);
 }
 
 void FileRoutine::huffmanTreeFromFile() {}

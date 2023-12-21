@@ -20,9 +20,10 @@ public:
   // driver methods, should be built with the smaller functions and methods!!
   void huffmanEncrypt();
   void huffmanDecrypt();
-
-  void writeEncryptedFileChars();
-  void flushBitset(std::ofstream &filePath, const std::vector<bool> &bitset);
+  void writeEncodings(const std::string &filePath,
+                      const std::string &heapString,
+                      const hff::HuffmanTree &tree);
+  std::vector<bool> getEncryptedFileChar(const hff::HuffmanTree &tree);
   // public fileds!
   std::string fileDecoded;
   std::string fileEncoded;
@@ -45,7 +46,7 @@ public:
 // write file with the proper huffman encodings
 
 int intFromBits(const std::vector<bool> &v);
-void writeEncodings(const std::string, const std::string);
+
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
 std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
