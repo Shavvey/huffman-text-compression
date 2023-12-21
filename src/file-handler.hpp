@@ -20,6 +20,9 @@ public:
   // driver methods, should be built with the smaller functions and methods!!
   void huffmanEncrypt();
   void huffmanDecrypt();
+
+  void writeEncryptedFileChars();
+  void flushBitset(std::ofstream &filePath, const std::vector<bool> &bitset);
   // public fileds!
   std::string fileDecoded;
   std::string fileEncoded;
@@ -67,6 +70,5 @@ const std::vector<bool> readBitset(const std::string &filePath);
 const long getFileSize(const std::string &filepath);
 std::vector<bool> bitsFromString(const std::string &string);
 std::vector<bool> huffCodeToBits(struct hff::huffCode &code);
-void flushBitSet(const std::vector<bool> &bitsets, uint32_t numValidBits,
-                 const std::string &filePath);
+std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
 } // namespace FileRoutine
