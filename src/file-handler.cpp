@@ -64,21 +64,6 @@ std::vector<bool> FileRoutine::getBits(T value, unsigned int num_bits,
   return bits;
 }
 
-// append more bits to an already existing given bitset with the other bits
-template <class T>
-void append_bitset(std::vector<bool> &bitsets, const std::vector<T> &values,
-                   size_t bitset_size) {
-  for (int i = 0; i < values.size(); i++) {
-    T value = values.at(i);
-    std::vector<bool> bits =
-        get_bits(value, bitset_size, sizeof(value) * 8 - bitset_size);
-
-    // append given bits
-
-    bitsets.insert(bitsets.end(), bits.begin(), bits.end());
-  }
-}
-
 // fill a given bitset so that its size is divisible by 8,
 // so that we can write the bitset using each byte
 void FileRoutine::fillBitset(std::vector<bool> &bitsets) {

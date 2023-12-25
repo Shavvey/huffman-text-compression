@@ -36,9 +36,8 @@ public:
 
     processFile(fileDecodePath);
   };
-  ~FileHandler() {}
-  // map of file characters and their relative frequencies
-  // used during the encoding step
+  ~FileHandler() {} // map of file characters and their relative
+                    // frequencies used during the encoding step
   std::unordered_map<char, int> charFreqMap;
 };
 
@@ -60,9 +59,6 @@ std::ostream &operator<<(std::ostream &os, int arr[]);
 
 template <typename T>
 std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset);
-
-template <typename T>
-void append_bitset(std::vector<bool> &, const std::vector<T> &, size_t);
 
 void fillBitset(std::vector<bool> &bitset);
 void writeBitset(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
