@@ -101,9 +101,7 @@ public:
     populateCharCodes(root, arr, top);
   }
 
-  // secondary constructor where it takes the map of characters and their
-  // individual file frequencies, used in file handler for some things
-  // not sure if im going to use this yet, maybe i should delete it
+  // secondary constructor where it takes the map of characters and frequencies
   HuffmanTree(std::unordered_map<char, int> fileCharFreq) {
     int const size = fileCharFreq.size();
     int freq[size];

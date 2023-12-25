@@ -183,16 +183,11 @@ void FileRoutine::FileHandler::writeEncodings(const std::string &filePath,
                                               const hff::HuffmanTree &tree) {
   // convert heap string to bitset
   std::vector<bool> bitsetHeapString = FileRoutine::bitsFromString(heapString);
-  std::cout << "Bits of the string: " << bitsetHeapString << std::endl;
   int size = heapString.size();
-  std::cout << "Size of bit string:" << size << std::endl;
   std::vector<bool> bitsetField = getBits<int>(size, sizeof(int) * 8, 0);
-  std::cout << "Bitset containing the size of bit string:" << bitsetField
-            << std::endl;
   // append bitset of entire heapstring to the end of the bitset field
   bitsetField.insert(bitsetField.end(), bitsetHeapString.begin(),
                      bitsetHeapString.end());
-  std::cout << "The entire bitset:" << bitsetField << std::endl;
   std::vector<bool> textBitset = getEncryptedFileChar(tree);
   // append text bitset to final bitset
   bitsetField.insert(bitsetField.end(), textBitset.begin(), textBitset.end());
@@ -204,8 +199,8 @@ void FileRoutine::FileHandler::writeEncodings(const std::string &filePath,
 }
 
 // return bitstring of encoding, can recast to back to binary
-std::string FileRoutine::getEncoding(hff::HuffmanTree huffTree, char c) {
-  struct hff::huffCode code = huffTree.huffmanEncode(c);
+std::string FileRoutine::getEncoding(hff::HuffmanTree tree, char c) {
+  struct hff::huffCode code = tree.huffmanEncode(c);
   // NOTE: delete this afterwards, this is just for testing
   printf("Code's value %d\n", code.sum);
   printf("Code's size %d\n", code.size);
@@ -283,19 +278,13 @@ void FileRoutine::decodeFile(const std::string filePath,
   // return the region at stores a integer value, this stores
   // the size of the heapstring as a 32-bit int
   std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
-
-  std::cout << "Full bitset recovered from file" << bitset << std::endl;
-  std::cout << "Integer bitset representing size (should be 36)" << INT_BITSET
-            << std::endl;
   int size = intFromBits(INT_BITSET);
-  std::cout << "Size from int bitset: " << size << std::endl;
   std::vector<bool> STRING_BITSET(
       bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
       bitset.end() - (sizeof(int) * 8));
   std::vector<bool> TEXT_BITSET(
       bitset.begin(),
       bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8));
-  std::cout << "Expected string bitset: " << STRING_BITSET << std::endl;
   std::vector<bool>::const_iterator itr = STRING_BITSET.begin();
   std::string heapstring;
   while (itr != STRING_BITSET.end()) {
@@ -311,25 +300,15 @@ void FileRoutine::decodeFile(const std::string filePath,
   }
   // reverse the heapstring
   std::reverse(heapstring.begin(), heapstring.end());
-  std::cout << "decoded heapstring: " << heapstring << std::endl;
-  std::cout << "Text bitset, should be empty in this case: " << TEXT_BITSET
-            << std::endl;
 
   std::reverse(TEXT_BITSET.begin(), TEXT_BITSET.end());
-  std::cout << "decoding this bitset: " << TEXT_BITSET << std::endl;
-  int arr[MAX_TREE_HEIGHT];
-  int top = 0;
-  hff::printCodes(tree.root, arr, top);
   // decode the text bitset
   // first iterate across the bitset
   hff::MinHeapNode *root = tree.root;
   for (bool i : TEXT_BITSET) {
     std::cout << i << std::endl;
-    if (i == 1) {
-      root = root->right;
-    } else {
-      root = root->left;
-    }
+    (i) ? root = root->right : root = root->left;
+    // if i is one, move right; otherewise move left
     if (hff::isLeaf(root)) {
       std::cout << "char from tree: " << root->data << std::endl;
       root = tree.root;

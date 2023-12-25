@@ -11,12 +11,6 @@ class FileHandler {
 
 public:
   void processFile(std::string);
-  // i should probably make this functions!
-  void getFileCharacters();
-  void getFileFrequencies();
-  // test methods to make sure the file frequencies and chars are remembered
-  void printFileFrequnecies();
-  void printFileCharacters();
   // driver methods, should be built with the smaller functions and methods!!
   void huffmanEncrypt();
   void huffmanDecrypt();
@@ -42,8 +36,6 @@ public:
 };
 
 /*FUNCTION PROTOTYPING*/
-// write file with the proper huffman encodings
-
 int intFromBits(const std::vector<bool> &v);
 
 // get each encoding from the huffman tree

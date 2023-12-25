@@ -28,9 +28,9 @@ hff::MinHeap *hff::createMinHeap(unsigned capacity) {
   minHeap->capacity = capacity;
   // allocate memory to min heap array based on total capacity given
   minHeap->array =
-      // we could use something more advanced since we in c plus plus land, but
-      // we won't ;)
+      // a simple array of pointers to keep track of all the allocations
       (hff::MinHeapNode **)malloc(minHeap->capacity * sizeof(MinHeapNode *));
+  // array chould possibly be deleted in a destructor later
   return minHeap;
 }
 // helper function to swap the pointers of two references to nodes stored on the
@@ -405,8 +405,6 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
     serializedBytes.push_back(bytes);
     size++;
   }
-  // we wan't to count the null terminator since it helps us read back the
-  // string?
   serialHeap.size = size;
   serialHeap.data = serializedBytes;
   return serialHeap;
@@ -419,8 +417,9 @@ void hff::printBytes(hff::SerializedMinHeap minHeap) {
   // print newline
   printf("\n");
 }
-// left-root-right
-// print out tree in a in order fashion
+
+// root-right-left
+// print out a simple in order traversal of the tree, given its root
 void hff::printInOrder(hff::MinHeapNode *root) {
   if (root == NULL) {
     return;
