@@ -271,6 +271,8 @@ std::vector<bool> FileRoutine::huffCodeToBits(struct hff::huffCode &code) {
     n /= 2;
     i++;
   }
+  // reverse the order of the bitset
+  std::reverse(bit_set.begin(), bit_set.end());
   return bit_set;
 }
 
@@ -330,26 +332,24 @@ void FileRoutine::decodeFile(const std::string filePath,
 
   std::reverse(TEXT_BITSET.begin(), TEXT_BITSET.end());
   std::cout << "decoding this bitset: " << TEXT_BITSET << std::endl;
+  int arr[MAX_TREE_HEIGHT];
+  int top = 0;
+  hff::printCodes(tree.root, arr, top);
   // decode the text bitset
   // first iterate across the bitset
   hff::MinHeapNode *root = tree.root;
-  std::string s;
-  for (std::vector<bool>::const_iterator i = TEXT_BITSET.begin();
-       i != TEXT_BITSET.end(); i++) {
-    // if bitset is one go left, if bitset is zero go right
-    if (*i == 0) {
-      root = root->left;
-    } else {
+  for (bool i : TEXT_BITSET) {
+    std::cout << i << std::endl;
+    if (i == 1) {
       root = root->right;
+    } else {
+      root = root->left;
     }
     if (hff::isLeaf(root)) {
-      // NOTE: this should probably be updated to append this char to a textfile
-      s.push_back(root->data);
-      // reset the root back to the top
+      std::cout << "char from tree: " << root->data << std::endl;
       root = tree.root;
     }
   }
-  std::cout << s << std::endl;
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
