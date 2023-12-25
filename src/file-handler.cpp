@@ -286,9 +286,10 @@ int FileRoutine::intFromBits(const std::vector<bool> &v) {
   }
   return retval;
 }
-// NOTE: heapstring is reversed inside the encrypted file,
-// so we need to reverse the result of the decoded heapstring in this function
-void FileRoutine::printDecodedMinHeap(const std::string filePath) {
+// prints the decoded output the file given, should be the encoded version of
+// file using its huffman tree
+void FileRoutine::decodeFile(const std::string filePath,
+                             const hff::HuffmanTree &tree) {
   // recover the bitset from the file
   std::vector<bool> bitset = readBitset(filePath);
   // reverse the bit order
@@ -326,6 +327,29 @@ void FileRoutine::printDecodedMinHeap(const std::string filePath) {
   std::cout << "decoded heapstring: " << heapstring << std::endl;
   std::cout << "Text bitset, should be empty in this case: " << TEXT_BITSET
             << std::endl;
+
+  std::reverse(TEXT_BITSET.begin(), TEXT_BITSET.end());
+  std::cout << "decoding this bitset: " << TEXT_BITSET << std::endl;
+  // decode the text bitset
+  // first iterate across the bitset
+  hff::MinHeapNode *root = tree.root;
+  std::string s;
+  for (std::vector<bool>::const_iterator i = TEXT_BITSET.begin();
+       i != TEXT_BITSET.end(); i++) {
+    // if bitset is one go left, if bitset is zero go right
+    if (*i == 0) {
+      root = root->left;
+    } else {
+      root = root->right;
+    }
+    if (hff::isLeaf(root)) {
+      // NOTE: this should probably be updated to append this char to a textfile
+      s.push_back(root->data);
+      // reset the root back to the top
+      root = tree.root;
+    }
+  }
+  std::cout << s << std::endl;
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
@@ -399,7 +423,7 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   int len[MAX_TREE_HEIGHT], top = 0;
   tree.populateCharCodes(tree.root, len, top);
   writeEncodings(fileEncoded, heapString, tree);
-  printDecodedMinHeap(fileEncoded);
+  decodeFile(fileEncoded, tree);
 }
 
 void FileRoutine::huffmanTreeFromFile() {}

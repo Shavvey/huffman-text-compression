@@ -50,7 +50,7 @@ int intFromBits(const std::vector<bool> &v);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
 std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
-void printDecodedMinHeap(const std::string filepath);
+void decodeFile(const std::string filepath, const hff::HuffmanTree &tree);
 std::string convertToBinary(unsigned int);
 char decodeFileChar(char c, hff::MinHeapNode *treeNode, int bin);
 void rightPaddingZeroes(std::string *, int);
