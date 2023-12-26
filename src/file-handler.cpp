@@ -279,6 +279,9 @@ int FileRoutine::intFromBits(const std::vector<bool> &v) {
 // file using its huffman tree
 void FileRoutine::decodeFile(const std::string filePath,
                              const hff::HuffmanTree &tree) {
+
+  std::string output = "output.txt";
+
   // recover the bitset from the file
   std::vector<bool> bitset = readBitset(filePath);
   // reverse the bit order
@@ -311,6 +314,7 @@ void FileRoutine::decodeFile(const std::string filePath,
   std::reverse(TEXT_BITSET.begin(), TEXT_BITSET.end());
   // decode the text bitset
   // first iterate across the bitset
+  std::fstream fileOutput(output, std::ios::out);
   hff::MinHeapNode *root = tree.root;
   for (bool i : TEXT_BITSET) {
     (i) ? root = root->right : root = root->left;
@@ -318,7 +322,9 @@ void FileRoutine::decodeFile(const std::string filePath,
     if (hff::isLeaf(root)) {
       // printing out each of the decoded chars for testing purposes
       // std::cout << "char from tree: " << root->data << std::endl;
+      fileOutput.put(root->data);
       root = tree.root;
+      // now we need to write this to an actual file
     }
   }
 }
