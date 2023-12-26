@@ -28,8 +28,9 @@ public:
     // file with just the plaintext characters
     fileEncoded = fileEncodePath;
 
-    processFile(fileDecodePath);
+    charFreqMap = processFile(fileDecodePath);
   };
+  std::unordered_map<char, int> charFreqMap;
 };
 
 /*FUNCTION PROTOTYPING*/
@@ -38,11 +39,11 @@ int intFromBits(const std::vector<bool> &v);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
 std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
-void decodeFile(const std::string filepath, const hff::HuffmanTree &tree);
+void decodeFile(const std::string filepath, const hff::HuffmanTree tree);
 std::string convertToBinary(unsigned int);
 char decodeFileChar(char c, hff::MinHeapNode *treeNode, int bin);
 void rightPaddingZeroes(std::string *, int);
-void huffmanTreeFromFile();
+hff::HuffmanTree huffmanTreeFromFile(const std::string &fileEncoded);
 std::ostream &operator<<(std::ostream &os, const std::vector<bool> &v);
 std::ostream &operator<<(std::ostream &os, int arr[]);
 void printBitRegions(const std::string &fileEncoded);

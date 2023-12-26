@@ -115,5 +115,7 @@ public:
     // build huffman tree based on map of characters and their file frequencies
     root = hff::buildHuffmanTree(chars, freq, size);
   }
+  // just a simple construct to convert a root into a full huffman tree
+  HuffmanTree(hff::MinHeapNode *_root) { root = _root; }
 };
 } // namespace hff

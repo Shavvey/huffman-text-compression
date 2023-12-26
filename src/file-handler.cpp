@@ -278,7 +278,7 @@ int FileRoutine::intFromBits(const std::vector<bool> &v) {
 // prints the decoded output the file given, should be the encoded version of
 // file using its huffman tree
 void FileRoutine::decodeFile(const std::string filePath,
-                             const hff::HuffmanTree &tree) {
+                             const hff::HuffmanTree tree) {
 
   std::string output = "output.txt";
 
@@ -372,8 +372,8 @@ std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
   return bits;
 }
 
-// process the file produce charFreqList, this list can then be
-// decomposed into file frequency and file character arrays
+// process the file by creating mapping each encountered char to a frequency
+// (number of times encountered inside the file)
 std::unordered_map<char, int>
 FileRoutine::FileHandler::processFile(std::string filePath) {
   // open file stream and read from it
@@ -415,22 +415,56 @@ void FileRoutine::rightPaddingZeroes(std::string *inputString, int pad_length) {
 
 void FileRoutine::FileHandler::huffmanEncrypt() {
   // process the input file, returing the map of chars and frequency data
-  std::unordered_map<char, int> charFreqMap = processFile(fileDecoded);
   std::cout << "Constructing Huffman Tree\n";
   hff::HuffmanTree tree(charFreqMap);
   // print out tree if you would like, (kinda messy for large trees)
   hff::printCurrentTree(tree.root);
   // create heap string can represents the `minHeap`
   std::string heapString = hff::minHeapToString(tree.root);
-  // open input file
-  // write the encrypted file chars
-  // file input and file output
   int len[MAX_TREE_HEIGHT], top = 0;
   tree.populateCharCodes(tree.root, len, top);
   writeEncodings(fileEncoded, heapString, tree);
-  decodeFile(fileEncoded, tree);
+  // delete the created tree, freeing its memory
+  hff::deleteTree(tree.root);
 }
+
 // create the huffman tree from the encoded file
-void FileRoutine::huffmanTreeFromFile() {}
+hff::HuffmanTree
+FileRoutine::huffmanTreeFromFile(const std::string &fileEncoded) {
+  // retrieved bitset from file with the binary huffman encodings
+  std::vector<bool> bitset = readBitset(fileEncoded);
+  std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
+  // get size using the field of the bitset that encodes for the size of minheap
+  int size = intFromBits(INT_BITSET);
+  std::vector<bool> STRING_BITSET(
+      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
+      bitset.end() - (sizeof(int) * 8));
+  auto itr = STRING_BITSET.begin();
+  std::string heapstring;
+  while (itr != STRING_BITSET.end()) {
+    // construct a new byte as new bool are read
+    std::bitset<8> byte;
+    for (int i = 0; i < 8; i++) {
+      byte[i] = *itr;
+      itr++;
+    }
+    // convert new decoded byte into a char
+    char c = (char)byte.to_ulong();
+    heapstring.push_back(c);
+  }
+  // reverse the heapstring
+  std::reverse(heapstring.begin(), heapstring.end());
+  hff::MinHeapNode *root = hff::minHeapFromString(heapstring);
+  hff::printTree(root);
+  hff::HuffmanTree tree(root);
+  return tree;
+}
+
 // decryption routine, should be composed of more simple functions and methods
-void FileRoutine::FileHandler::huffmanDecrypt() {}
+void FileRoutine::FileHandler::huffmanDecrypt() {
+  // construct the tree uses its char freq map
+  hff::HuffmanTree tree = huffmanTreeFromFile(fileEncoded);
+  decodeFile(fileEncoded, tree);
+  // delete the tree after decryption
+  hff::deleteTree(tree.root);
+}
