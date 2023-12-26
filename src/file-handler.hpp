@@ -2,8 +2,7 @@
 #pragma once
 // include all the definitions of for the huffman tree
 #include "huffman-tree.hpp"
-#include <fstream>
-#include <list>
+
 // create a namespace for file routine methods and functions
 namespace FileRoutine {
 class FileHandler {

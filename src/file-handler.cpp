@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cassert>
-#include <cmath>
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
@@ -117,10 +116,11 @@ FileRoutine::FileHandler::getEncryptedFileChar(const hff::HuffmanTree &tree) {
   // while we have not reached the end of file
   while (!fileIn.eof()) {
     fileIn.get(fileChar);
-    std::cout << "File char being encoded: " << fileChar << std::endl;
+    // std::cout << "File char being encoded: " << fileChar << std::endl;
     std::vector<bool> huffCodeBits = getBitsFromCode(tree, fileChar);
-    std::cout << "File char conversion to bits: " << huffCodeBits << std::endl;
-    // inser huff codes bits into the larger bitset
+    // std::cout << "File char conversion to bits: " << huffCodeBits <<
+    // std::endl;
+    //  inser huff codes bits into the larger bitset
     bitset.insert(bitset.end(), huffCodeBits.begin(), huffCodeBits.end());
   }
   fileIn.close();
@@ -220,7 +220,7 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree tree, char c) {
 std::vector<bool> FileRoutine::getBitsFromCode(hff::HuffmanTree tree, char c) {
   // look up code from its char
   struct hff::huffCode code = tree.huffmanEncode(c);
-  std::cout << "Sum of code huff code: " << code.sum << std::endl;
+  // std::cout << "Sum of code huff code: " << code.sum << std::endl;
   // convert huff code to a bits
   return huffCodeToBits(code);
 }

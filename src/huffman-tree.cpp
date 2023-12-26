@@ -1,4 +1,7 @@
 #include "huffman-tree.hpp"
+#include <iostream>
+#include <queue>
+#include <sstream>
 // include the namespace so i dont have to keep referencing it
 using namespace hff;
 
