@@ -481,19 +481,19 @@ struct huffCode hff::HuffmanTree::huffmanEncode(char charEncoded) {
 void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root,
                                          int arr[MAX_TREE_HEIGHT], int top) {
 
-  // assign 0 to left edge and recur
+  // if the left child exists, recurse down left subtree
   if (root->left) {
 
     arr[top] = 0;
-    // recurse using the left edge?
+    // each step along the left is represented with a 0
     hff::HuffmanTree::populateCharCodes(root->left, arr, top + 1);
   }
 
-  // assign 1 to right edge and recur
+  //  if the right child exists, recurse down the right subtree
   if (root->right) {
 
     arr[top] = 1;
-    // recurse using the right edge?
+    // each step along the right is represented with a 1
     hff::HuffmanTree::populateCharCodes(root->right, arr, top + 1);
   }
 

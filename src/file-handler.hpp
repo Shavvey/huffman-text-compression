@@ -30,8 +30,8 @@ public:
 
     processFile(fileDecodePath);
   };
-  ~FileHandler() {} // map of file characters and their relative
-                    // frequencies used during the encoding step
+  // map of file characters and their relative
+  // frequencies used during the encoding step
   std::unordered_map<char, int> charFreqMap;
 };
 

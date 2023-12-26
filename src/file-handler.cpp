@@ -199,6 +199,10 @@ void FileRoutine::FileHandler::writeEncodings(const std::string &filePath,
 }
 
 // return bitstring of encoding, can recast to back to binary
+// tree: the huffman tree used to look up each char
+// c: the character that is being looked up
+// uses huffman encode using the map between chars and their respective huffman
+// code
 std::string FileRoutine::getEncoding(hff::HuffmanTree tree, char c) {
   struct hff::huffCode code = tree.huffmanEncode(c);
   // NOTE: delete this afterwards, this is just for testing
