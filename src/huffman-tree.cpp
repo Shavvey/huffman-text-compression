@@ -429,6 +429,17 @@ void hff::printInOrder(hff::MinHeapNode *root) {
   hff::printInOrder(root->right);
 }
 
+void hff::deleteTree(hff::MinHeapNode *node) {
+  if (node == NULL)
+    // early return if current node is null
+    return;
+
+  deleteTree(node->right);
+  deleteTree(node->left);
+
+  free(node);
+}
+
 // root-left-right
 // print out tree in a pre order fashion
 void hff::printPreOrder(hff::MinHeapNode *root) {

@@ -124,8 +124,9 @@ FileRoutine::FileHandler::getEncryptedFileChar(const hff::HuffmanTree &tree) {
     bitset.insert(bitset.end(), huffCodeBits.begin(), huffCodeBits.end());
   }
   fileIn.close();
+  // make sure final bitset can be broken into bytes for writing process
+  // we accomplish this by just filling the bitset until its a multiple of 8
   fillBitset(bitset);
-  std::cout << "Final bitset created: " << bitset << std::endl;
   return bitset;
 }
 
@@ -223,6 +224,7 @@ std::vector<bool> FileRoutine::getBitsFromCode(hff::HuffmanTree tree, char c) {
   // convert huff code to a bits
   return huffCodeToBits(code);
 }
+// simple funciton to return a bit string represented from an unsigned integer
 std::string FileRoutine::convertToBinary(unsigned int n) {
   if (n == 0) {
     return "0";
@@ -272,6 +274,7 @@ int FileRoutine::intFromBits(const std::vector<bool> &v) {
   }
   return retval;
 }
+
 // prints the decoded output the file given, should be the encoded version of
 // file using its huffman tree
 void FileRoutine::decodeFile(const std::string filePath,
@@ -310,14 +313,36 @@ void FileRoutine::decodeFile(const std::string filePath,
   // first iterate across the bitset
   hff::MinHeapNode *root = tree.root;
   for (bool i : TEXT_BITSET) {
-    std::cout << i << std::endl;
     (i) ? root = root->right : root = root->left;
     // if i is one, move right; otherewise move left
     if (hff::isLeaf(root)) {
-      std::cout << "char from tree: " << root->data << std::endl;
+      // printing out each of the decoded chars for testing purposes
+      // std::cout << "char from tree: " << root->data << std::endl;
       root = tree.root;
     }
   }
+}
+
+// function to just grab all the bits inside a file an print out the bit region
+// supposedely encoding from each
+void FileRoutine::printBitRegions(const std::string &fileEncoded) {
+  // recover the bitset from the file read out
+  std::vector<bool> bitset = readBitset(fileEncoded);
+  // NOTE: not a lot of robust error handling with this, be careful!
+  std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
+  int size = intFromBits(INT_BITSET);
+  std::vector<bool> STRING_BITSET(
+      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
+      bitset.end() - (sizeof(int) * 8));
+  std::vector<bool> TEXT_BITSET(
+      bitset.begin(),
+      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8));
+  std::cout << "Total bitset recovered from file " << fileEncoded << " : "
+            << bitset << std::endl;
+  std::cout << "Integer field: " << INT_BITSET << std::endl;
+  std::cout << "Heap string field: " << STRING_BITSET << std::endl;
+  std::cout << "Binary encodings of original text: " << TEXT_BITSET
+            << std::endl;
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
@@ -343,10 +368,12 @@ std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
 
 // process the file produce charFreqList, this list can then be
 // decomposed into file frequency and file character arrays
-void FileRoutine::FileHandler::processFile(std::string filePath) {
+std::unordered_map<char, int>
+FileRoutine::FileHandler::processFile(std::string filePath) {
   // open file stream and read from it
   std::ifstream file(filePath, std::ios::in | std::ifstream::binary);
   char fileChar;
+  std::unordered_map<char, int> charFreqMap;
   // read until the end of file
   while (!file.eof()) {
     // get the next fileChar in the file
@@ -365,20 +392,24 @@ void FileRoutine::FileHandler::processFile(std::string filePath) {
       found->second = found->second + 1;
     }
   }
+  return charFreqMap;
 }
 
 // simple string padding funciton that adds zeroes until target is reached
 void FileRoutine::rightPaddingZeroes(std::string *inputString, int pad_length) {
   int size = (*inputString).size();
+  // while we the size is below the pad length
   while ((pad_length - size) > 0) {
+    // append string with a zero
     (*inputString).push_back('0');
+    // increment size
     size++;
   }
 }
 
 void FileRoutine::FileHandler::huffmanEncrypt() {
   // process the input file, returing the map of chars and frequency data
-  processFile(fileDecoded);
+  std::unordered_map<char, int> charFreqMap = processFile(fileDecoded);
   std::cout << "Constructing Huffman Tree\n";
   hff::HuffmanTree tree(charFreqMap);
   // print out tree if you would like, (kinda messy for large trees)
@@ -393,7 +424,7 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   writeEncodings(fileEncoded, heapString, tree);
   decodeFile(fileEncoded, tree);
 }
-
+// create the huffman tree from the encoded file
 void FileRoutine::huffmanTreeFromFile() {}
-
+// decryption routine, should be composed of more simple functions and methods
 void FileRoutine::FileHandler::huffmanDecrypt() {}

@@ -10,7 +10,7 @@ class FileHandler {
   // class method declarations
 
 public:
-  void processFile(std::string);
+  std::unordered_map<char, int> processFile(std::string);
   // driver methods, should be built with the smaller functions and methods!!
   void huffmanEncrypt();
   void huffmanDecrypt();
@@ -30,9 +30,6 @@ public:
 
     processFile(fileDecodePath);
   };
-  // map of file characters and their relative
-  // frequencies used during the encoding step
-  std::unordered_map<char, int> charFreqMap;
 };
 
 /*FUNCTION PROTOTYPING*/
@@ -48,7 +45,7 @@ void rightPaddingZeroes(std::string *, int);
 void huffmanTreeFromFile();
 std::ostream &operator<<(std::ostream &os, const std::vector<bool> &v);
 std::ostream &operator<<(std::ostream &os, int arr[]);
-
+void printBitRegions(const std::string &fileEncoded);
 template <typename T>
 std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset);
 

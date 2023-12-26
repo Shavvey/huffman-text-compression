@@ -79,6 +79,7 @@ int getParent(int);
 int getLeftChild(int);
 int getRightChild(int);
 int sumArr(int *, int);
+void deleteTree(hff::MinHeapNode *root);
 class HuffmanTree {
 public:
   // public fields!
@@ -88,7 +89,6 @@ public:
   void printHuffmanTree();
   char huffmanDecode(std::string);
   struct huffCode huffmanEncode(char);
-
   void populateCharCodes(MinHeapNode *, int[MAX_TREE_HEIGHT], int);
   // class constructor
   HuffmanTree(char *data, int *freq, int size) {
