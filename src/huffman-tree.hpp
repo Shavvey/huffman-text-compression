@@ -6,15 +6,15 @@
 #include <unordered_map>
 #include <vector>
 
-// namespacing all the huffman libraries because i really like typing :: in
+// name spacing all the huffman libraries because i really like typing :: in
 // every single line of code
 namespace hff {
 #define MAX_TREE_HEIGHT 256
-/*DEFINTIONS*/
+/*DEFINITIONS*/
 struct MinHeapNode {
   // input character for
   char data;
-  // its frequency inside a given textfile
+  // its frequency inside a given text file
   unsigned freq;
   // left and right references to nodes inside the huffman tree
   MinHeapNode *right;
@@ -26,7 +26,7 @@ struct MinHeap {
   unsigned size;
   // capacity of min heap
   unsigned capacity;
-  // array of minheap node pointers
+  // array of minHeap node pointers
   struct MinHeapNode **array;
 };
 

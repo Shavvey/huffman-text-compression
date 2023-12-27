@@ -11,11 +11,11 @@
 #include <vector>
 // initially i was using `bitset` to write
 // values, but it seems I needed to read and write
-// the bits direclty, so I need to make much dumber functions
+// the bits directly, so I need to make much dumber functions
 // to accomplish this.
 // source:
 // https://leimao.github.io/blog/CPP-Read-Write-Arbitrary-Bits/#Introduction
-// overloading the basic << operator for vecotrs
+// overloading the basic << operator for vectors
 // just a nicer way to display these values, because
 // i am going to be using *a lot* of vectors
 std::ostream &FileRoutine::operator<<(std::ostream &os,
@@ -59,7 +59,7 @@ std::vector<bool> FileRoutine::getBits(T value, unsigned int num_bits,
     bool bit = (value >> (value_bits - 1 - offset - i)) & 1U;
     bits.push_back(bit);
   }
-  // returrn the collected bits from the given value types
+  // return the collected bits from the given value types
   return bits;
 }
 
@@ -79,9 +79,9 @@ void FileRoutine::writeBitset(const std::vector<bool> &bitset,
                               uint32_t numValidBits,
                               const std::string &filePath) {
   // size of bitset should be divisible by 8, otherwise throw an error
-  assert(bitset.size() % 8 == 0);
+  assert((bitset.size() % 8 == 0) && "bitset should be a multiple of 8");
   std::fstream fhand;
-  // trunc will clear the file
+  // `trunc` will clear the file
   fhand.open(filePath, fhand.binary | fhand.trunc | fhand.out);
   if (!fhand.is_open()) {
     std::cerr << "Failed to open " << filePath << std::endl;
@@ -108,10 +108,10 @@ FileRoutine::FileHandler::getEncryptedFileChar(const hff::HuffmanTree &tree) {
   std::ofstream fileOut;
   fileOut.open(fileEncoded, fileOut.binary | fileOut.out | fileOut.app);
 
-  // input file, should the plaintext characters
+  // input file, should the plain text characters
   std::ifstream fileIn;
   fileIn.open(fileDecoded, fileIn.in);
-  // holds each char from `fileIn`
+  // holds each char from 'fileIn'
   char fileChar;
   // while we have not reached the end of file
   while (!fileIn.eof()) {
@@ -120,7 +120,7 @@ FileRoutine::FileHandler::getEncryptedFileChar(const hff::HuffmanTree &tree) {
     std::vector<bool> huffCodeBits = getBitsFromCode(tree, fileChar);
     // std::cout << "File char conversion to bits: " << huffCodeBits <<
     // std::endl;
-    //  inser huff codes bits into the larger bitset
+    //  insert huff codes bits into the larger bitset
     bitset.insert(bitset.end(), huffCodeBits.begin(), huffCodeBits.end());
   }
   fileIn.close();
@@ -146,17 +146,18 @@ const std::vector<bool> FileRoutine::readBitset(const std::string &filepath) {
       char ch;
       fhand.read(&ch, sizeof(ch));
       std::vector<bool> bits = FileRoutine::getBits(ch, sizeof(ch) * 8, 0);
+      // append the bitset with successfully read char
       bitsets.insert(bitsets.end(), bits.begin(), bits.end());
     }
   }
-  // contruct valid bitset
+  // construct valid bitset
   std::vector<bool> valid_bitsets{bitsets.begin(),
                                   bitsets.begin() + num_valid_bits};
   return valid_bitsets;
 }
 
-// get the filesize using a given filepath
-// param: filepath: specify the filepath to open
+// get the file size using a given file path
+// param: file path: specify the filepath to open
 // returns a count based on the number of byte exist between
 // the start and the end of the file
 const long FileRoutine::getFileSize(const std::string &filepath) {
@@ -170,7 +171,7 @@ const long FileRoutine::getFileSize(const std::string &filepath) {
   } else {
     // goto end of the file
     file_handler.seekg(0, std::ios::end);
-    // return the file stream position, this will be used to find filesize
+    // return the file stream position, this will be used to find file size
     filesize = file_handler.tellg();
   }
   return filesize;
@@ -195,11 +196,11 @@ void FileRoutine::FileHandler::writeEncodings(const std::string &filePath,
   // write this bitset to the file
   std::reverse(bitsetField.begin(), bitsetField.end());
   writeBitset(bitsetField, bitsetField.size(), filePath);
-  // use helper function to write the encryped text chracters
+  // use helper function to write the encrypted text characters
   getEncryptedFileChar(tree);
 }
 
-// return bitstring of encoding, can recast to back to binary
+// return a bit string of encoding, can recast to back to binary
 // tree: the huffman tree used to look up each char
 // c: the character that is being looked up
 // uses huffman encode using the map between chars and their respective huffman
@@ -224,7 +225,7 @@ std::vector<bool> FileRoutine::getBitsFromCode(hff::HuffmanTree tree, char c) {
   // convert huff code to a bits
   return huffCodeToBits(code);
 }
-// simple funciton to return a bit string represented from an unsigned integer
+// simple function to return a bit string represented from an unsigned integer
 std::string FileRoutine::convertToBinary(unsigned int n) {
   if (n == 0) {
     return "0";
@@ -242,7 +243,7 @@ std::string FileRoutine::convertToBinary(unsigned int n) {
   return binarystring;
 }
 
-// convert the huff code given to a simple vector in the smallest availalbe size
+// convert the huff code given to a simple vector in the smallest available size
 std::vector<bool> FileRoutine::huffCodeToBits(struct hff::huffCode &code) {
   std::vector<bool> bit_set(code.size);
 
@@ -277,46 +278,18 @@ int FileRoutine::intFromBits(const std::vector<bool> &v) {
 
 // prints the decoded output the file given, should be the encoded version of
 // file using its huffman tree
-void FileRoutine::decodeFile(const std::string filePath,
+void FileRoutine::decodeFile(std::vector<bool> text_bitset,
                              const hff::HuffmanTree tree) {
-
+  // name of the text file produced
+  // this is comically stupid to just name it output but whatever
   std::string output = "output.txt";
 
-  // recover the bitset from the file
-  std::vector<bool> bitset = readBitset(filePath);
-  // reverse the bit order
-  // return the region at stores a integer value, this stores
-  // the size of the heapstring as a 32-bit int
-  std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
-  int size = intFromBits(INT_BITSET);
-  std::vector<bool> STRING_BITSET(
-      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
-      bitset.end() - (sizeof(int) * 8));
-  std::vector<bool> TEXT_BITSET(
-      bitset.begin(),
-      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8));
-  std::vector<bool>::const_iterator itr = STRING_BITSET.begin();
-  std::string heapstring;
-  while (itr != STRING_BITSET.end()) {
-    // construct a new byte as new bool are read
-    std::bitset<8> byte;
-    for (int i = 0; i < 8; i++) {
-      byte[i] = *itr;
-      itr++;
-    }
-    // convert new decoded byte into a char
-    char c = (char)byte.to_ulong();
-    heapstring.push_back(c);
-  }
-  // reverse the heapstring
-  std::reverse(heapstring.begin(), heapstring.end());
-
-  std::reverse(TEXT_BITSET.begin(), TEXT_BITSET.end());
+  std::reverse(text_bitset.begin(), text_bitset.end());
   // decode the text bitset
   // first iterate across the bitset
   std::fstream fileOutput(output, std::ios::out);
   hff::MinHeapNode *root = tree.root;
-  for (bool i : TEXT_BITSET) {
+  for (bool i : text_bitset) {
     (i) ? root = root->right : root = root->left;
     // if i is one, move right; otherewise move left
     if (hff::isLeaf(root)) {
@@ -330,7 +303,7 @@ void FileRoutine::decodeFile(const std::string filePath,
 }
 
 // function to just grab all the bits inside a file an print out the bit region
-// supposedely encoding from each
+// supposedly encoding from each
 void FileRoutine::printBitRegions(const std::string &fileEncoded) {
   // recover the bitset from the file read out
   std::vector<bool> bitset = readBitset(fileEncoded);
@@ -352,11 +325,11 @@ void FileRoutine::printBitRegions(const std::string &fileEncoded) {
 }
 
 std::vector<bool> FileRoutine::bitsFromString(const std::string &s) {
-  // number of bits for each charcter
+  // number of bits for each character
   const int NUM_BITS{8};
   const int OFFSET{0};
   std::vector<bool> bits;
-  // reserve bitset size given that this is a strin of ascii characters
+  // reserve bitset size given that this is a string of ASCII characters
   // ignore the null characters of string
   for (int j = 0; j < s.size(); j++) {
     char value = s.at(j);
@@ -392,7 +365,7 @@ FileRoutine::FileHandler::processFile(std::string filePath) {
       // encountered char not already inside dictionary/map
       charFreqMap.insert({fileChar, 1});
       // once the key value pair is created, we can increment
-      // the frequnecy value for each successive look we do in the file
+      // the frequency value for each successive look we do in the file
     } else {
       // increment the key value if the fileChar has already been found
       found->second = found->second + 1;
@@ -423,26 +396,22 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
   std::string heapString = hff::minHeapToString(tree.root);
   int len[MAX_TREE_HEIGHT], top = 0;
   tree.populateCharCodes(tree.root, len, top);
+  // write the binary encodings for the each character, should be based on the
+  // huffman tree also, the minheap will be serialized as a string and embedded
+  // inside the file (reversed to garble the string a little)
   writeEncodings(fileEncoded, heapString, tree);
   // delete the created tree, freeing its memory
   hff::deleteTree(tree.root);
 }
 
 // create the huffman tree from the encoded file
+// string_bitset: constant reference to the bitset representing the heapstring
 hff::HuffmanTree
-FileRoutine::huffmanTreeFromFile(const std::string &fileEncoded) {
-  // retrieved bitset from file with the binary huffman encodings
-  std::vector<bool> bitset = readBitset(fileEncoded);
-  std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
-  // get size using the field of the bitset that encodes for the size of minheap
-  int size = intFromBits(INT_BITSET);
-  std::vector<bool> STRING_BITSET(
-      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
-      bitset.end() - (sizeof(int) * 8));
-  auto itr = STRING_BITSET.begin();
+FileRoutine::huffmanTreeFromFile(std::vector<bool> string_bitset) {
+  auto itr = string_bitset.begin();
   std::string heapstring;
-  while (itr != STRING_BITSET.end()) {
-    // construct a new byte as new bool are read
+  while (itr != string_bitset.end()) {
+    // construct a new byte as a new bool are read
     std::bitset<8> byte;
     for (int i = 0; i < 8; i++) {
       byte[i] = *itr;
@@ -454,17 +423,34 @@ FileRoutine::huffmanTreeFromFile(const std::string &fileEncoded) {
   }
   // reverse the heapstring
   std::reverse(heapstring.begin(), heapstring.end());
+  // create a minheap from the serialized minheap embedded inside the file
   hff::MinHeapNode *root = hff::minHeapFromString(heapstring);
   hff::printTree(root);
+  // construct a huffman tree object uses the pointer to the root
   hff::HuffmanTree tree(root);
   return tree;
 }
 
 // decryption routine, should be composed of more simple functions and methods
 void FileRoutine::FileHandler::huffmanDecrypt() {
+  // first retrieve the bitset
+  std::vector<bool> bitset = readBitset(fileEncoded);
+  // abort if the read bitset is zero
+  assert("bitset size is zero" && (bitset.size() != 0));
   // construct the tree uses its char freq map
-  hff::HuffmanTree tree = huffmanTreeFromFile(fileEncoded);
-  decodeFile(fileEncoded, tree);
+  std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
+  // size taken from the integer field inside the bitset
+  int size = intFromBits(INT_BITSET);
+  std::vector<bool> STRING_BITSET(
+      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
+      bitset.end() - (sizeof(int) * 8));
+  std::vector<bool> TEXT_BITSET(
+      bitset.begin(),
+      bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8));
+  // retrieve tree using the decoded heapstring
+  hff::HuffmanTree tree = huffmanTreeFromFile(STRING_BITSET);
+  // decode the file using the textbitset and the tree
+  decodeFile(TEXT_BITSET, tree);
   // delete the tree after decryption
   hff::deleteTree(tree.root);
 }

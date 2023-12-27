@@ -1,13 +1,11 @@
-// only one header defintion of the file
+// only one header definition of the file
 #pragma once
 // include all the definitions of for the huffman tree
 #include "huffman-tree.hpp"
-
 // create a namespace for file routine methods and functions
 namespace FileRoutine {
 class FileHandler {
   // class method declarations
-
 public:
   std::unordered_map<char, int> processFile(std::string);
   // driver methods, should be built with the smaller functions and methods!!
@@ -17,14 +15,14 @@ public:
                       const std::string &heapString,
                       const hff::HuffmanTree &tree);
   std::vector<bool> getEncryptedFileChar(const hff::HuffmanTree &tree);
-  // public fileds!
+  // public fields!
   std::string fileDecoded;
   std::string fileEncoded;
   FileHandler(const std::string fileEncodePath,
               const std::string fileDecodePath) {
     // file with the huffman encodings we create
     fileDecoded = fileDecodePath;
-    // file with just the plaintext characters
+    // file with just the plain text characters
     fileEncoded = fileEncodePath;
 
     charFreqMap = processFile(fileDecodePath);
@@ -38,11 +36,12 @@ int intFromBits(const std::vector<bool> &v);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
 std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
-void decodeFile(const std::string filepath, const hff::HuffmanTree tree);
+void decodeFile(const std::vector<bool> text_bitset,
+                const hff::HuffmanTree tree);
 std::string convertToBinary(unsigned int);
 char decodeFileChar(char c, hff::MinHeapNode *treeNode, int bin);
 void rightPaddingZeroes(std::string *, int);
-hff::HuffmanTree huffmanTreeFromFile(const std::string &fileEncoded);
+hff::HuffmanTree huffmanTreeFromFile(std::vector<bool> string_bitset);
 std::ostream &operator<<(std::ostream &os, const std::vector<bool> &v);
 std::ostream &operator<<(std::ostream &os, int arr[]);
 void printBitRegions(const std::string &fileEncoded);

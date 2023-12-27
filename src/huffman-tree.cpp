@@ -2,7 +2,7 @@
 #include <iostream>
 #include <queue>
 #include <sstream>
-// include the namespace so i dont have to keep referencing it
+// include the namespace so i don't have to keep referencing it
 using namespace hff;
 
 hff::MinHeapNode *hff::newNode(char data, unsigned int freq) {
@@ -22,18 +22,17 @@ hff::MinHeapNode *hff::newNode(char data, unsigned int freq) {
 // a min heap of given capacity
 hff::MinHeap *hff::createMinHeap(unsigned capacity) {
   // entry pointer to minHeap, should be the root
-  // allcoate memory for minHeap onto the heap
+  // allocate memory for minHeap onto the heap
   hff::MinHeap *minHeap = new MinHeap;
   // size initially is 0 when the min heap is created
   minHeap->size = 0;
-  // capacity of the minheap, this tells use how much space we need to allocate
-  // using malloc
+  // capacity of the minHeap, this tells use how much space we need to allocate
   minHeap->capacity = capacity;
   // allocate memory to min heap array based on total capacity given
   minHeap->array =
       // a simple array of pointers to keep track of all the allocations
       (hff::MinHeapNode **)malloc(minHeap->capacity * sizeof(MinHeapNode *));
-  // array chould possibly be deleted in a destructor later
+  // array could possibly be deleted in a destructor later
   return minHeap;
 }
 // helper function to swap the pointers of two references to nodes stored on the
@@ -53,7 +52,7 @@ void hff::minHeapify(hff::MinHeap *minHeap, int index) {
   int smallest = index;
   // compute the left child of the indexed heap node
   int left = 2 * index + 1;
-  // compute the right child of the inedex heap node
+  // compute the right child of the index heap node
   int right = 2 * index + 2;
   // using size as a sentinel value, while preforming swaps down the tree if
   // needed
@@ -153,6 +152,8 @@ hff::MinHeap *hff::createAndBuildMinHeap(char data[], int freq[], int size) {
   hff::MinHeap *minHeap = hff::createMinHeap(size);
 
   for (int i = 0; i < size; ++i) {
+    // allocate memory for each node based on data and freq array that is passed
+    // as an arg
     minHeap->array[i] = hff::newNode(data[i], freq[i]);
   }
 
@@ -189,7 +190,7 @@ hff::MinHeapNode *hff::buildHuffmanTree(char data[], int freq[], int size) {
   return hff::extractMin(minHeap);
 }
 
-// recursive function to navigate the leafs of minheap node and print out the
+// recursive function to navigate the leafs of minHeap node and print out the
 // weighting of encoded characters
 void hff::printCodes(hff::MinHeapNode *root, int arr[], int top) {
 
@@ -251,7 +252,7 @@ int hff::maxDepth(hff::MinHeapNode *root) {
 // the 2D character array
 void hff::pathRecursive(hff::MinHeapNode *root, char ***res, int d, int depth,
                         int left, int right) {
-  // if recursive path hits a branch (or root isnt created) or is past the max
+  // if recursive path hits a branch (or root isn't created) or is past the max
   // depth we return out of the function call
   if (root == NULL || d == depth) {
     // early return if root passed does not exist
@@ -352,13 +353,13 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   if (data.size() == 0) {
     return NULL;
   }
-  // using a stringstream to iterate over the string and get each character
+  // using a string stream to iterate over the string and get each character
   std::stringstream s(data);
   char c;
-  // get another character from stringstream
+  // get another character from string stream
   c = s.get();
   // since we don't need the frequency data after the heap is constructed
-  // each of the frequncy values are just set to 0
+  // each of the frequency values are just set to 0
   hff::MinHeapNode *root = hff::newNode(c, 0);
   std::queue<hff::MinHeapNode *> q;
   q.push(root);
@@ -390,7 +391,7 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
 }
 SerializedMinHeap hff::serializeFromString(std::string heapString) {
   // struct that contains all the information stored inside minHeap,
-  // this will be stored inside the compress textfile,
+  // this will be stored inside the compress text file,
   // so that the uncompressed file can be recovered
   SerializedMinHeap serialHeap;
   std::stringstream s(heapString);
@@ -402,7 +403,7 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
   // compressed text
   std::vector<std::byte> serializedBytes;
   while (data != '\0') {
-    // get a character from the stringstream
+    // get a character from the string stream
     data = s.get();
     std::byte bytes = std::byte(data);
     serializedBytes.push_back(bytes);
@@ -478,7 +479,7 @@ char hff::HuffmanTree::huffmanDecode(std::string bitString) {
       current = current->right;
     } else if (c == '0') {
       data = (isLeaf(root)) ? current->data : '\0';
-      // travserse to left sub tree
+      // traverse to left sub tree
       current = current->left;
     }
     // get another character
@@ -495,7 +496,7 @@ struct huffCode hff::HuffmanTree::huffmanEncode(char charEncoded) {
 void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root,
                                          int arr[MAX_TREE_HEIGHT], int top) {
 
-  // if the left child exists, recurse down left subtree
+  // if the left child exists, recurse down left sub-tree
   if (root->left) {
 
     arr[top] = 0;
@@ -503,7 +504,7 @@ void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root,
     hff::HuffmanTree::populateCharCodes(root->left, arr, top + 1);
   }
 
-  //  if the right child exists, recurse down the right subtree
+  //  if the right child exists, recurse down the right sub-tree
   if (root->right) {
 
     arr[top] = 1;
