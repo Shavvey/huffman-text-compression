@@ -14,7 +14,7 @@ minheap binary tree like this:
 
 ![huffman-tree](images/HuffmanTree.png)
 
-Less frequent character are assigned higher values/weights in the tree.
+Less frequent characters are assigned higher values/weights in the tree.
 A binary code is then created for each character based on how the character is
 reached using the tree. For example, the character 'o' has the lowest value of 0,
-so its code is 00, and is reached by going down the left subtree twice.
+so its code is zero in binary (00), and is reached by going down the left subtree twice.

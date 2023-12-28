@@ -26,7 +26,7 @@ std::ostream &FileRoutine::operator<<(std::ostream &os,
   // look through each entry and print them
   for (int i = 0; i < v.size(); ++i) {
     os << v.at(i);
-    // print comma to seperate values a litter better
+    // print comma to separate values a litter better
     if (i != v.size() - 1) {
       os << ", ";
     }
@@ -36,6 +36,7 @@ std::ostream &FileRoutine::operator<<(std::ostream &os,
   return os;
 }
 
+// overloading output stream operator to print out entire integer array
 std::ostream &FileRoutine::operator<<(std::ostream &os, int arr[]) {
   for (int i = 0; i < 10; i++) {
     std::cout << arr[i] << " ";
@@ -212,12 +213,13 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree tree, char c) {
   printf("Code's value %d\n", code.sum);
   printf("Code's size %d\n", code.size);
   // inti empty string
-  std::string binarystring = convertToBinary(code.sum);
+  std::string binaryString = convertToBinary(code.sum);
   // pad the string with zeroes to the right until the string is 4 characters
   // this makes each huffman code provided a fixed length, and thus decoding
   // should be easier
-  printf("Codes's binary string %s\n", binarystring.c_str());
-  return binarystring;
+  std::cout << "Code's binary string: " << binaryString << std::endl;
+  // return binary string created
+  return binaryString;
 }
 std::vector<bool> FileRoutine::getBitsFromCode(hff::HuffmanTree tree, char c) {
   // look up code from its char
@@ -279,28 +281,39 @@ int FileRoutine::intFromBits(const std::vector<bool> &v) {
 
 // prints the decoded output the file given, should be the encoded version of
 // file using its huffman tree
-void FileRoutine::decodeFile(std::vector<bool> text_bitset,
-                             const hff::HuffmanTree tree) {
+void FileRoutine::FileHandler::decodeFile(std::vector<bool> text_bitset,
+                                          const hff::HuffmanTree tree) {
   // name of the text file produced
   // this is comically stupid to just name it output but whatever
   std::string output = "output.txt";
-
+  // NOTE: since we fill the text_bitset, we need to keep track
+  //  of how many characters we have decoded from the bitset
+  //  and make sure it does not exceed the original size of characters
+  //  from the plaintext file
+  int charCount = getNumChars(fileDecoded);
   std::reverse(text_bitset.begin(), text_bitset.end());
   // decode the text bitset
   // first iterate across the bitset
   std::fstream fileOutput(output, std::ios::out);
+  fileOutput.clear();
   hff::MinHeapNode *root = tree.root;
-  for (const bool i : text_bitset) {
-    (i) ? root = root->right : root = root->left;
+  std::vector<bool>::const_iterator itr = text_bitset.begin();
+  int numDecode = 0;
+  while (numDecode < charCount) {
+    (*itr) ? root = root->right : root = root->left;
     // if i is one, move right; otherewise move left
     if (hff::isLeaf(root)) {
-      // printing out each of the decoded chars for testing purposes
-      // std::cout << "char from tree: " << root->data << std::endl;
+      // put character decodded from huffman tree into the textfile
       fileOutput.put(root->data);
+      // go back to tree root
       root = tree.root;
-      // now we need to write this to an actual file
+      // int that keeps track of succesfully decoded chars
+      numDecode++;
     }
+    // increment iterator to goto next element in `text_bitset`
+    itr++;
   }
+  fileOutput.close();
 }
 
 // function to just grab all the bits inside a file an print out the bit region
@@ -308,6 +321,8 @@ void FileRoutine::decodeFile(std::vector<bool> text_bitset,
 void FileRoutine::printBitRegions(const std::string &fileEncoded) {
   // recover the bitset from the file read out
   std::vector<bool> bitset = readBitset(fileEncoded);
+  // bitset can't be empty after this step, so abort using this assert if it is
+  assert((bitset.size() > 0) && "bitset must not be empty!");
   // NOTE: not a lot of robust error handling with this, be careful!
   std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
   int size = intFromBits(INT_BITSET);
@@ -409,10 +424,11 @@ void FileRoutine::FileHandler::huffmanEncrypt() {
 // string_bitset: constant reference to the bitset representing the heapstring
 hff::HuffmanTree
 FileRoutine::huffmanTreeFromFile(std::vector<bool> string_bitset) {
-  auto itr = string_bitset.begin();
+  // iterate through the bitset and grab each bool and construct a byte using it
+  std::vector<bool>::const_iterator itr = string_bitset.begin();
   std::string heapstring;
   while (itr != string_bitset.end()) {
-    // construct a new byte as a new bool are read
+    // construct a new byte as new bools are read
     std::bitset<8> byte;
     for (int i = 0; i < 8; i++) {
       byte[i] = *itr;
@@ -432,12 +448,27 @@ FileRoutine::huffmanTreeFromFile(std::vector<bool> string_bitset) {
   return tree;
 }
 
+int FileRoutine::getNumChars(const std::string &file) {
+  int count = 0;
+  // line of the opened file
+  std::string line;
+  // open a file input stream
+  std::ifstream fileInput(file);
+  assert((fileInput.is_open()) && "Error opening file");
+  // grab each line of the text file
+  while (getline(fileInput, line)) {
+    // increment count based on line length
+    count += line.length();
+  }
+  return count;
+}
+
 // decryption routine, should be composed of more simple functions and methods
 void FileRoutine::FileHandler::huffmanDecrypt() {
   // first retrieve the bitset
   std::vector<bool> bitset = readBitset(fileEncoded);
   // abort if the read bitset is zero
-  assert("bitset size is zero" && (bitset.size() != 0));
+  assert((bitset.size() > 0) && "bitset must not be empty!");
   // construct the tree uses its char freq map
   std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
   // size taken from the integer field inside the bitset

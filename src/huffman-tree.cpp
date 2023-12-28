@@ -423,9 +423,10 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
   serialHeap.data = serializedBytes;
   return serialHeap;
 }
-void hff::printBytes(hff::SerializedMinHeap minHeap) {
-  for (std::vector<std::byte>::const_iterator itr = minHeap.data.begin();
-       itr != minHeap.data.end(); ++itr) {
+void hff::printBytes(hff::SerializedMinHeap serializedHeap) {
+  // iterate through each byte of the heap and print value in hex
+  for (std::vector<std::byte>::const_iterator itr = serializedHeap.data.begin();
+       itr != serializedHeap.data.end(); ++itr) {
     // print out hexadecimal string
     printf("%hhx", static_cast<unsigned char>(*itr));
   }

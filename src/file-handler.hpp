@@ -14,6 +14,8 @@ public:
   void writeEncodings(const std::string &filePath,
                       const std::string &heapString,
                       const hff::HuffmanTree &tree);
+  void decodeFile(const std::vector<bool> text_bitset,
+                  const hff::HuffmanTree tree);
   std::vector<bool> getEncryptedFileChar(const hff::HuffmanTree &tree);
   // public fields!
   std::string fileDecoded;
@@ -36,8 +38,7 @@ int intFromBits(const std::vector<bool> &v);
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
 std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
-void decodeFile(const std::vector<bool> text_bitset,
-                const hff::HuffmanTree tree);
+
 std::string convertToBinary(unsigned int);
 char decodeFileChar(char c, hff::MinHeapNode *treeNode, int bin);
 void rightPaddingZeroes(std::string *, int);
@@ -55,4 +56,5 @@ const long getFileSize(const std::string &filepath);
 std::vector<bool> bitsFromString(const std::string &string);
 std::vector<bool> huffCodeToBits(struct hff::huffCode &code);
 std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
+int getNumChars(const std::string &file);
 } // namespace FileRoutine
