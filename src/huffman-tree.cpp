@@ -38,11 +38,11 @@ hff::MinHeap *hff::createMinHeap(unsigned capacity) {
 // helper function to swap the pointers of two references to nodes stored on the
 // minHeap
 void hff::swapMinHeapNode(hff::MinHeapNode **first, hff::MinHeapNode **second) {
-  // first create a temp variable to stored a single pointer
+  // first create a temp variable to store a single pointer
   struct hff::MinHeapNode *temp = *first;
   // swap the first pointer with the second pointer
   *first = *second;
-  // swap the second pointer, stored inside temp. with the first pointer
+  // swap the second pointer, stored inside temp, with the first pointer
   *second = temp;
 }
 
@@ -51,9 +51,9 @@ void hff::minHeapify(hff::MinHeap *minHeap, int index) {
   // initialize smallest value to the current index
   int smallest = index;
   // compute the left child of the indexed heap node
-  int left = 2 * index + 1;
+  int left = getLeftChild(index);
   // compute the right child of the index heap node
-  int right = 2 * index + 2;
+  int right = getRightChild(index);
   // using size as a sentinel value, while preforming swaps down the tree if
   // needed
   if (left < minHeap->size &&
@@ -112,13 +112,14 @@ int hff::getParent(int child) { return (child - 1) / 2; }
 // get left child from parent
 int hff::getLeftChild(int parent) { return 2 * parent + 1; }
 // get right child from parent
-int hff::getRightChild(int parent) { return 2 * parent; }
+int hff::getRightChild(int parent) { return 2 * parent + 2; }
 
 // A standard function to build min heap
 void hff::buildMinHeap(hff::MinHeap *minHeap) {
 
   int n = minHeap->size - 1;
   for (int i = (n - 1) / 2; i >= 0; --i)
+    // start at the leaf and heapify until we reach the root node of the heap
     hff::minHeapify(minHeap, i);
 }
 
@@ -140,10 +141,10 @@ int hff::sumArr(int arr[], int n) {
   return sum;
 }
 
-// Utility function to check if this node is leaf
-bool hff::isLeaf(hff::MinHeapNode *root) {
+// simple utility function to check if this node is leaf
+bool hff::isLeaf(hff::MinHeapNode *node) {
   // if node a is a leaf, by definition it has no children
-  return !(root->left) && !(root->right);
+  return !(node->left) && !(node->right);
 }
 
 // Creates a min heap of a given capacity
@@ -230,6 +231,7 @@ void hff::huffmanCodes(char data[], int freq[], int size) {
 }
 // simple helper function to find the largest of two numbers
 int max(int a, int b) { return (a > b) ? a : b; }
+
 // another helper function used in string representation of binary-tree
 int hff::power(int base, int exponent) {
   // i really like ternary operators
@@ -248,6 +250,7 @@ int hff::maxDepth(hff::MinHeapNode *root) {
   int max_val = max(left_depth, right_depth);
   return max_val + 1;
 }
+
 // recursive path from the tree how far left and right we need to index into
 // the 2D character array
 void hff::pathRecursive(hff::MinHeapNode *root, char ***res, int d, int depth,
@@ -267,6 +270,7 @@ void hff::pathRecursive(hff::MinHeapNode *root, char ***res, int d, int depth,
   hff::pathRecursive(root->left, res, d + 1, depth, left, mid - 1);
   hff::pathRecursive(root->right, res, d + 1, depth, mid + 1, right);
 }
+
 // gets a string representation of the tree
 // its pretty ugly but it works!
 char ***hff::printTree(hff::MinHeapNode *root) {
@@ -285,6 +289,7 @@ char ***hff::printTree(hff::MinHeapNode *root) {
   hff::pathRecursive(root, res, 0, depth, 0, width - 1);
   return res;
 }
+
 // print current tree as a 2D string representation
 void hff::printCurrentTree(hff::MinHeapNode *root) {
   int depth = maxDepth(root);
@@ -299,8 +304,9 @@ void hff::printCurrentTree(hff::MinHeapNode *root) {
     printf("\n");
   }
 }
-// class method implementaing of printing the huffman tree
-// this is just pretty much a rewrite of printCurrentTree
+
+// class method implementation of printing the huffman tree
+// this is just pretty much a rewrite of `printCurrentTree`
 // but as a method
 void hff::HuffmanTree::printHuffmanTree() {
   int depth = maxDepth(root);
@@ -315,6 +321,7 @@ void hff::HuffmanTree::printHuffmanTree() {
     printf("\n");
   }
 }
+
 std::string hff::minHeapToString(hff::MinHeapNode *root) {
   // probably should raise an error?
   if (!root) {
@@ -355,6 +362,7 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   }
   // using a string stream to iterate over the string and get each character
   std::stringstream s(data);
+  // the character retrieved using calls to the stringstream
   char c;
   // get another character from string stream
   c = s.get();
@@ -364,7 +372,9 @@ hff::MinHeapNode *hff::minHeapFromString(std::string data) {
   std::queue<hff::MinHeapNode *> q;
   q.push(root);
   while (!q.empty()) {
+    // retrieve node in front of the queue
     hff::MinHeapNode *node = q.front();
+    // remove this top element from queue using pop
     q.pop();
     // get another character from the string stream
     c = s.get();
@@ -414,7 +424,8 @@ SerializedMinHeap hff::serializeFromString(std::string heapString) {
   return serialHeap;
 }
 void hff::printBytes(hff::SerializedMinHeap minHeap) {
-  for (auto itr = minHeap.data.begin(); itr != minHeap.data.end(); ++itr) {
+  for (std::vector<std::byte>::const_iterator itr = minHeap.data.begin();
+       itr != minHeap.data.end(); ++itr) {
     // print out hexadecimal string
     printf("%hhx", static_cast<unsigned char>(*itr));
   }
@@ -429,18 +440,19 @@ void hff::printInOrder(hff::MinHeapNode *root) {
     return;
   }
   hff::printInOrder(root->left);
-  printf(" %c", root->data);
   hff::printInOrder(root->right);
+  printf(" %c", root->data);
 }
 
 void hff::deleteTree(hff::MinHeapNode *node) {
   if (node == NULL)
     // early return if current node is null
     return;
-
+  // recurse down left subtree
   deleteTree(node->right);
+  // recurse down right  subtree
   deleteTree(node->left);
-
+  // delete the specified node by freeing its memory on the stack
   free(node);
 }
 
@@ -450,9 +462,11 @@ void hff::printPreOrder(hff::MinHeapNode *root) {
   if (root == NULL) {
     return;
   }
-  printf(" %c", root->data);
-  hff::printInOrder(root->left);
+  // recurse down the left subtree
+  hff::printPreOrder(root->left);
+  // recurse down the right subtree
   hff::printPreOrder(root->right);
+  printf(" %c", root->data);
 }
 // left-right-root
 // prints out tree in a post order fashion
@@ -517,6 +531,7 @@ void hff::HuffmanTree::populateCharCodes(hff::MinHeapNode *root,
     code.sum = hff::sumArr(arr, top);
     code.size = top;
     huffmanCodes[root->data] = code;
+    // store the huffman code
     printf("Data stored: %d\n", huffmanCodes[root->data].sum);
   }
 }

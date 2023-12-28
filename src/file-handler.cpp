@@ -9,6 +9,7 @@
 #include <stack>
 #include <string>
 #include <vector>
+
 // initially i was using `bitset` to write
 // values, but it seems I needed to read and write
 // the bits directly, so I need to make much dumber functions
@@ -289,7 +290,7 @@ void FileRoutine::decodeFile(std::vector<bool> text_bitset,
   // first iterate across the bitset
   std::fstream fileOutput(output, std::ios::out);
   hff::MinHeapNode *root = tree.root;
-  for (bool i : text_bitset) {
+  for (const bool i : text_bitset) {
     (i) ? root = root->right : root = root->left;
     // if i is one, move right; otherewise move left
     if (hff::isLeaf(root)) {

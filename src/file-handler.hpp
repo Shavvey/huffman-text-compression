@@ -1,6 +1,6 @@
 // only one header definition of the file
 #pragma once
-// include all the definitions of for the huffman tree
+// include all the definitions for the huffman tree
 #include "huffman-tree.hpp"
 // create a namespace for file routine methods and functions
 namespace FileRoutine {
@@ -24,7 +24,8 @@ public:
     fileDecoded = fileDecodePath;
     // file with just the plain text characters
     fileEncoded = fileEncodePath;
-
+    // use the specified plain text file produce a map of
+    // the characters and their specified frequencies inside the file
     charFreqMap = processFile(fileDecodePath);
   };
   std::unordered_map<char, int> charFreqMap;
@@ -32,7 +33,6 @@ public:
 
 /*FUNCTION PROTOTYPING*/
 int intFromBits(const std::vector<bool> &v);
-
 // get each encoding from the huffman tree
 std::string getEncoding(hff::HuffmanTree tree, char c);
 std::vector<bool> getBitsFromCode(hff::HuffmanTree tree, char c);
@@ -47,7 +47,6 @@ std::ostream &operator<<(std::ostream &os, int arr[]);
 void printBitRegions(const std::string &fileEncoded);
 template <typename T>
 std::vector<bool> getBits(T value, unsigned int num_bits, unsigned int offset);
-
 void fillBitset(std::vector<bool> &bitset);
 void writeBitset(const std::vector<bool> &bitsets, uint32_t num_valid_bits,
                  const std::string &filePath);

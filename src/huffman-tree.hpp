@@ -93,6 +93,7 @@ public:
     int arr[MAX_TREE_HEIGHT];
     // used in recursive call in `populateCharCodes`
     int top = 0;
+    // create and print the character codes
     populateCharCodes(root, arr, top);
   }
 

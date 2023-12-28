@@ -9,3 +9,12 @@ character encountered in the text file inside a min heap binary tree.
 
 The implementation of the huffman tree involve a minheap based on the
 relative frequencies of each character encountered in the plaintext file.
+For example, a file containing the words "cole's coal cole" will have a
+minheap binary tree like this:
+
+![huffman-tree](images/HuffmanTree.png)
+
+Less frequent character are assigned higher values/weights in the tree.
+A binary code is then created for each character based on how the character is
+reached using the tree. For example, the character 'o' has the lowest value of 0,
+so its code is 00, and is reached by going down the left subtree twice.
