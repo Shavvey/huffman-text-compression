@@ -21,7 +21,7 @@
 // i am going to be using *a lot* of vectors
 std::ostream &FileRoutine::operator<<(std::ostream &os,
                                       const std::vector<bool> &v) {
-  // print out brackets to nake it look prettier
+  // print out brackets to make it look prettier
   os << "[";
   // look through each entry and print them
   for (int i = 0; i < v.size(); ++i) {
@@ -212,7 +212,7 @@ std::string FileRoutine::getEncoding(hff::HuffmanTree tree, char c) {
   // NOTE: delete this afterwards, this is just for testing
   printf("Code's value %d\n", code.sum);
   printf("Code's size %d\n", code.size);
-  // inti empty string
+  // init empty string
   std::string binaryString = convertToBinary(code.sum);
   // pad the string with zeroes to the right until the string is 4 characters
   // this makes each huffman code provided a fixed length, and thus decoding
@@ -301,13 +301,13 @@ void FileRoutine::FileHandler::decodeFile(std::vector<bool> text_bitset,
   int numDecode = 0;
   while (numDecode < charCount) {
     (*itr) ? root = root->right : root = root->left;
-    // if i is one, move right; otherewise move left
+    // if i is one, move right; otherwise move left
     if (hff::isLeaf(root)) {
-      // put character decodded from huffman tree into the textfile
+      // put character decoded from huffman tree into the textfile
       fileOutput.put(root->data);
       // go back to tree root
       root = tree.root;
-      // int that keeps track of succesfully decoded chars
+      // int that keeps track of successfully decoded chars
       numDecode++;
     }
     // increment iterator to goto next element in `text_bitset`
@@ -390,7 +390,7 @@ FileRoutine::FileHandler::processFile(std::string filePath) {
   return charFreqMap;
 }
 
-// simple string padding funciton that adds zeroes until target is reached
+// simple string padding function that adds zeroes until target is reached
 void FileRoutine::rightPaddingZeroes(std::string *inputString, int pad_length) {
   int size = (*inputString).size();
   // while we the size is below the pad length
@@ -403,8 +403,8 @@ void FileRoutine::rightPaddingZeroes(std::string *inputString, int pad_length) {
 }
 
 void FileRoutine::FileHandler::huffmanEncrypt() {
-  // process the input file, returing the map of chars and frequency data
-  std::cout << "Constructing Huffman Tree\n";
+  // process the input file, returning the map of chars and frequency data
+  std::cout << "Constructing Huffman Tree" << std::endl;
   hff::HuffmanTree tree(charFreqMap);
   // print out tree if you would like, (kinda messy for large trees)
   hff::printCurrentTree(tree.root);
@@ -481,7 +481,7 @@ void FileRoutine::FileHandler::huffmanDecrypt() {
       bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8));
   // retrieve tree using the decoded heapstring
   hff::HuffmanTree tree = huffmanTreeFromFile(STRING_BITSET);
-  // decode the file using the textbitset and the tree
+  // decode the file using the `text_bitset` and the tree
   decodeFile(TEXT_BITSET, tree);
   // delete the tree after decryption
   hff::deleteTree(tree.root);

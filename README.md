@@ -18,3 +18,9 @@ Less frequent characters are assigned higher values/weights in the tree.
 A binary code is then created for each character based on how the character is
 reached using the tree. For example, the character 'o' has the lowest value of 0,
 so its code is zero in binary (00), and is reached by going down the left subtree twice.
+
+## Project Build
+
+The only thing required is `make` and a c++ compiler like `g++` or `clang++`,
+that's all. You can run `make` inside the `src` folder to compile the project
+into an executable and run it. Use `make clean` to destroy all compilied files.
