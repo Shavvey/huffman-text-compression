@@ -62,7 +62,7 @@ int maxDepth(hff::MinHeapNode *);
 void pathRecursive(hff::MinHeapNode *, char ***, int, int, int, int);
 char ***printTree(hff::MinHeapNode *);
 void printCurrentTree(hff::MinHeapNode *);
-int power(int, int);
+int power(unsigned int base, unsigned int exponent);
 std::string minHeapToString(hff::MinHeapNode *);
 hff::MinHeapNode *minHeapFromString(std::string);
 void printBytes(hff::SerializedMinHeap);

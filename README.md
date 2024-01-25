@@ -23,4 +23,4 @@ so its code is zero in binary (00), and is reached by going down the left subtre
 
 The only thing required is `make` and a c++ compiler like `g++` or `clang++`,
 that's all. You can run `make` inside the `src` folder to compile the project
-into an executable and run it. Use `make clean` to destroy all compilied files.
+into an executable and run it. Use `make clean` to destroy all compiled files.

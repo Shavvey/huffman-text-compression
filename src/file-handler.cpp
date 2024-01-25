@@ -473,6 +473,7 @@ void FileRoutine::FileHandler::huffmanDecrypt() {
   std::vector<bool> INT_BITSET(bitset.end() - (sizeof(int) * 8), bitset.end());
   // size taken from the integer field inside the bitset
   int size = intFromBits(INT_BITSET);
+  // bitset inside the file that stores the heap string
   std::vector<bool> STRING_BITSET(
       bitset.end() - (sizeof(char) * size * 8 + sizeof(int) * 8),
       bitset.end() - (sizeof(int) * 8));

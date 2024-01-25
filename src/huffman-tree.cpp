@@ -233,7 +233,7 @@ void hff::huffmanCodes(char data[], int freq[], int size) {
 int max(int a, int b) { return (a > b) ? a : b; }
 
 // another helper function used in string representation of binary-tree
-int hff::power(int base, int exponent) {
+int hff::power(unsigned int base, unsigned int exponent) {
   // i really like ternary operators
   return (exponent != 0) ? base * power(base, exponent - 1) : 1;
 }
@@ -280,6 +280,7 @@ char ***hff::printTree(hff::MinHeapNode *root) {
   // init the 2 dimensional character array, based on depth and width calc
   char ***res = (char ***)malloc(sizeof(char **) * depth);
   for (int i = 0; i < depth; i++) {
+    // allocate memory for each pointer inside the character array
     res[i] = (char **)malloc(sizeof(char *) * width);
     for (int j = 0; j < width; j++) {
       res[i][j] = (char *)" ";
@@ -303,6 +304,8 @@ void hff::printCurrentTree(hff::MinHeapNode *root) {
     }
     printf("\n");
   }
+  // free heap memory used in this operation
+  free(out);
 }
 
 // class method implementation of printing the huffman tree
