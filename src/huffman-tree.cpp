@@ -79,7 +79,6 @@ bool hff::isSizeOne(hff::MinHeap *minHeap) { return (minHeap->size == 1); }
 // A standard function to extract
 // minimum value node from heap
 hff::MinHeapNode *hff::extractMin(hff::MinHeap *minHeap) {
-
   hff::MinHeapNode *temp = minHeap->array[0];
   minHeap->array[0] = minHeap->array[minHeap->size - 1];
 

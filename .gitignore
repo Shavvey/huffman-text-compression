@@ -3,6 +3,7 @@
 
 # precompilied header files
 *.gch
+*.pch
 
 #DS Store
 .DS_Store

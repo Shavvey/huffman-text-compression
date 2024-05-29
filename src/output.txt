@@ -1,1 +1,1 @@
-does this text compression thing work now?
+compressing this line of text into a binary file!

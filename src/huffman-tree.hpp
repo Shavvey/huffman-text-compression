@@ -10,6 +10,7 @@
 // every single line of code
 namespace hff {
 #define MAX_TREE_HEIGHT 256
+
 /*DEFINITIONS*/
 struct MinHeapNode {
   // input character for

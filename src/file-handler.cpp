@@ -17,8 +17,6 @@
 // source:
 // https://leimao.github.io/blog/CPP-Read-Write-Arbitrary-Bits/#Introduction
 // overloading the basic << operator for vectors
-// just a nicer way to display these values, because
-// i am going to be using *a lot* of vectors
 std::ostream &FileRoutine::operator<<(std::ostream &os,
                                       const std::vector<bool> &v) {
   // print out brackets to make it look prettier
